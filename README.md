@@ -17,6 +17,12 @@ Then install python dependencies:
 pip install -r requirements.txt
 ```
 
+Do your migrations (create your development database):
+
+```
+python manage.py migrate
+```
+
 Next install the VueJS stuff:
 
 Note: Hiba please edit this because I dunno how to set up the vue directories
