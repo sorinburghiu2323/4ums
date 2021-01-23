@@ -11,5 +11,5 @@ def potato_view(request):
     return handleMethods(
         request,
         GET=potato_handler.get_potatoes,
-        PUT=potato_handler.post_potato,
+        POST=potato_handler.post_potato,
     )

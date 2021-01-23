@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Potato(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=False, unique=True)
     is_sweet = models.BooleanField(default=False)
     quantity = models.IntegerField(default=0)
 
