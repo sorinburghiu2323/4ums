@@ -4,6 +4,7 @@ from django.http import HttpResponseNotAllowed, QueryDict
 from django.http.multipartparser import MultiPartParser, MultiPartParserError
 
 """
+
 REST Method Handler
 
 return the view handleMethods(request)
