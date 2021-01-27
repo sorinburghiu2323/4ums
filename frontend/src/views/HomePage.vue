@@ -2,6 +2,7 @@
     <div>
         <h1> Welcome {{firstName}} {{lastName}}</h1>
         <h2 id="potato-title"> Your potato list </h2>
+
         <div class="potato-list" v-if="homepagePotatos">
             <ul>
                 <li v-for="(potato, index) in homepagePotatos" :key="index">{{potato.name}}</li>
@@ -22,7 +23,7 @@ export default {
     },
     data () {
         return {
-            firstName: 'Hiba',
+            firstName: 'Hia',
             lastName: 'Al Dalaty',
             showPotatoForm: false,
         }

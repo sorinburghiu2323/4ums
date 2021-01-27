@@ -9,7 +9,7 @@
             <p> Is it sweet? You have selected: {{isSweet}}</p>
             <input type="radio" id="sweet" name="sweetness" :value="true" v-model="isSweet">
             <label for="sweetness">Sweet</label><br>
-            <input type="radio" id="not-sweet" name="gender" :value="false" v-model="isSweet">
+            <input type="radio" id="not-sweet" name="sweetness" :value="false" v-model="isSweet">
             <label for="not-sweet">Not Sweet</label><br>
         </div>
 
@@ -44,7 +44,7 @@ export default {
     computed: {
         message() {
             if(this.failure === true) {
-                return 'Failed to create potato';
+                return 'Failed to create potato'
             }
             else if(this.failure === false){
                 return 'Successfully added your potato';
