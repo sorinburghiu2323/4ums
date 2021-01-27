@@ -1,25 +1,39 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HomePage 
+    :homepagePotatos="potatos"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import HelloWorld from './components/HelloWorld.vue'
+import HomePage from './views/HomePage.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HomePage,
   },
   created() {
     this.getPotatos();
   },
+  mounted() {
+    this.$root.$on('updatePotatos', () => {
+        // your code goes here
+        this.getPotatos();
+    });
+  },
+  data() {
+    return {
+      potatos: null
+    }
+  },
   methods: {
     getPotatos() {
-      axios.get('api/potato').then(response => console.log(response));
+      axios.get('api/potato').then(response => 
+        this.potatos = response.data.potatoes
+      );
     }
   }
 }
