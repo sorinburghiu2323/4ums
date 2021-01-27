@@ -34,12 +34,12 @@ npm install
 
 Now to build the frontend, there are two ways:
 
-### Watches for any changes in the filetree and recompiles when detects a change
+Watches for any changes in the filetree and recompiles when detects a change
 ```
 npm run watch
 ```
 
-### Compiles and minifies for production
+Compiles and minifies for production
 ```
 npm run build
 ```
