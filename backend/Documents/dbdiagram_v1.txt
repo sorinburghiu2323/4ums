@@ -1,0 +1,14 @@
+Table User {
+  id int
+  name varchar
+}
+
+Table Post {
+  id integer
+  user int
+  post_title varchar
+  created_at timestamp
+}
+
+// A user can have many posts.
+Ref: "User"."id" < "Post"."id"
