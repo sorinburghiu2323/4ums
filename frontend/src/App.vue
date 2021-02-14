@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <HomePage 
-    :homepagePotatos="potatos"/>
+    My App
+    <router-view/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import HomePage from './views/HomePage.vue'
+// import HomePage from './views/HomePage.vue'
 
 export default {
   name: 'App',
   components: {
-    HomePage,
+    // HomePage,
   },
   created() {
     this.getPotatos();
