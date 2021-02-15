@@ -13,7 +13,7 @@ class CustomUserManager(BaseUserManager):
 
     def create_user(self, email, password, **extra_fields):
         """
-        Cate and save a User with the given email and password.
+        Create and save a User with the given email and password.
         """
         if not email:
             raise ValueError(_("The Email must be set"))
