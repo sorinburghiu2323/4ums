@@ -114,7 +114,7 @@ class Post(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255, unique=True)
+    title = models.CharField(max_length=255)
     description = models.TextField(default=0)
     post_type = models.CharField(
         max_length=20, choices=PostType.choices, default=PostType.DISCUSSION
