@@ -43,3 +43,10 @@ Compiles and minifies for production
 ```
 npm run build
 ```
+
+## Before your push...
+
+Make sure you apply black to the root of the project using:
+```
+black .
+```
