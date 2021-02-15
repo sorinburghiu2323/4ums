@@ -121,3 +121,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Override the default user model.
+AUTH_USER_MODEL = "backend.User"
