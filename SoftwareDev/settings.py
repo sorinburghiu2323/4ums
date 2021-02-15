@@ -26,7 +26,7 @@ SECRET_KEY = "^)^0g^8num8d+n20)#j(#qqe&+%^n&7v9#k$)4qa#(80p$dx-5"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ecm2434-group-d-project.eba-qcw626fs.us-west-2.elasticbeanstalk.com']#,'127.0.0.1']
 
 
 # Application definition

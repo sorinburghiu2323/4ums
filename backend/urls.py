@@ -3,4 +3,7 @@ from backend import views
 
 # Create your API urls here.
 
-urlpatterns = []
+
+urlpatterns = [
+    path('helloworld', views.helloworld_page)
+]

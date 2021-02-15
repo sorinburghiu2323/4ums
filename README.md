@@ -14,7 +14,7 @@ and activate it
 Then install python dependencies:
 
 ```
-pip install -r requirements.txt
+pip install -r requirements-nondeploy.txt
 ```
 
 Do your migrations (create your development database):
@@ -42,4 +42,11 @@ npm run watch
 Compiles and minifies for production
 ```
 npm run build
+```
+
+## Before your push...
+
+Make sure you apply black to the root of the project using:
+```
+black .
 ```
