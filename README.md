@@ -14,7 +14,7 @@ and activate it
 Then install python dependencies:
 
 ```
-pip install -r requirements.txt
+pip install -r requirements-nondeploy.txt
 ```
 
 Do your migrations (create your development database):
