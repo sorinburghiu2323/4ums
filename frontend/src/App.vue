@@ -2,6 +2,7 @@
   <div id="app">
     My App
     <router-view/>
+    {{potatos}}
   </div>
 </template>
 
