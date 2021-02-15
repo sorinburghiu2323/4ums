@@ -42,6 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
     Create and save a SuperUser with the given email and password.
     """
+
     email = models.EmailField(unique=True)
     password = models.CharField(blank=True, max_length=255)
     username = models.CharField(max_length=255, unique=True)
@@ -51,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_teacher = models.BooleanField(default=False)
     hide_leaderboard = models.BooleanField(default=False)
 
-    # more fields
+    # Permission fields
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -72,10 +73,17 @@ class Community(models.Model):
     Community model where the name is a unique modifier
     and has user as a foreign key
     """
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)  # Creator of the Community
-    name = models.CharField(max_length=255, unique=True)  # Set the Name of the Community
+
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True
+    )  # Creator of the Community
+    name = models.CharField(
+        max_length=255, unique=True
+    )  # Set the Name of the Community
     description = models.TextField(max_length=255)  # Community Description
-    created_at = models.DateTimeField(default=timezone.now)  # Time of Community Being Created
+    created_at = models.DateTimeField(
+        default=timezone.now
+    )  # Time of Community Being Created
 
     def __str__(self):
         return self.name
@@ -100,14 +108,17 @@ class Post(models.Model):
         Enum for Post type so that the posts will have two specific
         types, discussion and question posts.
         """
+
         DISCUSSION = "discussion"
         QUESTION = "question"
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, unique=True)
     description = models.TextField(default=0)
-    post_type = models.CharField(max_length=20, choices=PostType.choices, default=PostType.DISCUSSION)
+    post_type = models.CharField(
+        max_length=20, choices=PostType.choices, default=PostType.DISCUSSION
+    )
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -130,6 +141,7 @@ class PostLike(models.Model):
     Post like model where the title is a unique modifier
     and has user and post as foreign keys
     """
+
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
@@ -151,10 +163,11 @@ class PostComment(models.Model):
     Post model where the title is a unique modifier
     and has user and post as foreign keys
     """
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.TextField(max_length=255, unique=False)
-    is_approved = models.BooleanField(default=0)
+    is_approved = models.BooleanField(default=0, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -176,8 +189,9 @@ class PostCommentLike(models.Model):
     Post Comment Like model where the user and post_comment make up
     the foreign keys and the unique attribute is the id.
     """
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    post_comment = models.ForeignKey(PostComment, on_delete=models.SET_NULL, null=True)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post_comment = models.ForeignKey(PostComment, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

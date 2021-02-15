@@ -4,7 +4,9 @@ from django.http import HttpResponseNotAllowed, QueryDict
 from django.http.multipartparser import MultiPartParser
 
 
-def handle_methods(request, GET=None, POST=None, PUT=None, PATCH=None, DELETE=None, args=[], kwargs={}):
+def handle_methods(
+    request, GET=None, POST=None, PUT=None, PATCH=None, DELETE=None, args=[], kwargs={}
+):
     """
     REST Method Handler.
     Return the view handleMethods(request)
@@ -39,11 +41,16 @@ def handle_methods(request, GET=None, POST=None, PUT=None, PATCH=None, DELETE=No
         if DELETE is not None:
             methods += ["DELETE"]
         return HttpResponseNotAllowed(methods)
+
     try:
         if request.content_type.lower() == "application/json":
             data = json.loads(request.body)
         elif request.content_type.lower() == "multipart/form-data":
-            data = MultiPartParser(request.META, request, request.upload_handlers).parse()[0].dict()
+            data = (
+                MultiPartParser(request.META, request, request.upload_handlers)
+                .parse()[0]
+                .dict()
+            )
         else:
             data = QueryDict(request.body).dict()
     except Exception:
