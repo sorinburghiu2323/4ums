@@ -9,6 +9,6 @@ def get_helloworld(request):
 
     return HttpResponse('<html><body><p>hello world!</p></body></html>')
 
-@csrf_except
+@csrf_exempt
 def helloworld_page(request):
     return handle_methods(request,GET=get_helloworld)
