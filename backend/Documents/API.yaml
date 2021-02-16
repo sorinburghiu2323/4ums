@@ -7,6 +7,77 @@ info:
   description: ''
 servers:
   - url: 'http://localhost:3000'
-paths: {}
+paths:
+  /users:
+    post:
+      summary: ''
+      operationId: post-users
+      responses:
+        '201':
+          description: Created - User created.
+        '400':
+          description: 'Bad Request - {description of why the request is bad}'
+      description: Register a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Unique.
+                email:
+                  type: string
+                  description: Unique.
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                password:
+                  type: string
+                is_teacher:
+                  type: boolean
+                  description: "Bool to whether the user is applied for a teacher's account."
+              required:
+                - username
+                - email
+                - first_name
+                - last_name
+                - password
+                - is_teacher
+  /login:
+    post:
+      summary: ''
+      operationId: post-login
+      responses:
+        '200':
+          description: OK - Logged in.
+        '400':
+          description: 'Bad Request - {description of why the request is bad}'
+        '404':
+          description: Not Found - User does not exist.
+      description: Login a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+  /logout:
+    post:
+      summary: ''
+      operationId: post-logout
+      responses:
+        '200':
+          description: OK - Logged out.
+      description: Logout the user.
 components:
   schemas: {}
