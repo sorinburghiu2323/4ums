@@ -1,41 +1,13 @@
 <template>
   <div id="app">
-    My App
     <router-view/>
-    {{potatos}}
+    <img src="@/assets/logo.png">
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-// import HomePage from './views/HomePage.vue'
-
 export default {
   name: 'App',
-  components: {
-    // HomePage,
-  },
-  created() {
-    this.getPotatos();
-  },
-  mounted() {
-    this.$root.$on('updatePotatos', () => {
-        // your code goes here
-        this.getPotatos();
-    });
-  },
-  data() {
-    return {
-      potatos: null
-    }
-  },
-  methods: {
-    getPotatos() {
-      axios.get('api/potato').then(response => 
-        this.potatos = response.data.potatoes
-      );
-    }
-  }
 }
 </script>
 
