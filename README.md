@@ -14,14 +14,39 @@ and activate it
 Then install python dependencies:
 
 ```
-pip install -r requirements.txt
+pip install -r requirements-nondeploy.txt
 ```
 
-Next install the VueJS stuff:
+Do your migrations (create your development database):
 
-Note: Hiba please edit this because I dunno how to set up the vue directories
+```
+python manage.py migrate
+```
+
+Next install the VueJS frontend dependencies:
+
 
 ```shell script
-cd frontend\vue-frontend
+cd frontend
 npm install
+```
+  Note: When you pull changes that others have made, you may want to do `npm install` again to ensure any additional dependencies have been added.
+
+Now to build the frontend, there are two ways:
+
+Watches for any changes in the filetree and recompiles when detects a change
+```
+npm run watch
+```
+
+Compiles and minifies for production
+```
+npm run build
+```
+
+## Before your push...
+
+Make sure you apply black to the root of the project using:
+```
+black .
 ```
