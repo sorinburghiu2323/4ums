@@ -91,10 +91,10 @@ paths:
       operationId: post-create_post
       responses:
         '201':
-          description: 'Created post - {description of why the request is bad}'
+          description: 'Created post '
           headers: {}
         '400':
-          description: 'Bad Request{'
+          description: 'Bad Request - {description of why the request is bad}'
       description: Provides an endpoint to create a post in a specific community
       requestBody:
         content:
