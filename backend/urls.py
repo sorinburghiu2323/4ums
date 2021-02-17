@@ -5,5 +5,7 @@ from backend import views
 
 
 urlpatterns = [
-    path('helloworld', views.helloworld_page)
+    path("helloworld", views.helloworld_page),
+    path("login", views.login),
+    path("logout", views.logout),
 ]
