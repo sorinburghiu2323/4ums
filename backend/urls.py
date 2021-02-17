@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.urls import path, include
 from backend import views
 
@@ -5,7 +6,7 @@ from backend import views
 
 
 urlpatterns = [
-    path("helloworld", views.helloworld_page),
+    path("", lambda _: HttpResponse("", status=200)),
     path("login", views.login),
     path("logout", views.logout),
 ]

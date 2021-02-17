@@ -50,3 +50,9 @@ Make sure you apply black to the root of the project using:
 ```
 black .
 ```
+
+## Having a migration error?
+
+This may be due to a database update. Simply drop you current database and create a new one as follows:
+1. Delete `db.sqlite3` file
+2. Run `python manage.py migrate`
