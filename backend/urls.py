@@ -7,4 +7,6 @@ from backend import views
 
 urlpatterns = [
     path("", lambda _: HttpResponse("", status=200)),
+    path("login", views.login),
+    path("logout", views.logout),
 ]
