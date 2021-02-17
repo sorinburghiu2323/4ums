@@ -79,43 +79,5 @@ paths:
         '200':
           description: OK - Logged out.
       description: Logout the user.
-  '/community&{id}/create_post':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-    post:
-      summary: ''
-      operationId: post-create_post
-      responses:
-        '201':
-          description: 'Created post '
-          headers: {}
-        '400':
-          description: 'Bad Request - {description of why the request is bad}'
-      description: Provides an endpoint to create a post in a specific community
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                user:
-                  type: integer
-                community:
-                  type: integer
-                description:
-                  type: string
-                post_type:
-                  type: object
-          application/xml:
-            schema:
-              type: object
-              properties: {}
-        description: ''
 components:
   schemas: {}
