@@ -52,6 +52,13 @@ Table PostCommentLike {
   created_at timestamp
 }
 
+Table CommunityMember {
+  id integer
+  user integer
+  community integer
+  created_at timestamp
+}
+
 
 Ref: "User"."id" < "Community"."user_creator"
 
@@ -70,3 +77,7 @@ Ref: "Post"."id" < "PostComment"."post"
 Ref: "PostComment"."id" < "PostCommentLike"."post_comment"
 
 Ref: "User"."id" < "PostCommentLike"."user"
+
+Ref: "User"."id" < "CommunityMember"."user"
+
+Ref: "Community"."id" < "CommunityMember"."community"
