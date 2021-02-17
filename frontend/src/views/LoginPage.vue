@@ -7,17 +7,17 @@
             </div>
             <div class="input">
             <p>Email address</p>
-            <input type="text"/>
+            <input type="text" v-model="email"/>
             </div>
             <div class="input">
                 <p>Password</p>
-                <input type="text">
+                <input type="text" v-model="password">
             </div>
             <div class="text">
                 <p>Forgot your password?</p>
             </div>
             <div>
-                <button class="login-btn">Login</button>
+                <button class="login-btn" @click="loginUser()">Login</button>
             </div>
             <div class="text">
                 <p>Don't have an account? <a class="link" @click="navigate('register')">Sign up</a></p>
@@ -29,10 +29,19 @@
 <script>
 export default {
     name: 'LoginPage',
+    data() {
+        return {
+            email: '',
+            password: '',
+        }
+    },
     methods: {
         navigate(path) {
             this.$router.push(path);
-        }
+        },
+        loginUser() {
+            alert('Login functionality not yet implemented');
+        },
     }
 
 }

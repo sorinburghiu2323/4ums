@@ -6,22 +6,24 @@
                 <div class="logo-container"><img src="@/assets/logo.png"></div>
             </div>
             <div class="input">
-                <input type="text" placeholder="Username"/>
+                <input type="text" placeholder="Username" v-model="username"/>
             </div>
             <div class="input">
-                <input type="email" placeholder="Email">
+                <input type="email" placeholder="Email" v-model="email" />
             </div>
             <div class="input">
-                <input type="text" placeholder="Password" >
+                <input type="passwrod" placeholder="Password" v-model="password" >
             </div>
             <div class="input">
-                <input type="text" placeholder="Confirm password" >
+                <input type="password" placeholder="Confirm password" v-model="passwordConfirmation">
+                <p style="color: red; font-size: 12px;">{{errMessage}}</p>
             </div>
             <div class="terms">
-                <input type="checkbox"> <span>I aggree to all terms</span>
+                <div><input type="checkbox" v-model="isTermsAgreed"> <span>I aggree to all terms</span></div>
+                <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
             </div>
             <div>
-                <button class="register-btn">register</button>
+                <button class="register-btn" @click="registerUser()">Register</button>
             </div>
             <div class="text">
                 <p>Already have an account? <a class="link" @click="navigate('login')">Sign in</a></p>
@@ -33,10 +35,52 @@
 <script>
 export default {
     name: 'RegisterPage',
+    data() {
+        return {
+            username: '',
+            password: '',
+            passwordConfirmation: '',
+            email: '',
+            isTermsAgreed: false,
+
+            errMessage: '',
+            termErrMessage: '',
+        }
+    },
+    watch: {
+        /*
+        * Provide an error message to show the user that the password
+        * and their password confirmation do not match.
+        **/
+        passwordConfirmation: function() {
+            if(this.passwordConfirmation != '' 
+            && this.passwordConfirmation !== this.password) {
+                this.errMessage = 'Passwords do not match';
+            } else {
+                this.errMessage = '';
+            }
+            
+        },
+        /**
+         * Clear any error messages related to the agreed terms checkbox
+         * if the user agrees with the terms
+         */
+        isTermsAgreed: function() {
+            if(this.termErrMessage != '' && this.isTermsAgreed) {
+                this.termErrMessage = '';
+            }
+        }
+    },
     methods: {
         navigate(path) {
             this.$router.push(path);
         },
+        registerUser() {
+            alert('Registration functionality not yet implemented');
+            if(!this.isTermsAgreed) {
+                this.termErrMessage = 'You must agree to the terms to register.';
+            }
+        }
     },
 
 }
@@ -69,8 +113,9 @@ export default {
 
 .terms {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 10px 0px 10px 0px;
+    text-align: left;
 }
 .input input {
     width: 100%;
