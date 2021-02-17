@@ -6,7 +6,7 @@ info:
     name: Group D Team
   description: ''
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'http://localhost:3000/api'
 paths:
   /users:
     post:
@@ -38,7 +38,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
               required:
                 - username
                 - email
