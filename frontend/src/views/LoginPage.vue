@@ -2,19 +2,23 @@
     <div class="container">
         <form class="login-form">
             <div class="header">
-            <p>Login</p>
-            <div class="logo-container"><img src="@/assets/logo.png"></div>
+                <p>Login</p>
+                <div class="logo-container"><img src="@/assets/logo.png"></div>
             </div>
+            <div>
+                <p v-if="failedLogin" class="error-message">Incorrect password or email</p>
+            </div>
+
             <div class="input">
-            <p>Email address</p>
-            <input type="text" v-model="email"/>
+                <p>Email address</p>
+                <input type="text" v-model="email"/>
             </div>
             <div class="input">
                 <p>Password</p>
-                <input type="text" v-model="password">
+                <input type="password" v-model="password">
             </div>
             <div class="text">
-                <p>Forgot your password?</p>
+                <p class="link">Forgot your password?</p>
             </div>
             <div>
                 <button class="login-btn" @click="loginUser()">Login</button>
@@ -27,12 +31,14 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'LoginPage',
     data() {
         return {
             email: '',
             password: '',
+            failedLogin: false,
         }
     },
     methods: {
@@ -40,7 +46,18 @@ export default {
             this.$router.push(path);
         },
         loginUser() {
-            alert('Login functionality not yet implemented');
+            
+            axios.post('api/login', {email: this.email, password: this.password})
+            .then((response) => {
+                console.log(response);
+                this.failedLogin = false;
+                this.$router.push('/');
+            })
+            .catch((error) =>{
+                console.error(error);
+                this.failedLogin = true;
+            })
+
         },
     }
 
@@ -91,5 +108,10 @@ input {
 .link {
     cursor: pointer;
     text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
 }
 </style>

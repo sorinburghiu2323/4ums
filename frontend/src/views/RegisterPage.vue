@@ -12,7 +12,7 @@
                 <input type="email" placeholder="Email" v-model="email" />
             </div>
             <div class="input">
-                <input type="passwrod" placeholder="Password" v-model="password" >
+                <input type="password" placeholder="Password" v-model="password" >
             </div>
             <div class="input">
                 <input type="password" placeholder="Confirm password" v-model="passwordConfirmation">
