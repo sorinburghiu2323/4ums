@@ -92,7 +92,7 @@ paths:
       responses:
         '201':
           description: 'Created post '
-          headers: { }
+          headers: {}
         '400':
           description: 'Bad Request - {description of why the request is bad}'
       description: Provides an endpoint to create a post in a specific community
@@ -114,14 +114,12 @@ paths:
                   type: object
               required:
                 - title
-                - user
                 - community
-                - description
                 - post_type
           application/xml:
             schema:
               type: object
-              properties: { }
+              properties: {}
         description: ''
 components:
   schemas: {}
