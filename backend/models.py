@@ -49,6 +49,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     points = models.IntegerField(default=0)
+    teacher_request = models.BooleanField(
+        default=False
+    )  # When the user applies for a teacher account.
     is_teacher = models.BooleanField(default=False)
     hide_leaderboard = models.BooleanField(default=False)
 
@@ -64,7 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.username
+        return ("TEACHER REQUEST: " if self.teacher_request else "") + self.email
 
 
 # Community Class
@@ -128,7 +131,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    description = models.TextField(default="")
+    description = models.TextField(default=0)
     post_type = models.CharField(
         max_length=20, choices=PostType.choices, default=PostType.DISCUSSION
     )

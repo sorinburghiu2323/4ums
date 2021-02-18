@@ -27,7 +27,16 @@ def create_post(request, community_id):
                 "Unauthorized - Login required.", status=401, safe=False
             )
         comm_instance = get_community(community_id)
-        check_member(comm_instance, user_instance)
+        if comm_instance is None:
+            return JsonResponse(
+                "Community does not exist", status=404, safe=False
+            )
+
+        comm_member = check_member(community_id, user_instance)
+        if comm_member is None:
+            return JsonResponse(
+                "User not member of that community", status=401, safe=False
+            )
         Post.objects.create(
             user=user_instance,
             title=request.DATA["title"],

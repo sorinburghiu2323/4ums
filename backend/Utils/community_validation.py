@@ -1,5 +1,3 @@
-from django.shortcuts import get_object_or_404
-
 from backend.models import Community, CommunityMember
 
 
@@ -10,7 +8,10 @@ def get_community(community_id):
     :return: Community instance
     :return: 404 error if doesn't exist
     """
-    return get_object_or_404(Community, pk=community_id)
+    try:
+        return Community.objects.get(pk=community_id)
+    except Community.DoesNotExist:
+        return
 
 
 def check_member(community_instance, user_instance):
@@ -21,6 +22,7 @@ def check_member(community_instance, user_instance):
     :return: Community instance
     :return: 404 error if doesn't exist
     """
-    return get_object_or_404(
-        CommunityMember, user=user_instance, community=community_instance
-    )
+    try:
+        return CommunityMember.objects.get(user=user_instance, community=community_instance)
+    except CommunityMember.DoesNotExist:
+        return
