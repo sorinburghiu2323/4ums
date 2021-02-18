@@ -44,7 +44,7 @@ def validate_user_data(first_name, last_name, email, username):
         return "Email cannot be empty and must be valid."
     if User.objects.filter(email=email).exists():
         return "Email is already in use."
-    if username.isspace() or username == "" or len(username) > 64:
+    if username.isspace() or username == "" or len(username) > 64 or not re.search("[a-z]", username.lower()):
         return "Username cannot be empty or too large."
     if User.objects.filter(username=username).exists():
         return "An account with this username already exists."
@@ -70,13 +70,11 @@ def validate_password(password, password_repeat=None):
         flag = True
     elif not re.search("[0-9]", password):
         flag = True
-    elif not re.search("[$&+,:;=?@#|'<>.^*()%!-]", password):
-        flag = True
     elif re.search("\s", password):
         flag = True
     if flag:
         return (
-            "Password must contain at least a lower case, an upper case, a number, a symbol (e.g. !$%) "
-            "and not spaces."
+            "Password must contain at least a lower case, an upper case, a number, no spaces "
+            "and be at least 9 characters."
         )
     return False

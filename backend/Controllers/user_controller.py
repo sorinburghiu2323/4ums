@@ -81,9 +81,7 @@ def user_register(request):
             username=request.DATA["username"],
             first_name=request.DATA["first_name"],
             last_name=request.DATA["last_name"],
-            teacher_request=True
-            if request.DATA["is_teacher"].lower() == "true"
-            else False,
+            teacher_request=request.DATA["is_teacher"].lower() == "true",
         )
         return JsonResponse("Created - User created.", status=201, safe=False)
 
