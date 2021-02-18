@@ -36,9 +36,11 @@ paths:
                   type: string
                 password:
                   type: string
+                password_repeat:
+                  type: string
                 is_teacher:
                   type: boolean
-                  description: Bool to whether the user is applied for a teacher's account.
+                  description: "Bool to whether the user is applied for a teacher's account."
               required:
                 - username
                 - email
@@ -46,6 +48,7 @@ paths:
                 - last_name
                 - password
                 - is_teacher
+                - password_repeat
   /login:
     post:
       summary: ''
