@@ -15,6 +15,8 @@ import {
 import { 
   faUserSecret,
   faSort, 
+  faSearch,
+  faCog,
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -24,6 +26,8 @@ library.add(
   faUserSecret,
   faSort,
   faFontAwesome,
+  faSearch,
+  faCog,
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
