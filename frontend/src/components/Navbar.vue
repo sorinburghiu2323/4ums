@@ -1,8 +1,8 @@
 <template>
     <div id="nav">
-        <a href="/communtites"><div id="communities" v-on:click="goTo('communities')">Communities</div></a>   
-        <a href="/profile"><div id="profile" v-on:click="goTo('profile')">Profile</div></a>
-        <a href="/leaderboard"><div id="leaderboard" v-on:click="goTo('leaderboard')">Leaderboard</div></a>
+        <router-link class="nav-link" to="../communities" v-on:click = "goTo('communities')"><div id="communities" v-on:click="goTo('communities')">Communities</div></router-link> 
+        <router-link class="nav-link" to="../profile" v-on:click = "goTo('profile')"><div id="profile" v-on:click="goTo('profile')">Profile</div></router-link>
+        <router-link class="nav-link" to="../leaderboard" v-on:click = "goTo('leaderboard')"><div id="leaderboard" v-on:click="goTo('leaderboard')">Leaderboard</div></router-link>
     </div>
 </template>
 
@@ -19,6 +19,7 @@ export default {
         goTo: function(location) {
             // update the text colour depending on which is selected
             document.getElementById(location).style.color = "black";
+            // this.$router.replace(location)
             for (var i=0; i<3; i++) {
                 if (this.pages[i] != location) {
                     document.getElementById(this.pages[i]).style.color = "white";
