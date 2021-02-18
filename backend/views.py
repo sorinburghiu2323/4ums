@@ -23,3 +23,14 @@ def logout(request):
         request,
         POST=user_controller.user_logout,
     )
+
+
+# USER VIEWS
+
+
+@csrf_exempt
+def users(request):
+    return handle_methods(
+        request,
+        POST=user_controller.user_register,
+    )
