@@ -1,7 +1,9 @@
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
+from backend.Utils.community_validation import get_community
 from backend.Utils.user_validation import verify_user_login
-from backend.models import Post, Community
+from backend.models import Post
 
 
 def create_post(request, community_id):
@@ -18,14 +20,25 @@ def create_post(request, community_id):
         and "description" in request.DATA
         and "post_type" in request.DATA
     ):
+        try:
+            user_instance = verify_user_login(request)  # Verify that the user exists
+        except PermissionDenied:
+            return JsonResponse(
+                "Unauthorized - Login required.", status=401, safe=False
+            )
+        comm_instance = get_community(community_id)
         Post.objects.create(
-            user=verify_user_login(request),  # Verify that user is logged in
+            user=user_instance,
             title=request.DATA["title"],
             description=request.DATA["description"],
             post_type=request.DATA["post_type"],
-            community=Community.objects.get(id=community_id),
+            community=comm_instance,
         )
         return JsonResponse("Ok - Post has been created.", status=201, safe=False)
     return JsonResponse(
         "Bad Request - Please provide the required body.", status=400, safe=False
     )
+
+
+def show_post(request, community_id):
+    return JsonResponse("Ok - Post", status=200, safe=False)

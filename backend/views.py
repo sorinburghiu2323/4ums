@@ -28,5 +28,6 @@ def create_post(request, community_id):
     return handle_methods(
         request,
         POST=post_creator.create_post,
+        GET=post_creator.show_post,
         args=[community_id],
     )
