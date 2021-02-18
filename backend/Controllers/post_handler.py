@@ -1,7 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
-from backend.Utils.community_validation import get_community
+from backend.Utils.community_validation import get_community, check_member
 from backend.Utils.user_validation import verify_user_login
 from backend.models import Post
 
@@ -27,6 +27,7 @@ def create_post(request, community_id):
                 "Unauthorized - Login required.", status=401, safe=False
             )
         comm_instance = get_community(community_id)
+        check_member(comm_instance, user_instance)
         Post.objects.create(
             user=user_instance,
             title=request.DATA["title"],

@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 
-from backend.Controllers import user_controller, post_creator
+from backend.Controllers import user_controller, post_handler
 from backend.Utils.http_method_handler import handle_methods
 
 
@@ -27,7 +27,7 @@ def logout(request):
 def create_post(request, community_id):
     return handle_methods(
         request,
-        POST=post_creator.create_post,
-        GET=post_creator.show_post,
+        POST=post_handler.create_post,
+        GET=post_handler.show_post,
         args=[community_id],
     )
