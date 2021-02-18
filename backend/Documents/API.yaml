@@ -95,6 +95,8 @@ paths:
           headers: {}
         '400':
           description: 'Bad Request - {description of why the request is bad}'
+        '404':
+          description: Not Found - Community not found
       description: Provides an endpoint to create a post in a specific community
       requestBody:
         content:
@@ -104,22 +106,32 @@ paths:
               properties:
                 title:
                   type: string
-                user:
-                  type: integer
-                community:
-                  type: integer
                 description:
                   type: string
                 post_type:
-                  type: object
+                  type: string
               required:
                 - title
-                - community
+                - description
                 - post_type
           application/xml:
             schema:
               type: object
               properties: {}
         description: ''
+      parameters: []
+    get:
+      summary: ''
+      operationId: get-community-id
+      responses:
+        '200':
+          description: OK
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
 components:
   schemas: {}
