@@ -95,6 +95,8 @@ paths:
           headers: {}
         '400':
           description: 'Bad Request - {description of why the request is bad}'
+        '401':
+          description: Unauthorized User
         '404':
           description: Not Found - Community not found
       description: Provides an endpoint to create a post in a specific community
