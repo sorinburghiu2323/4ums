@@ -82,7 +82,7 @@ paths:
         '200':
           description: OK - Logged out.
       description: Logout the user.
-  '/community/{id}/post':
+  '/communities/{id}/post':
     parameters:
       - schema:
           type: string
