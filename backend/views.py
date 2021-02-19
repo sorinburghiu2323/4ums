@@ -30,6 +30,7 @@ def create_post(request, community_id):
         POST=post_handler.create_post,
         GET=post_handler.show_post,
         args=[community_id],
+    )
 
 
 # USER VIEWS

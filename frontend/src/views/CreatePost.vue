@@ -8,12 +8,12 @@
         Post Content <br>
         <textarea v-model="description" placeholder="What do you want to post?"></textarea>
         <br>
-        <input type="radio" id="discussion" value="Discussion" v-model="type">
+        <!--<input type="radio" id="discussion" value="Discussion" v-model="type">
         <label for="discussion">Discussion</label>
         <br>
         <input type="radio" id="question" value="Question" v-model="type">
         <label for="question">Question</label>
-        <br>
+        <br> -->
         <p id="success" style="color: green;"></p>
         <button v-on:click="createPost()">Submit Post</button>
     </div>
@@ -27,11 +27,12 @@ export default {
     name: 'CreatePost',
     created() {
         this.id = this.$route.params.id;
+        this.type = this.$route.params.type;
     },
     methods: {
         createPost: function() {
             console.log("Hello")
-            var post_url = "/communities/" + this.id + "/post"
+            var post_url = "/communities/" + this.id + "/posts"
             axios.post(post_url, {
                 title: this.title,
                 description: this.description,
