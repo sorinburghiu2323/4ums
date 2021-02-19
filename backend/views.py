@@ -33,6 +33,7 @@ def create_post(request, community_id):
         args=[community_id],
     )
 
+
 # USER VIEWS
 @csrf_exempt
 def users(request):
@@ -44,7 +45,4 @@ def users(request):
 
 @csrf_exempt
 def create_community(request):
-    return handle_methods(
-        request,
-        POST=community_controller.create_new
-    )
+    return handle_methods(request, POST=community_controller.create_new)
