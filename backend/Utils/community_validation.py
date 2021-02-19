@@ -23,6 +23,8 @@ def check_member(community_instance, user_instance):
     :return: 404 error if doesn't exist
     """
     try:
-        return CommunityMember.objects.get(user=user_instance, community=community_instance)
+        return CommunityMember.objects.get(
+            user=user_instance, community=community_instance
+        )
     except CommunityMember.DoesNotExist:
         return
