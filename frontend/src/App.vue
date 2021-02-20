@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div class="page">
+      <router-view/>
+    </div>
     <Navbar />
   </div>
 </template>
@@ -23,6 +25,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+.page {
+  height: 100vh;
+  overflow: scroll;
 }
 </style>

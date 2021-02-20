@@ -1,9 +1,24 @@
 <template>
     <div class="container">
-        <form class="register-form">
+        <div class="register-form">
             <div class="header">
                 <p>Register</p>
-                <div class="logo-container"><img src="@/assets/logo.png"></div>
+            </div>
+            <div class="pass-requirements" v-if="showRequirements">
+                <p>Password requirements: </p>
+                <ul>
+                    <li :class="{'fulfilled': lowercase}">Atleast 1 lower case</li>
+                    <li :class="{'fulfilled': uppercase}">Atleast 1 upper case</li>
+                    <li :class="{'fulfilled': containsNumber}">A number</li>
+                    <li :class="{'fulfilled': noSpaces}">No spaces</li>
+                    <li :class="{'fulfilled': nineChars}">At least 9 characters long</li>
+                </ul>
+            </div>
+            <div class="input">
+                <input type="text" placeholder="First name" v-model="firstName"/>
+            </div>
+            <div class="input">
+                <input type="text" placeholder="Last name" v-model="lastName"/>
             </div>
             <div class="input">
                 <input type="text" placeholder="Username" v-model="username"/>
@@ -28,20 +43,31 @@
             <div class="text">
                 <p>Already have an account? <a class="link" @click="navigate('login')">Sign in</a></p>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'RegisterPage',
     data() {
         return {
+            firstName: '',
+            lastName: '',
             username: '',
             password: '',
             passwordConfirmation: '',
             email: '',
             isTermsAgreed: false,
+
+            // Pass requirements
+            showRequirements: false,
+            lowercase: false,
+            uppercase: false,
+            nineChars: false,
+            noSpaces: true,
+            containsNumber: false,
 
             errMessage: '',
             termErrMessage: '',
@@ -52,6 +78,35 @@ export default {
         * Provide an error message to show the user that the password
         * and their password confirmation do not match.
         **/
+        password: function() {
+            // Check 9 character password
+            if(this.password.length >= 9) {
+                this.nineChars = true;
+            } else {
+                this.nineChars = false;
+            }
+            // Check for white space
+            if(/\s/g.test(this.password)) {
+                this.noSpaces = false;
+            } else {
+                this.noSpaces = true;
+            }
+            if(/[a-z]/.test(this.password)){
+                this.lowercase = true;
+            } else {
+                this.lowercase = false;
+            }
+            if(/[A-Z]/.test(this.password)) {
+                this.uppercase = true;
+            } else {
+                this.uppercase = false;
+            }
+            if(/[0-9]/.test(this.password)) {
+                this.containsNumber = true;
+            } else {
+                this.containsNumber = false;
+            }
+        },
         passwordConfirmation: function() {
             if(this.passwordConfirmation != '' 
             && this.passwordConfirmation !== this.password) {
@@ -76,13 +131,86 @@ export default {
             this.$router.push(path);
         },
         registerUser() {
-            alert('Registration functionality not yet implemented');
+            if(this.validateFields() === false) {
+                this.errMessage = 'Please fill in missing fields';
+                return false;
+            }
+
+            if(this.validatePassword() === false) {
+                this.showRequirements = true;
+                return false;
+            }
+
             if(!this.isTermsAgreed) {
                 this.termErrMessage = 'You must agree to the terms to register.';
+                return false;
             }
-        }
-    },
 
+            axios.post('api/users', {
+                email: this.email,
+                username: this.username, 
+                password: this.password, 
+                first_name: this.firstName,
+                last_name: this.lastName,
+                is_teacher: 'false',
+                password_repeat: this.passwordConfirmation,
+            })
+            .then((response) => {
+                console.log(response);
+                this.errMessage = '';
+                this.termErrMessage = '';
+                this.$router.push('homepage');
+            })
+            .catch((error) =>{
+                console.error(error);
+                this.errMessage = error.response.data;
+            })
+        },
+        validatePassword() {
+            if(this.password.length >= 9) {
+                this.nineChars = true;
+            } else {
+                this.nineChars = false;
+                return false;
+            }
+            // Check for white space
+            if(/\s/g.test(this.password)) {
+                this.noSpaces = false;
+                return false;
+            } else {
+                this.noSpaces = true;
+            }
+            if(/[a-z]/.test(this.password)){
+                this.lowercase = true;
+            } else {
+                this.lowercase = false;
+                return false;
+            }
+            if(/[A-Z]/.test(this.password)) {
+                this.uppercase = true;
+            } else {
+                this.uppercase = false;
+                return false;
+            }
+            if(/[0-9]/.test(this.password)) {
+                this.containsNumber = true;
+            } else {
+                this.containsNumber = false;
+                return false;
+            }
+        },
+        validateFields() {
+            if
+            (
+                this.firstName && this.lastName && 
+                this.password && this.passwordConfirmation &&
+                this.email
+            ) {
+                return true;
+            }
+            return false;
+        },
+    }
 }
 </script>
 
@@ -140,5 +268,18 @@ export default {
     cursor: pointer;
     text-decoration: underline;
 }
+.error {
+    color: red;
+}
+
+.pass-requirements ul {
+    text-align: left;
+    color: red;
+}
+
+.fulfilled ul {
+    color: green;
+}
+
 
 </style>

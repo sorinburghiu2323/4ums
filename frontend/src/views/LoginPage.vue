@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <form class="login-form">
+        <div class="login-form">
             <div class="header">
                 <p>Login</p>
                 <div class="logo-container"><img src="@/assets/logo.png"></div>
@@ -15,7 +15,7 @@
             </div>
             <div class="input">
                 <p>Password</p>
-                <input type="password" v-model="password">
+                <input type="password" v-model="password" @keyup.enter="loginUser()">
             </div>
             <div class="text">
                 <p class="link">Forgot your password?</p>
@@ -26,7 +26,7 @@
             <div class="text">
                 <p>Don't have an account? <a class="link" @click="navigate('register')">Sign up</a></p>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -51,7 +51,7 @@ export default {
             .then((response) => {
                 console.log(response);
                 this.failedLogin = false;
-                this.$router.push('/');
+                this.$router.push('homepage');
             })
             .catch((error) =>{
                 console.error(error);
