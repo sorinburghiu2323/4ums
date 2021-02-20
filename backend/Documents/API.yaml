@@ -131,6 +131,17 @@ paths:
       responses:
         '200':
           description: OK- Posts have been sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  previous_page:
+                    type: string
+                  next_page:
+                    type: string
+                  page_data:
+                    type: string
         '400':
           description: Bad Request
         '401':
@@ -146,14 +157,8 @@ paths:
             schema:
               type: object
               properties:
-                previous_page:
-                  type: string
-                next_page:
-                  type: string
-                data:
-                  type: array
-                  items:
-                    type: string
+                page_number:
+                  type: integer
           application/xml:
             schema:
               type: object
