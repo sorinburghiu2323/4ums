@@ -28,9 +28,7 @@ def create_post(request, community_id):
             )
         comm_instance = get_community(community_id)
         if comm_instance is None:
-            return JsonResponse(
-                "Community does not exist", status=404, safe=False
-            )
+            return JsonResponse("Community does not exist", status=404, safe=False)
 
         comm_member = check_member(community_id, user_instance)
         if comm_member is None:

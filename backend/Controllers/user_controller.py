@@ -4,7 +4,11 @@ from django.core.paginator import Paginator, EmptyPage
 from django.http import JsonResponse
 
 from backend.Utils.paginators import post_paginator
-from backend.Utils.user_validation import validate_user_data, validate_password, verify_user_login
+from backend.Utils.user_validation import (
+    validate_user_data,
+    validate_password,
+    verify_user_login,
+)
 from backend.models import User, Post
 
 
@@ -107,6 +111,10 @@ def get_feed(request):
         return JsonResponse("Unauthorized - Login required.", status=401, safe=False)
 
     # Get feed data and paginate it.
-    page = int(request.DATA.get('page', 1))  # Assume first page is 'page' field is missing.
-    feed = Post.objects.filter(community__communitymember__user=user).order_by('-created_at')
+    page = int(
+        request.DATA.get("page", 1)
+    )  # Assume first page is 'page' field is missing.
+    feed = Post.objects.filter(community__communitymember__user=user).order_by(
+        "-created_at"
+    )
     return JsonResponse(post_paginator(feed, page), status=200)
