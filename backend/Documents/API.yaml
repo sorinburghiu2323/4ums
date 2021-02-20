@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
               required:
                 - username
                 - email
@@ -130,13 +130,34 @@ paths:
       operationId: get-community-id
       responses:
         '200':
-          description: OK
-      description: ''
+          description: OK- Posts have been sent
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      description: Provides an endpoint to view all posts in the current commmunity with pagination
       requestBody:
         content:
           application/json:
             schema:
               type: object
+              properties:
+                previous_page:
+                  type: string
+                next_page:
+                  type: string
+                data:
+                  type: array
+                  items:
+                    type: string
+          application/xml:
+            schema:
+              type: object
               properties: {}
+        description: ''
 components:
   schemas: {}
