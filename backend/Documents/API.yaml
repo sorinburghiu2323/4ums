@@ -158,6 +158,6 @@ paths:
             schema:
               type: object
               properties: {}
-        description: ''
+        description: Returns the json data with the previous page the next page and the data for the current page
 components:
   schemas: {}
