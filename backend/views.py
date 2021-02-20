@@ -34,9 +34,19 @@ def create_post(request, community_id):
 
 
 # USER VIEWS
+
+
 @csrf_exempt
 def users(request):
     return handle_methods(
         request,
         POST=user_controller.user_register,
+    )
+
+
+@csrf_exempt
+def feed(request):
+    return handle_methods(
+        request,
+        GET=user_controller.get_feed,
     )

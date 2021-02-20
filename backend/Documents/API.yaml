@@ -138,5 +138,113 @@ paths:
             schema:
               type: object
               properties: {}
+  /users/feed:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  current_page:
+                    type: integer
+                  posts:
+                    $ref: '#/components/schemas/Post'
+                required:
+                  - total_pages
+                  - current_page
+                  - posts
+        '401':
+          description: Unauthorized - Login required.
+      operationId: get-users-feed
+      description: |-
+        Get the feed posts for the logged in user.
+
+        Pagination included: Every page has 20 posts.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+        description: 'If no page in the body, it is assumed first page.'
 components:
-  schemas: {}
+  schemas:
+    Post:
+      title: Post
+      type: object
+      properties:
+        id:
+          type: integer
+        community:
+          $ref: '#/components/schemas/CommunitySimple'
+        user:
+          $ref: '#/components/schemas/UserSimple'
+        title:
+          type: string
+        description:
+          type: string
+        post_type:
+          type: string
+          description: 'Either "discussion" or "questions".'
+        created_at:
+          type: string
+        likes_num:
+          type: integer
+          description: Number of likes.
+        comments_num:
+          type: integer
+          description: Number of comments.
+        is_community_owner:
+          type: boolean
+          description: True if the creator of the post is the community owner.
+      required:
+        - id
+        - community
+        - user
+        - title
+        - description
+        - post_type
+        - created_at
+        - likes_num
+        - comments_num
+        - is_community_owner
+      description: Post serializer for standard display of Posts.
+    CommunitySimple:
+      title: CommunitySimple
+      type: object
+      description: Simple community serializer.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    UserSimple:
+      title: UserSimple
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        points:
+          type: integer
+        is_teacher:
+          type: boolean
+      required:
+        - id
+        - username
+        - points
+        - is_teacher
+      description: Simple user serializer

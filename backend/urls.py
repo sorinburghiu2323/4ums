@@ -12,4 +12,5 @@ urlpatterns = [
     path("logout", views.logout),
     path("communities/<int:community_id>/posts", views.create_post),
     path("users", views.users),
+    path("users/feed", views.feed),
 ]
