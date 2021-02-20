@@ -54,6 +54,10 @@ export default {
     border-radius: 25px;
 }
 
+.nav-link {
+    text-decoration: none !important;
+}
+
 .icon {
     font-size: 2vh;
     margin-top: 1vh;
