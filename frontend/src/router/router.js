@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePage from '../views/HomePage.vue'
-import Communities from '../views/Communities.vue'
+import IndividualCommunitiesPage from '../views/IndividualCommunitiesPage.vue'
 import Profile from '../views/Profile.vue'
 import Leaderboard from '../views/Leaderboard.vue'
 
@@ -16,7 +16,7 @@ const routes = [
     {
         path: '/communities',
         name: 'Communities',
-        component: Communities
+        component: IndividualCommunitiesPage
     },
     {
         path: '/profile',

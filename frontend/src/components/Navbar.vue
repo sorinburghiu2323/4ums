@@ -48,13 +48,13 @@ export default {
     background-color: #161626;
     color:rgb(126, 126, 126);
     width: 100%;
-    position: fixed;
+    position: static;
     bottom: 0;
     left: 0;
     border-radius: 25px;
 }
 
-.nav-link {
+.nav-link{
     text-decoration: none !important;
 }
 
