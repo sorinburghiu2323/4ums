@@ -34,7 +34,7 @@
                 <p style="color: red; font-size: 12px;">{{errMessage}}</p>
             </div>
             <div class="terms">
-                <div><input type="checkbox" v-model="isTermsAgreed"> <span>I aggree to all terms</span></div>
+                <div><input type="checkbox" v-model="isTermsAgreed"> <span>I agree to all terms</span></div>
                 <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
             </div>
             <div>

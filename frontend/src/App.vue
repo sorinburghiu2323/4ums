@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="page">
+    <div>
       <router-view/>
     </div>
     <Navbar />
@@ -27,8 +27,4 @@ export default {
   color: #2c3e50;
 }
 
-.page {
-  height: 100vh;
-  overflow: scroll;
-}
 </style>
