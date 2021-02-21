@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import PermissionDenied
-from django.core.paginator import Paginator, EmptyPage
 from django.http import JsonResponse
 
-from backend.Utils.paginators import post_paginator
+from backend.Utils.paginators import json_paginator
 from backend.Utils.user_validation import (
     validate_user_data,
     validate_password,
@@ -118,4 +117,4 @@ def get_feed(request):
     feed = Post.objects.filter(community__communitymember__user=user).order_by(
         "-created_at"
     )
-    return JsonResponse(post_paginator(feed, page), status=200)
+    return JsonResponse(json_paginator(feed, page), status=200)

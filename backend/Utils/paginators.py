@@ -1,9 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage
 
-from backend.models import Post
 
-
-def post_paginator(data_to_paginate: list, page: int) -> dict:
+def json_paginator(data_to_paginate: list, page: int) -> dict:
     """
     Paginate a list of Post instances given a certain page to return.
     If `page` parameter if over the amount of pages, last page is returned.
