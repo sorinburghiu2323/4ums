@@ -32,10 +32,7 @@ def create_new(request):
                 "Conflict - Name is already in use", status=409, safe=False
             )
 
-        CommunityMember.objects.create(
-            user=user_instance,
-            community=new_community
-        )
+        CommunityMember.objects.create(user=user_instance, community=new_community)
 
         return JsonResponse("Community created", status=201, safe=False)
 
