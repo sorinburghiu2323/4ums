@@ -3,10 +3,10 @@
     <button v-if = this.buttonVisible id="circleButton" v-on:click="postSelect()">Create Post</button>
     <div id="iconContainer" v-if = this.selectVisible>
         <p id="title">Post to 4um</p>
-        <button class="icon" v-on:click="createPost('question')"><font-awesome-icon :icon="['fas', 'question']" /></button>
-        <button class="icon" v-on:click="createPost('discussion')"><font-awesome-icon :icon="['fas', 'align-left']" /></button>
+        <button class="icon2" v-on:click="createPost('question')"><font-awesome-icon :icon="['fas', 'question']" /></button>
+        <button class="icon2" v-on:click="createPost('discussion')"><font-awesome-icon :icon="['fas', 'align-left']" /></button>
         <br>
-        <button class="icon2" v-on:click="close()"><font-awesome-icon :icon="['fas', 'times-circle']" /></button>
+        <button class="icon3" v-on:click="close()"><font-awesome-icon :icon="['fas', 'times-circle']" /></button>
     </div>  
   </div>
 </template>
@@ -49,11 +49,12 @@ export default {
     background-image: linear-gradient(to bottom right,#d333bb, #e06ceb);
     height: 15vh;
     width: 15vh;
-    position: fixed;
+    position: absolute;
     bottom: 10vh;
     right: 0;
     font-size: 2.5vh;
     border-width: 0;
+    z-index: 1;
 }
 
 #iconContainer {
@@ -61,13 +62,14 @@ export default {
     width: 100%;
     border-radius: 20% 20% 0 0;
     height: 21vh;
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0px;
     text-align: center;
+    z-index: 1;
 }
 
-.icon {
+.icon2 {
     border-radius: 50%;
     background-color: #21242f;
     color: #8a3bfe;
@@ -79,7 +81,7 @@ export default {
     border-width: 0;
 }
 
-.icon2 {
+.icon3 {
     border-radius: 50%;
     background-color: #21242f;
     color: #8a3bfe;

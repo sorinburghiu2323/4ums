@@ -1,16 +1,10 @@
 <template>
     <div id="form">
-        <div id="communityBox"><font-awesome-icon :icon="['fas', 'users']" style="color: #5ff9ab"/> Community {{ this.id }}</div>
-        <input class="inputBox" id="title" v-model="title" placeholder="Add an interesting title..."> 
+        <div id="communityBox"><font-awesome-icon style="color: #5ff9ab" :icon="['fas', 'users']"/> Community {{ this.id }}</div>
+        <input id="title" v-model="title" placeholder="Add an interesting title..."> 
         <br>
         <textarea class="inputBox" v-model="description" placeholder="Post text (optional)..."></textarea>
         <br>
-        <!--<input type="radio" id="discussion" value="Discussion" v-model="type">
-        <label for="discussion">Discussion</label>
-        <br>
-        <input type="radio" id="question" value="Question" v-model="type">
-        <label for="question">Question</label>
-        <br> -->
         <p id="success" style="color: green;"></p>
         <button id="submit" v-on:click="createPost()">Submit Post</button>
     </div>
@@ -32,17 +26,16 @@ export default {
             // Get the inputs from the form and send it to backend
 
             console.log("Hello")
-            var post_url = "/communities/" + this.id + "/posts"
+            var post_url = "api/communities/"+this.id.toString()+"/posts"
             axios.post(post_url, {
                 title: this.title,
                 description: this.description,
-                type: this.type
+                post_type: this.type
             }).then((response) => {
                 console.log(response);
                 document.getElementById("success").innerHTML = "Posted!";
             }).catch((error) => {
-                console.log(error);
-                document.getElementById("success").innerHTML = "Post failed";
+                document.getElementById("success").innerHTML = error.response.data;
                 document.getElementById("success").style = "color: red;"
             })
         }
@@ -64,6 +57,7 @@ export default {
     background-color: #222531;
     padding: 1vh;
     color: white;
+    font-family: 'Trebuchet MS';
 }
 
 .inputBox {
@@ -80,6 +74,13 @@ export default {
     font-family: 'Trebuchet MS';
     height: 5vh;
     color: white;
+    font-family: 'Trebuchet MS';
+    background-color: #222531;
+    width: 100%;
+    border: 0;
+    color: white;
+    margin-top: 1vh;
+    font-size: 3vh;
 }
 
 #submit {

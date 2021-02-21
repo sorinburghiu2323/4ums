@@ -4,7 +4,7 @@ import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 
-import Communities from '../components/Communities.vue'
+//import Communities from '../components/Communities.vue'
 import Profile from '../components/Profile.vue'
 import Leaderboard from '../components/Leaderboard.vue'
 import CreatePost from '../views/CreatePost.vue'
@@ -35,7 +35,7 @@ const routes = [
         component: RegisterPage,
     },
     {
-        path: '/communities',
+        path: '/communities/:id',
         name: 'Communities',
         component: Communities
     },
