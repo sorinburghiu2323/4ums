@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from backend.Utils.community_validation import (
     check_if_valid,
 )
-from backend.Utils.paginaton_helper import format_json
+from backend.Utils.paginators import json_paginator
 from backend.models import Post
 
 
@@ -59,4 +59,4 @@ def show_post(request, community_id):
         return check_if_valid(request, community_id)
     # Return pagination data
     store = Post.objects.filter(community=comm_instance).order_by("-created_at")
-    return JsonResponse(format_json(request, store), status=200, safe=True)
+    return JsonResponse(json_paginator(request, store), status=200, safe=True)
