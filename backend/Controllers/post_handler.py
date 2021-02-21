@@ -1,8 +1,9 @@
-from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
-from backend.Utils.community_validation import get_community, check_member
-from backend.Utils.user_validation import verify_user_login
+from backend.Utils.community_validation import (
+    check_if_valid,
+)
+from backend.Utils.paginators import json_paginator
 from backend.models import Post
 
 
@@ -13,6 +14,7 @@ def create_post(request, community_id):
     :param community_id: id of the community.
     :return: 201 - Post has been created.
              400 - Bad request.
+             401 - Unauthorized.
              404 - Not Found - Community not found.
     """
     if (
@@ -21,20 +23,11 @@ def create_post(request, community_id):
         and "post_type" in request.DATA
     ):
         try:
-            user_instance = verify_user_login(request)  # Verify that the user exists
-        except PermissionDenied:
-            return JsonResponse(
-                "Unauthorized - Login required.", status=401, safe=False
+            user_instance, comm_instance, comm_member = check_if_valid(
+                request, community_id
             )
-        comm_instance = get_community(community_id)
-        if comm_instance is None:
-            return JsonResponse("Community does not exist", status=404, safe=False)
-
-        comm_member = check_member(community_id, user_instance)
-        if comm_member is None:
-            return JsonResponse(
-                "User not member of that community", status=401, safe=False
-            )
+        except ValueError:
+            return check_if_valid(request, community_id)
         Post.objects.create(
             user=user_instance,
             title=request.DATA["title"],
@@ -49,4 +42,21 @@ def create_post(request, community_id):
 
 
 def show_post(request, community_id):
-    return JsonResponse("Ok - Post", status=200, safe=False)
+    """
+    Create a post.
+    :param request: session request.
+    :param community_id: id of the community.
+    :return: 201 - Post has been created.
+             400 - Bad request.
+             401 - Unauthorized.
+             404 - Not Found - Community not found.
+    """
+    try:  # Check if valid request
+        user_instance, comm_instance, comm_member = check_if_valid(
+            request, community_id
+        )
+    except ValueError:
+        return check_if_valid(request, community_id)
+    # Return pagination data
+    store = Post.objects.filter(community=comm_instance).order_by("-created_at")
+    return JsonResponse(json_paginator(request, store), status=200, safe=False)

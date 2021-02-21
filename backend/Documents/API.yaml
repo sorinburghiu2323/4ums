@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
               required:
                 - username
                 - email
@@ -127,17 +127,39 @@ paths:
       parameters: []
     get:
       summary: ''
-      operationId: get-community-id
+      operationId: get-community-posts
       responses:
         '200':
-          description: OK
-      description: ''
+          description: Posts have been returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  previous_page:
+                    type: integer
+                  current_page:
+                    type: integer
+                  total_pages:
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/Post'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized- Not logged in
+        '404':
+          description: Not Found - Community was not found
+      description: Provides an endpoint to show all posts in a specific community
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: {}
+              properties:
+                page:
+                  type: integer
+        description: Supply with page number that you want
   /users/feed:
     get:
       summary: Your GET endpoint
@@ -207,7 +229,7 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
 components:
   schemas:
@@ -227,7 +249,7 @@ components:
           type: string
         post_type:
           type: string
-          description: 'Either "discussion" or "questions".'
+          description: Either "discussion" or "questions".
         created_at:
           type: string
         likes_num:

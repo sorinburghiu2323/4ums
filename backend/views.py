@@ -25,7 +25,7 @@ def logout(request):
 
 
 @csrf_exempt
-def create_post(request, community_id):
+def posts(request, community_id):
     return handle_methods(
         request,
         POST=post_handler.create_post,
