@@ -1,11 +1,12 @@
 <template>
   <div>
     <button v-if = this.buttonVisible id="circleButton" v-on:click="postSelect()">Create Post</button>
-    <div v-if = this.selectVisible>
-        <button v-on:click="createPost('question')">Question</button>
-        <button v-on:click="createPost('discussion')">Discussion</button>
+    <div id="iconContainer" v-if = this.selectVisible>
+        <p id="title">Post to 4um</p>
+        <button class="icon" v-on:click="createPost('question')"><font-awesome-icon :icon="['fas', 'question']" /></button>
+        <button class="icon" v-on:click="createPost('discussion')"><font-awesome-icon :icon="['fas', 'align-left']" /></button>
         <br>
-        <button v-on:click="close()">X</button>
+        <button class="icon2" v-on:click="close()"><font-awesome-icon :icon="['fas', 'times-circle']" /></button>
     </div>  
   </div>
 </template>
@@ -37,6 +38,11 @@ export default {
 </script>
 
 <style>
+#title {
+    color: black;
+    font-family: 'Trebuchet MS';
+    font-size: 2vh;
+}
 
 #circleButton {
     border-radius: 50%;
@@ -47,6 +53,42 @@ export default {
     bottom: 10vh;
     right: 0;
     font-size: 2.5vh;
+    border-width: 0;
 }
 
+#iconContainer {
+    background-color: #8a3bfe;
+    width: 100%;
+    border-radius: 20% 20% 0 0;
+    height: 21vh;
+    position: fixed;
+    bottom: 0;
+    left: 0px;
+    text-align: center;
+}
+
+.icon {
+    border-radius: 50%;
+    background-color: #21242f;
+    color: #8a3bfe;
+    height: 7vh;
+    width: 7vh;
+    font-size: 3vh;
+    text-align: center;
+    vertical-align: middle;
+    border-width: 0;
+}
+
+.icon2 {
+    border-radius: 50%;
+    background-color: #21242f;
+    color: #8a3bfe;
+    height: 5vh;
+    width: 5vh;
+    font-size: 2.5vh;
+    text-align: center;
+    vertical-align: middle;
+    top: 1vh;
+    border-width: 0;
+}
 </style>

@@ -15,7 +15,9 @@ import {
 import { 
   faUserSecret,
   faSort, 
-  faQuestion
+  faQuestion,
+  faAlignLeft,
+  faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -25,7 +27,9 @@ library.add(
   faUserSecret,
   faSort,
   faFontAwesome,
-  faQuestion
+  faQuestion,
+  faAlignLeft,
+  faTimesCircle
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
