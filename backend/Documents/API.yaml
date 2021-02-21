@@ -175,76 +175,37 @@ paths:
               properties:
                 page:
                   type: integer
-        description: 'If no page in the body, it is assumed first page.'
+        description: |-
+          If page is not specified, it is assumed first page.
+          If page is bigger than 'total_pages', last page is returned.
+  /community:
+    post:
+      summary: ''
+      operationId: post-community
+      responses:
+        '201':
+          description: Community Created
+        '400':
+          description: Bad Request - Name and description are required
+        '401':
+          description: Unauthorized - Login required
+        '409':
+          description: Conflict - Name is already in use
+      description: Create a new community
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - name
+                - description
+        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
 components:
-  schemas:
-    Post:
-      title: Post
-      type: object
-      properties:
-        id:
-          type: integer
-        community:
-          $ref: '#/components/schemas/CommunitySimple'
-        user:
-          $ref: '#/components/schemas/UserSimple'
-        title:
-          type: string
-        description:
-          type: string
-        post_type:
-          type: string
-          description: 'Either "discussion" or "questions".'
-        created_at:
-          type: string
-        likes_num:
-          type: integer
-          description: Number of likes.
-        comments_num:
-          type: integer
-          description: Number of comments.
-        is_community_owner:
-          type: boolean
-          description: True if the creator of the post is the community owner.
-      required:
-        - id
-        - community
-        - user
-        - title
-        - description
-        - post_type
-        - created_at
-        - likes_num
-        - comments_num
-        - is_community_owner
-      description: Post serializer for standard display of Posts.
-    CommunitySimple:
-      title: CommunitySimple
-      type: object
-      description: Simple community serializer.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-      required:
-        - id
-        - name
-    UserSimple:
-      title: UserSimple
-      type: object
-      properties:
-        id:
-          type: integer
-        username:
-          type: string
-        points:
-          type: integer
-        is_teacher:
-          type: boolean
-      required:
-        - id
-        - username
-        - points
-        - is_teacher
-      description: Simple user serializer
+  schemas: {}
