@@ -146,8 +146,6 @@ paths:
                     type: integer
                   data:
                     $ref: '#/components/schemas/Post'
-        '201':
-          description: Created
         '400':
           description: Bad Request
         '401':
