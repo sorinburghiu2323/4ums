@@ -150,8 +150,10 @@ yarn-error.log*
 *.sw?
 
 # Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+.elasticbeanstalk/
 .ebignore
+.ebextensions
+
+#Milo's special deployment files
 deploy_script.bat
+public/vue/
