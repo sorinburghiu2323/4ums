@@ -127,43 +127,39 @@ paths:
       parameters: []
     get:
       summary: ''
-      operationId: get-community-id
+      operationId: get-community-posts
       responses:
         '200':
-          description: OK- Posts have been sent
+          description: Posts have been returned
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   previous_page:
-                    type: string
-                  next_page:
-                    type: string
-                  page_data:
-                    type: string
+                    type: integer
+                  current_page:
+                    type: integer
+                  total_pages:
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/Post'
         '400':
           description: Bad Request
         '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
+          description: Unauthorized- Not logged in
         '404':
-          description: Not Found
-      description: Provides an endpoint to view all posts in the current commmunity with pagination
+          description: Not Found - Community was not found
+      description: Provides an endpoint to show all posts in a specific community
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                page_number:
+                page:
                   type: integer
-          application/xml:
-            schema:
-              type: object
-              properties: {}
-        description: Returns the json data with the previous page the next page and the data for the current page
+        description: Supply with page number that you want
   /users/feed:
     get:
       summary: Your GET endpoint
@@ -233,7 +229,77 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
 components:
-  schemas: {}
+  schemas:
+    Post:
+      title: Post
+      type: object
+      properties:
+        id:
+          type: integer
+        community:
+          $ref: '#/components/schemas/CommunitySimple'
+        user:
+          $ref: '#/components/schemas/UserSimple'
+        title:
+          type: string
+        description:
+          type: string
+        post_type:
+          type: string
+          description: Either "discussion" or "questions".
+        created_at:
+          type: string
+        likes_num:
+          type: integer
+          description: Number of likes.
+        comments_num:
+          type: integer
+          description: Number of comments.
+        is_community_owner:
+          type: boolean
+          description: True if the creator of the post is the community owner.
+      required:
+        - id
+        - community
+        - user
+        - title
+        - description
+        - post_type
+        - created_at
+        - likes_num
+        - comments_num
+        - is_community_owner
+      description: Post serializer for standard display of Posts.
+    CommunitySimple:
+      title: CommunitySimple
+      type: object
+      description: Simple community serializer.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    UserSimple:
+      title: UserSimple
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        points:
+          type: integer
+        is_teacher:
+          type: boolean
+      required:
+        - id
+        - username
+        - points
+        - is_teacher
+      description: Simple user serializer
