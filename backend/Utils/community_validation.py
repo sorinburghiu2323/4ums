@@ -40,7 +40,7 @@ def check_if_valid(request, community_id):
     and the user is a member of both.
     :param request: session request.
     :param community_id: id of the community.
-    :return: 201 - Posts have been sent.
+    :return: 200 - Posts have been sent.
              400 - Bad request.
              401 - Unauthorized.
              404 - Not Found - Community not found.
