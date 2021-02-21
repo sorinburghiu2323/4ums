@@ -15,6 +15,7 @@ def create_post(request, community_id):
     :return: 201 - Post has been created.
              400 - Bad request.
              401 - Unauthorized.
+             403 - Not member of the community
              404 - Not Found - Community not found.
     """
     if (
@@ -46,9 +47,10 @@ def show_post(request, community_id):
     Create a post.
     :param request: session request.
     :param community_id: id of the community.
-    :return: 201 - Post has been created.
+    :return: 200 - Post has been created.
              400 - Bad request.
              401 - Unauthorized.
+             403 - Not member of the community
              404 - Not Found - Community not found.
     """
     try:  # Check if valid request

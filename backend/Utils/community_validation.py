@@ -42,7 +42,8 @@ def check_if_valid(request, community_id):
     :param community_id: id of the community.
     :return: 200 - Posts have been sent.
              400 - Bad request.
-             401 - Unauthorized.
+             401 - Unauthenticated.
+             403 - Unauthorized
              404 - Not Found - Community not found.
     """
     comm_instance = get_community(community_id)
@@ -54,5 +55,5 @@ def check_if_valid(request, community_id):
         return JsonResponse("Unauthorized - Login required.", status=401, safe=False)
     comm_member = check_member(community_id, user_instance)
     if comm_member is None:
-        return JsonResponse("User not member of that community", status=401, safe=False)
+        return JsonResponse("User not member of that community", status=403, safe=False)
     return user_instance, comm_instance, comm_member
