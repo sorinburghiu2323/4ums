@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 
 from backend.Controllers import user_controller, post_handler
+from backend.Controllers import community_controller
 from backend.Utils.http_method_handler import handle_methods
 
 
@@ -40,3 +41,8 @@ def users(request):
         request,
         POST=user_controller.user_register,
     )
+
+
+@csrf_exempt
+def create_community(request):
+    return handle_methods(request, POST=community_controller.create_new)
