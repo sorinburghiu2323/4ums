@@ -1,8 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
-from backend.Utils.user_validation import validate_user_data, validate_password
-from backend.models import User
+from backend.Utils.paginators import json_paginator
+from backend.Utils.user_validation import (
+    validate_user_data,
+    validate_password,
+    verify_user_login,
+)
+from backend.models import User, Post
 
 
 def user_login(request):
@@ -88,3 +94,27 @@ def user_register(request):
     return JsonResponse(
         "Bad Request - Please provide the required json body.", status=400, safe=False
     )
+
+
+def get_feed(request):
+    """
+    Get the logged in user feed. The feed includes all the posts in the communities the
+    user is part of ordered chronologically.
+    :param request: session request.
+    :return: 200 - list of paginated Posts.
+             401 - login required.
+    """
+    try:
+        user = verify_user_login(request)
+    except PermissionDenied:
+        return JsonResponse("Unauthorized - Login required.", status=401, safe=False)
+
+    # Get feed data and paginate it.
+    try:
+        page = int(request.DATA["page"])
+    except:
+        page = 1  # Assume first page is 'page' field is missing.
+    feed = Post.objects.filter(community__communitymember__user=user).order_by(
+        "-created_at"
+    )
+    return JsonResponse(json_paginator(feed, page), status=200)

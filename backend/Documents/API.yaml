@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: Bool to whether the user is applied for a teacher's account.
+                  description: "Bool to whether the user is applied for a teacher's account."
               required:
                 - username
                 - email
@@ -138,6 +138,47 @@ paths:
             schema:
               type: object
               properties: {}
+  /users/feed:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/Post'
+                  next_page:
+                    type: integer
+                required:
+                  - total_pages
+                  - data
+        '401':
+          description: Unauthorized - Login required.
+      operationId: get-users-feed
+      description: |-
+        Get the feed posts for the logged in user.
+
+        Pagination included: Every page has 20 posts.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+        description: |-
+          If page is not specified, it is assumed first page.
+          If page is bigger than 'total_pages', last page is returned.
   /communities:
     post:
       summary: ''
@@ -166,7 +207,7 @@ paths:
               required:
                 - name
                 - description
-        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
+        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
     parameters: []
 components:
   schemas: {}
