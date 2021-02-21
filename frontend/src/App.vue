@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
-    <!--<Navbar /> -->
+    <Navbar />
   </div>
 </template>
 
@@ -34,4 +34,5 @@ body {
   margin: 0;
   top: 0;
 }
+
 </style>

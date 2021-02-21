@@ -69,6 +69,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return ("TEACHER REQUEST: " if self.teacher_request else "") + self.email
 
+    def serialize_simple(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "points": self.points,
+            "is_teacher": self.is_teacher,
+        }
+
 
 # Community Class
 class Community(models.Model):
@@ -90,6 +98,12 @@ class Community(models.Model):
 
     def __str__(self):
         return self.name
+
+    def serialize_simple(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+        }
 
     def serialize(self):
         return {
@@ -142,12 +156,16 @@ class Post(models.Model):
 
     def serialize(self):
         return {
-            "user": self.user,
-            "community": self.community,
+            "id": self.id,
+            "user": self.user.serialize_simple(),
+            "is_community_owner": Community.objects.filter(user=self.user).exists(),
+            "community": self.community.serialize_simple(),
             "title": self.title,
             "description": self.description,
             "post_type": self.post_type,
             "created_at": self.created_at,
+            "likes_num": PostLike.objects.filter(post=self).count(),
+            "comments_num": PostComment.objects.filter(post=self).count(),
         }
 
 
