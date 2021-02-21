@@ -1,12 +1,9 @@
 <template>
-    <div>
-        Create a post
+    <div id="form">
+        <div id="communityBox"><font-awesome-icon :icon="['fas', 'users']" style="color: #5ff9ab"/> Community {{ this.id }}</div>
+        <input class="inputBox" id="title" v-model="title" placeholder="Add an interesting title..."> 
         <br>
-        Title <br>
-        <input v-model="title" placeholder="Post Title"> 
-        <br>
-        Post Content <br>
-        <textarea v-model="description" placeholder="What do you want to post?"></textarea>
+        <textarea class="inputBox" v-model="description" placeholder="Post text (optional)..."></textarea>
         <br>
         <!--<input type="radio" id="discussion" value="Discussion" v-model="type">
         <label for="discussion">Discussion</label>
@@ -15,7 +12,7 @@
         <label for="question">Question</label>
         <br> -->
         <p id="success" style="color: green;"></p>
-        <button v-on:click="createPost()">Submit Post</button>
+        <button id="submit" v-on:click="createPost()">Submit Post</button>
     </div>
 </template>
 
@@ -31,6 +28,9 @@ export default {
     },
     methods: {
         createPost: function() {
+
+            // Get the inputs from the form and send it to backend
+
             console.log("Hello")
             var post_url = "/communities/" + this.id + "/posts"
             axios.post(post_url, {
@@ -57,6 +57,41 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+#communityBox {
+    width: 100%;
+    background-color: #222531;
+    padding: 1vh;
+    color: white;
+}
+
+.inputBox {
+    font-family: 'Trebuchet MS';
+    background-color: #222531;
+    width: 100%;
+    border: 0;
+    color: white;
+    margin-top:1vh;
+    height: 75vh;
+}
+
+#title {
+    font-family: 'Trebuchet MS';
+    height: 5vh;
+    color: white;
+}
+
+#submit {
+    border-radius: 50%;
+    background-image: linear-gradient(to bottom right,#d333bb, #e06ceb);
+    height: 11vh;
+    width: 11vh;
+    position: fixed;
+    bottom: 10vh;
+    right: 2vh;
+    font-size: 2.5vh;
+    border-width: 0;
+}
 
 </style>

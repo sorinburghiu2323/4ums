@@ -20,7 +20,7 @@ export default {
         goTo: function(location) {
             // update the text colour depending on which is selected
             document.getElementById(location).style.color = "#5FF9AB";
-            // this.$router.replace(location)
+           
             for (var i=0; i<4; i++) {
                 if (this.pages[i] != location) {
                     document.getElementById(this.pages[i]).style.color = "rgb(126, 126, 126)";
