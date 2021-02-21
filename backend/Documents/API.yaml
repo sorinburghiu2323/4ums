@@ -100,6 +100,8 @@ paths:
           description: 'Bad Request - {description of why the request is bad}'
         '401':
           description: Unauthorized User
+        '403':
+          description: Forbidden - User not member of that community
         '404':
           description: Not Found - Community not found
       description: Provides an endpoint to create a post in a specific community
@@ -144,10 +146,14 @@ paths:
                     type: integer
                   data:
                     $ref: '#/components/schemas/Post'
+        '201':
+          description: Created
         '400':
           description: Bad Request
         '401':
           description: Unauthorized- Not logged in
+        '403':
+          description: Forbidden - User not member of that community
         '404':
           description: Not Found - Community was not found
       description: Provides an endpoint to show all posts in a specific community
