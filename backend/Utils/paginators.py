@@ -3,30 +3,39 @@ from django.core.paginator import Paginator, EmptyPage
 from backend.models import Post
 
 
-def post_paginator(posts: [Post], page: int):
+def post_paginator(data_to_paginate: list, page: int) -> dict:
     """
     Paginate a list of Post instances given a certain page to return.
     If `page` parameter if over the amount of pages, last page is returned.
-    :param posts: list of Post instances to paginate.
+
+    How to use:
+    1. Pass in the filtered data you want to use at 'data_to_paginate', this can be anything of type:
+        data_to_paginate = Example.objects.filter(color=red)
+    2. Pass in the page you want to get; this can be gathered from a request body like:
+        page = request.DATA['page']
+
+    :param data_to_paginate: list of instances to paginate.
     :param page: page number wanted to be returned.
     :return: dict as follows:
                 {
-                    "total_pages": x,
-                    "current_page": y,
-                    "posts": post_list (serialised),
+                    "total_pages": (int),
+                    "previous_page": (int),
+                    "next_page": (int),
+                    "data": (serialised response),
                 }
     """
     POSTS_PER_PAGE = 20  # Amount of posts that can fit in a page.
-    paginator = Paginator(posts, POSTS_PER_PAGE)
+    paginator = Paginator(data_to_paginate, POSTS_PER_PAGE)
     try:
         posts = paginator.page(page)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    post_list = []
-    for post in posts:
-        post_list.append(post.serialize())
+    data = []
+    for dp in data_to_paginate:
+        data.append(dp.serialize())
     return {
         "total_pages": paginator.num_pages,
-        "current_page": page if page < paginator.num_pages else paginator.num_pages,
-        "posts": post_list,
+        "previous_page": posts.has_previous() and posts.previous_page_number() or None,
+        "next_page": posts.has_next() and posts.next_page_number() or None,
+        "data": data,
     }
