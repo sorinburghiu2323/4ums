@@ -110,11 +110,7 @@ def get_feed(request):
         return JsonResponse("Unauthorized - Login required.", status=401, safe=False)
 
     # Get feed data and paginate it.
-    try:
-        page = int(request.DATA["page"])
-    except:
-        page = 1  # Assume first page is 'page' field is missing.
     feed = Post.objects.filter(community__communitymember__user=user).order_by(
         "-created_at"
     )
-    return JsonResponse(json_paginator(feed, page), status=200)
+    return JsonResponse(json_paginator(feed, request), status=200)
