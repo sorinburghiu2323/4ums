@@ -9,6 +9,7 @@ def json_paginator(data_to_paginate: list, serialize: callable, request) -> dict
     How to use:
     1. Pass in the filtered data you want to use at 'data_to_paginate', this can be anything of type:
         data_to_paginate = Example.objects.filter(color=red)
+    2. Pass in the serialiser, e.g. "lambda d: d.serialise()"
 
     :param data_to_paginate: list of instances to paginate.
     :param serialize: function used to serialize each data item
