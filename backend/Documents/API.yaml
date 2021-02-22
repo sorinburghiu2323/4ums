@@ -209,50 +209,57 @@ paths:
                 - description
         description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
-  /communities/all:
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: ''
+      operationId: get-communities
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of communities
+                items:
+                  type: object
+                  description: Individual community
+                  properties:
+                    id:
+                      type: integer
+                      description: Community id
+                    name:
+                      type: string
+                      description: Name of the community
+                    description:
+                      type: string
+                      description: Community's description
+        '400':
+          description: 'Bad Request - {description of why the request is bad}'
         '401':
           description: Unauthorized - Login required
-      operationId: get-communities-all
-      description: |-
-        Get a (paginated) list of all communities.
-
-        Returns a JSON list of:
-        {id: ..., name: "...", description: "..."}
-        containing the community id, name and description respectively.
-  /communites/created:
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Unauthorized - Login required
-      operationId: get-communites-created
-      description: |-
-        Get a (paginated) list of communities that the user created.
-
-        Returns a JSON list of:
-        {id: ..., name: "...", description: "..."}
-        containing the community id, name and description respectively.
-  /communities/member:
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses: {}
-      operationId: get-communities-member
-      description: |-
-        Get a (paginated) list of communities the user is a member of.
-
-        Returns a JSON list of:
-        {id: ..., name: "...", description: "..."}
-        containing the community id, name and description respectively.
+      description: Get a (paginated) list of communities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: type of community included in the list
+                  enum:
+                    - all
+                    - created
+                    - memberof
+              required:
+                - type
+            examples: {}
+        description: |-
+          Specify which type of community to list. 
+          The three possible types are:
+            "all"      - all communities
+            "created"  - communities the user created
+            "memberof" - communities the user is a member of  
 components:
   schemas:
     Post:
