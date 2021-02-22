@@ -50,9 +50,14 @@ def list_communities(request):
              401 Unauthorized
     """
 
-    user_istance = request.user
+    user_instance = request.user
 
     if "all" in request.GET:
-        comms = Community.objects.all().order_by("-created_at")
+        comms = list(Community.objects.all().order_by("-name"))
     else:
-        comms = Community.objects.filter(communitymemb)
+        comm_mems = CommunityMember.objects
+                  .filter(user=user_instance)
+                  .order_by('-community')
+        comms = [comm_mem.community for comm_mem in comm_mems]
+
+    return JsonResponse(json_paginator(comms, request), status=200)
