@@ -35,7 +35,11 @@ def json_paginator(data_to_paginate: list, serialize: callable, request) -> dict
         data.append(serialize(dp))
     return {
         "total_pages": paginator.num_pages,
-        "previous_page": data_to_paginate.has_previous() and data_to_paginate.previous_page_number() or None,
-        "next_page": data_to_paginate.has_next() and data_to_paginate.next_page_number() or None,
+        "previous_page": data_to_paginate.has_previous()
+        and data_to_paginate.previous_page_number()
+        or None,
+        "next_page": data_to_paginate.has_next()
+        and data_to_paginate.next_page_number()
+        or None,
         "data": data,
     }
