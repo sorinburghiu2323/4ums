@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
+import CreateCommunity from '../views/CreateCommunity.vue'
 
 import Communities from '../components/Communities.vue'
 import Profile from '../components/Profile.vue'
@@ -40,6 +41,11 @@ const routes = [
         path: '/leaderboard',
         name: 'Leaderboard',
         component: Leaderboard
+    },
+    {
+        path: '/communities/create',
+        name: 'CreateCommunity',
+        component: CreateCommunity
     }
 ]
 
