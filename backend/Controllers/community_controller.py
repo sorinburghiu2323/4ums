@@ -79,5 +79,5 @@ def list_communities(request):
         comms = [comm_mem.community for comm_mem in comm_mems]
 
     return JsonResponse(
-        json_paginator(comms, lambda d: d.serialize_simple(), request), status=200
+        json_paginator(request, comms, lambda d: d.serialize_simple()), status=200
     )
