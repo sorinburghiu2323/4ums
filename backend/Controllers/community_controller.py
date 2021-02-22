@@ -71,11 +71,11 @@ def list_communities(request):
         )
 
     if list_type == "all":
-        comms = list(Community.objects.all().order_by("-name"))
+        comms = list(Community.objects.all().order_by("name"))
     elif list_type == "created":
-        comms = Community.objects.filter(user=user).order_by("-name")
+        comms = Community.objects.filter(user=user).order_by("name")
     elif list_type == "memberof":
-        comm_mems = CommunityMember.objects.filter(user=user).order_by("-community")
+        comm_mems = CommunityMember.objects.filter(user=user).order_by("community")
         comms = [comm_mem.community for comm_mem in comm_mems]
 
     return JsonResponse(
