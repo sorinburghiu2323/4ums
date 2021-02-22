@@ -56,31 +56,22 @@ def feed(request):
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def communities(request):
-    return handle_methods(
-        request,
-        POST=community_controller.create_new
-    )
+    return handle_methods(request, POST=community_controller.create_new)
+
 
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def communities_all(request):
-    return handle_methods(
-        request,
-        GET=community_controller.list_communities_all
-    )
+    return handle_methods(request, GET=community_controller.list_communities_all)
+
 
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def communities_created(request):
-    return handle_methods(
-        request,
-        GET=community_controller.list_communities_created
-    )
+    return handle_methods(request, GET=community_controller.list_communities_created)
+
 
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def communities_member(request):
-    return handle_methods(
-        request,
-        GET=community_controller.list_communities_member
-    )
+    return handle_methods(request, GET=community_controller.list_communities_member)
