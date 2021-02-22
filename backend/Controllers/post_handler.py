@@ -61,4 +61,8 @@ def show_post(request, community_id):
         return check_if_valid(request, community_id)
     # Return pagination data
     store = Post.objects.filter(community=comm_instance).order_by("-created_at")
-    return JsonResponse(json_paginator(request, store), status=200, safe=False)
+    return JsonResponse(
+        json_paginator(request, store, lambda d: d.serialize(request)),
+        status=200,
+        safe=False,
+    )
