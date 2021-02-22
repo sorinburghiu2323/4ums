@@ -214,6 +214,7 @@ components:
     Post:
       title: Post
       type: object
+      description: Post serializer for standard display of Posts.
       properties:
         id:
           type: integer
@@ -239,6 +240,9 @@ components:
         is_community_owner:
           type: boolean
           description: True if the creator of the post is the community owner.
+        is_liked:
+          type: boolean
+          description: True if the logged in user had liked this post.
       required:
         - id
         - community
@@ -250,7 +254,7 @@ components:
         - likes_num
         - comments_num
         - is_community_owner
-      description: Post serializer for standard display of Posts.
+        - is_liked
     CommunitySimple:
       title: CommunitySimple
       type: object
