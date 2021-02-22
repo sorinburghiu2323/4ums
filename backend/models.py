@@ -103,6 +103,7 @@ class Community(models.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "description": self.description
         }
 
     def serialize(self):
