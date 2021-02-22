@@ -14,4 +14,7 @@ urlpatterns = [
     path("users", views.users),
     path("users/feed", views.feed),
     path("communities", views.communities),
+    path("communities/all", views.communities_all),
+    path("communities/member", views.communities_member),
+    path("communities/created", views.communities_created)
 ]
