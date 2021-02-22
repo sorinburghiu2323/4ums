@@ -240,15 +240,22 @@ paths:
                     - all
                     - created
                     - memberof
+                page:
+                  type: integer
               required:
                 - type
+                - page
             examples: {}
         description: |-
-          Specify which type of community to list. 
-          The three possible types are:
-            "all"      - all communities
-            "created"  - communities the user created
-            "memberof" - communities the user is a member of  
+          parameter "type":
+            Specify which type of community to list. 
+            The three possible values are:
+              "all"      - all communities
+              "created"  - communities the user created
+              "memberof" - communities the user is a member of
+          parameter "page":
+            If page is not specified, it is assumed first page.
+            If page is bigger than 'total_pages', last page is returned.
 components:
   schemas:
     Post:
