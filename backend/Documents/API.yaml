@@ -226,7 +226,7 @@ paths:
           description: 'Bad Request - {description of why the request is bad}'
         '401':
           description: Unauthorized - Login required
-      description: Get a (paginated) list of communities
+      description: Get a (paginated) list of communities (ordered alphabetically by community name)
       requestBody:
         content:
           application/json:
