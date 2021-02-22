@@ -154,7 +154,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    def serialize(self):
+    def serialize(self, request=None):
         return {
             "id": self.id,
             "user": self.user.serialize_simple(),
@@ -166,6 +166,7 @@ class Post(models.Model):
             "created_at": self.created_at,
             "likes_num": PostLike.objects.filter(post=self).count(),
             "comments_num": PostComment.objects.filter(post=self).count(),
+            "is_liked": PostLike.objects.filter(user=request.user, post=self).exists() if request else False,
         }
 
 
