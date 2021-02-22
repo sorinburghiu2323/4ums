@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage
 
 
-def json_paginator(data_to_paginate: list, request) -> dict:
+def json_paginator(data_to_paginate: list, serialize: callable, request) -> dict:
     """
     Paginate a list of Post instances given a certain page to return.
     If `page` parameter if over the amount of pages, last page is returned.
@@ -11,6 +11,7 @@ def json_paginator(data_to_paginate: list, request) -> dict:
         data_to_paginate = Example.objects.filter(color=red)
 
     :param data_to_paginate: list of instances to paginate.
+    :param serialize: function used to serialize each data item
     :param request: session request.
     :return: dict as follows:
                 {
@@ -30,7 +31,7 @@ def json_paginator(data_to_paginate: list, request) -> dict:
         posts = paginator.page(1)
     data = []
     for dp in data_to_paginate:
-        data.append(dp.serialize())
+        data.append(serialize(dp))
     return {
         "total_pages": paginator.num_pages,
         "previous_page": posts.has_previous() and posts.previous_page_number() or None,
