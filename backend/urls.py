@@ -10,9 +10,9 @@ urlpatterns = [
     path("", lambda _: HttpResponse("", status=200)),
     path("login", views.login),
     path("logout", views.logout),
+    path("communities/<int:community_id>/posts/<int:post_id>", views.post),
     path("communities/<int:community_id>/posts", views.posts),
     path("users", views.users),
     path("users/feed", views.feed),
     path("communities", views.create_community),
-    path("communities/<int:community_id>/posts/<int:post_id>", views.post),
 ]

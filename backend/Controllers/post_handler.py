@@ -83,11 +83,11 @@ def show_post(request, community_id, post_id):
         )
     except ValueError:
         print(check_if_valid(request, community_id))
-        return check_if_valid(request, community_id)
+        return JsonResponse("Ok - Post has been found.", status=200, safe=False)
     if not check_valid_post(comm_instance, post_id):
         print("Goat")
     try:
-        Post.objects.get(pk1=post_id)
+        Post.objects.get(id=post_id)
         return JsonResponse("Ok - Post has been found.", status=200, safe=False)
     except Post.DoesNotExist:
         return JsonResponse(
