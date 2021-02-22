@@ -1,6 +1,14 @@
 from django.core.management.base import BaseCommand
 
-from backend.models import User, Community, CommunityMember, Post, PostLike, PostComment, PostCommentLike
+from backend.models import (
+    User,
+    Community,
+    CommunityMember,
+    Post,
+    PostLike,
+    PostComment,
+    PostCommentLike,
+)
 
 
 class Command(BaseCommand):
@@ -86,19 +94,17 @@ class Command(BaseCommand):
         team_2 = [sorin, will, ollie]
         team_3 = [milo, hiba, sarah]
         ecm2434 = Community.objects.create(
-            name="ECM2434",
-            user=matt,
-            description="Cool module."
+            name="ECM2434", user=matt, description="Cool module."
         )
         chess = Community.objects.create(
             name="Chess",
             user=sorin,
             description="Chess is a recreational and competitive board game played between two players. It is "
-                        "sometimes called Western or international chess to distinguish it from related games such as "
-                        "xiangqi. The current form of the game emerged in Southern Europe during the second half of "
-                        "the 15th century after evolving from similar, much older games of Indian and Persian origin. "
-                        "Today, chess is one of the world's most popular games, played by millions of people "
-                        "worldwide at home, in clubs, online, by correspondence, and in tournaments. "
+            "sometimes called Western or international chess to distinguish it from related games such as "
+            "xiangqi. The current form of the game emerged in Southern Europe during the second half of "
+            "the 15th century after evolving from similar, much older games of Indian and Persian origin. "
+            "Today, chess is one of the world's most popular games, played by millions of people "
+            "worldwide at home, in clubs, online, by correspondence, and in tournaments. ",
         )
         for member in team:
             CommunityMember.objects.create(
@@ -121,11 +127,11 @@ class Command(BaseCommand):
                     community=ecm2434,
                     title="Lorem ipsum dolor sit amet",
                     description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "
-                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "
-                                "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure "
-                                "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
-                                "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt "
-                                "mollit anim id est laborum. ",
+                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "
+                    "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure "
+                    "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
+                    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt "
+                    "mollit anim id est laborum. ",
                     post_type="discussion",
                 )
                 for t in team_3:

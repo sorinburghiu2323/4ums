@@ -23,7 +23,7 @@ def json_paginator(request, data_to_paginate: list) -> dict:
     POSTS_PER_PAGE = 20  # Amount of posts that can fit in a page.
     paginator = Paginator(data_to_paginate, POSTS_PER_PAGE)
     try:
-        data_to_paginate = paginator.page(int(request.DATA['page']))
+        data_to_paginate = paginator.page(int(request.DATA["page"]))
     except EmptyPage:
         data_to_paginate = paginator.page(paginator.num_pages)
     except:
@@ -33,7 +33,11 @@ def json_paginator(request, data_to_paginate: list) -> dict:
         data.append(dp.serialize(request))
     return {
         "total_pages": paginator.num_pages,
-        "previous_page": data_to_paginate.has_previous() and data_to_paginate.previous_page_number() or None,
-        "next_page": data_to_paginate.has_next() and data_to_paginate.next_page_number() or None,
+        "previous_page": data_to_paginate.has_previous()
+        and data_to_paginate.previous_page_number()
+        or None,
+        "next_page": data_to_paginate.has_next()
+        and data_to_paginate.next_page_number()
+        or None,
         "data": data,
     }
