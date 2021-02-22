@@ -121,7 +121,7 @@ class Command(BaseCommand):
         print("Completed:  5 %")
         count = 1
         for member in team:
-            for i in range(1, 11):
+            for _ in range(10):
                 post = Post.objects.create(
                     user=member,
                     community=ecm2434,
