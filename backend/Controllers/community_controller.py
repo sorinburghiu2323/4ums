@@ -56,25 +56,25 @@ def list_communities(request):
              401 Unauthorized - Login required
     """
     user = request.user
-    if 'type' not in request.DATA:
+    if "type" not in request.DATA:
         return JsonResponse(
             "Bad request - List type is required", status=400, safe=False
         )
 
-    list_type = request.DATA['type']
+    list_type = request.DATA["type"]
 
-    if list_type not in ['all','created','memberof']:
+    if list_type not in ["all", "created", "memberof"]:
         return JsonResponse(
             "Bad request - Type must be one of: 'all', 'created', 'memberof'",
             status=400,
-            safe=False
+            safe=False,
         )
 
-    if list_type == 'all':
+    if list_type == "all":
         comms = list(Community.objects.all().order_by("-name"))
-    elif list_type == 'created':
+    elif list_type == "created":
         comms = Community.objects.filter(user=user).order_by("-name")
-    elif list_type == 'memberof':
+    elif list_type == "memberof":
         comm_mems = CommunityMember.objects.filter(user=user).order_by("-community")
         comms = [comm_mem.community for comm_mem in comm_mems]
 
