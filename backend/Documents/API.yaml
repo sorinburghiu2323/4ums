@@ -221,18 +221,7 @@ paths:
                 type: array
                 description: List of communities
                 items:
-                  type: object
-                  description: Individual community
-                  properties:
-                    id:
-                      type: integer
-                      description: Community id
-                    name:
-                      type: string
-                      description: Name of the community
-                    description:
-                      type: string
-                      description: Community's description
+                  $ref: '#/components/schemas/CommunitySimple'
         '400':
           description: 'Bad Request - {description of why the request is bad}'
         '401':
@@ -315,9 +304,12 @@ components:
           type: integer
         name:
           type: string
+        description:
+          type: string
       required:
         - id
         - name
+        - description
     UserSimple:
       title: UserSimple
       type: object
