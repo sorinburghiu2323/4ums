@@ -114,5 +114,5 @@ def get_feed(request):
         "-created_at"
     )
     return JsonResponse(
-        json_paginator(feed, lambda d: d.serialize(), request), status=200
+        json_paginator(feed, lambda d: d.serialize(request), request), status=200
     )
