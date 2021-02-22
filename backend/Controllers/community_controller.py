@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.db.utils import IntegrityError
 
 from backend.Utils.user_validation import verify_user_login
+from backend.Utils.paginators import json_paginator
 from backend.models import Community, CommunityMember
 
 
@@ -40,22 +41,50 @@ def create_new(request):
         )
 
 
-def list_communities(request):
+def list_communities_all(request):
     """
-    Get a paginated list of communities.
-    Lists all communities if the GET parameter "all" is included, otherwise lists only
-    communities the user is a member of.
+    Get a paginated list of all communities.
+
     :param request: session request
     :return: 200 OK
              401 Unauthorized
     """
-
     user = request.user
+    comms = list(Community.objects.all().order_by("-name"))
 
-    if "all" in request.GET:
-        comms = list(Community.objects.all().order_by("-name"))
-    else:
-        comm_mems = CommunityMember.objects.filter(user=user).order_by("-community")
-        comms = [comm_mem.community for comm_mem in comm_mems]
+    return JsonResponse(
+        json_paginator(comms, lambda d: d.serialize_simple(), request), status=200
+    )
 
-    return JsonResponse(json_paginator(comms, request), status=200)
+
+def list_communities_created(request):
+    """
+    Get a paginated list of communities that the user created.
+
+    :param request: session request
+    :return: 200 OK
+             401 Unauthorized
+    """
+    user = request.user
+    comms = Community.objects.filter(user=user).order_by("-name")
+
+    return JsonResponse(
+        json_paginator(comms, lambda d: d.serialize_simple(), request), status=200
+    )
+
+
+def list_communities_member(request):
+    """
+    Get a paginated list of communities that the user is a member of.
+
+    :param request: session request
+    :return: 200 OK
+             401 Unauthorized
+    """
+    user = request.user
+    comm_mems = CommunityMember.objects.filter(user=user).order_by("-community")
+    comms = [comm_mem.community for comm_mem in comm_mems]
+
+    return JsonResponse(
+        json_paginator(comms, lambda d: d.serialize_simple(), request), status=200
+    )
