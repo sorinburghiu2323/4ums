@@ -15,10 +15,8 @@ def create_new(request):
              401 Unauthorized
              409 Conflict
     """
-    try:
-        user_instance = verify_user_login(request)
-    except PermissionDenied:
-        return JsonResponse("Unauthorized - Login required", status=401, safe=False)
+
+    user_instance = request.user
 
     if "name" in request.DATA and "description" in request.DATA:
         try:
@@ -40,3 +38,21 @@ def create_new(request):
         return JsonResponse(
             "Bad request - Name and description are required", status=400, safe=False
         )
+
+
+def list_communities(request):
+    """
+    Get a paginated list of communities.
+    Lists all communities if the GET parameter "all" is included, otherwise lists only
+    communities the user is a member of.
+    :param request: session request
+    :return: 200 OK
+             401 Unauthorized
+    """
+
+    user_istance = request.user
+
+    if "all" in request.GET:
+        comms = Community.objects.all().order_by("-created_at")
+    else:
+        comms = Community.objects.filter(communitymemb)
