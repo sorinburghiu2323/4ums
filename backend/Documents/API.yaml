@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
               required:
                 - username
                 - email
@@ -209,7 +209,7 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
     get:
       summary: ''
@@ -260,7 +260,36 @@ paths:
                 - type
                 - page
             examples: {}
-        description: "parameter \"type\":\n  Specify which type of community to list. \n  The three possible values are:\n    \"all\"      - all communities\n    \"created\"  - communities the user created\n    \"memberof\" - communities the user is a member of\nparameter \"page\":\n  If page is not specified, it is assumed first page.\n  If page is bigger than 'total_pages', last page is returned."
+        description: |-
+          parameter "type":
+            Specify which type of community to list. 
+            The three possible values are:
+              "all"      - all communities
+              "created"  - communities the user created
+              "memberof" - communities the user is a member of
+          parameter "page":
+            If page is not specified, it is assumed first page.
+            If page is bigger than 'total_pages', last page is returned.
+  '/communities/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communitie-id
+      responses:
+        '200':
+          description: 'Joined successfully '
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: 'Not found - No community with the id "{id}" exists'
+        '409':
+          description: Conflict - The user is already a member of that community
+      description: Join a community
 components:
   schemas:
     Post:
@@ -280,7 +309,7 @@ components:
           type: string
         post_type:
           type: string
-          description: 'Either "discussion" or "questions".'
+          description: Either "discussion" or "questions".
         created_at:
           type: string
         likes_num:
