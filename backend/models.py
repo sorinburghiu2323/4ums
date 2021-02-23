@@ -100,10 +100,7 @@ class Community(models.Model):
         return self.name
 
     def serialize_simple(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-        }
+        return {"id": self.id, "name": self.name, "description": self.description}
 
     def serialize(self):
         return {
