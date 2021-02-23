@@ -82,4 +82,13 @@ def comment_likes(request, community_id, post_id, comment_id):
         POST=post_handler.like_comment,
         DELETE=post_handler.unlike_comment,
         args=[community_id, post_id, comment_id],
+
+      
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def community(request, community_id):
+    return handle_methods(
+        request,
+        POST=community_controller.join_community,
+        args=[community_id],
     )

@@ -41,6 +41,39 @@ def create_new(request):
         )
 
 
+def join_community(request, community_id):
+    """
+    Join an existing community.
+    :param request: session request
+    :param community_id: id of community to join
+    :return: 200 Joined successfully
+             401 Unauthorized
+             404 Not found
+             409 Conflict
+    """
+
+    if not Community.objects.get(pk=community_id).exists():
+        return JsonResponse(
+            f'Not found - No community with the id "{community_id}" exists',
+            status=404,
+            safe=False,
+        )
+
+    comm_instance = Community.objects.get(pk=community_id)
+    user = request.user
+
+    if CommunityMember.objects.filter(community=comm_instance, user=user).exists():
+        return JsonResponse(
+            "Conflict - The user is already a member of that community",
+            status=409,
+            safe=False,
+        )
+
+    CommunityMember.objects.create(community=comm_instance, user=user)
+
+    return JsonResponse("Joined successfully", status=200, safe=False)
+
+
 def list_communities(request):
     """
     Get a paginated list of communities.
