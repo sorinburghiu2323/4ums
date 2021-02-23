@@ -110,6 +110,14 @@ class Community(models.Model):
             "created_at": self.created_at,
         }
 
+    def serialize_full(self):
+        return {
+            "creator_id": self.user.id,
+            "name": self.name,
+            "description": self.description,
+            "created_at": self.created_at,
+        }
+
 
 class CommunityMember(models.Model):
     """

@@ -117,3 +117,23 @@ def list_communities(request):
     return JsonResponse(
         json_paginator(request, comms, lambda d: d.serialize_simple()), status=200
     )
+
+def get_community(request, community_id):
+    """
+    Get a single community.
+    :param request: session request
+    :param community_id: id of the community to get
+    :return: 200 OK
+             401 Unauthorized
+             404 Not found
+    """
+    try:
+        comm_instance = Community.objects.get(pk=community_id)
+    except Community.DoesNotExist:
+        return JsonResponse(
+            f'Not found - No community with the id "{community_id}" exists',
+            status=404,
+            safe=False,
+        )
+
+    return JsonResponse(comm_instance.serialize_full(), status=200, safe=True)
