@@ -515,7 +515,9 @@ components:
           type: integer
         is_approved:
           type: boolean
-        create_at:
+        user_liked:
+          type: boolean
+        created_at:
           type: string
     CommentsPaginated:
       title: CommentsPaginated
