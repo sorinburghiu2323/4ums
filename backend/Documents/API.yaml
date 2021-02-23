@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: Bool to whether the user is applied for a teacher's account.
+                  description: "Bool to whether the user is applied for a teacher's account."
               required:
                 - username
                 - email
@@ -154,10 +154,12 @@ paths:
                     type: integer
                   previous_page:
                     type: integer
-                  data:
-                    $ref: '#/components/schemas/Post'
                   next_page:
                     type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
                 required:
                   - total_pages
                   - data
@@ -207,7 +209,7 @@ paths:
               required:
                 - name
                 - description
-        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
+        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
     parameters: []
     get:
       summary: ''
@@ -218,10 +220,22 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: object
                 description: List of communities
-                items:
-                  $ref: '#/components/schemas/CommunitySimple'
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommunitySimple'
+                required:
+                  - total_pages
+                  - data
         '400':
           description: 'Bad Request - {description of why the request is bad}'
         '401':
@@ -246,16 +260,7 @@ paths:
                 - type
                 - page
             examples: {}
-        description: |-
-          parameter "type":
-            Specify which type of community to list. 
-            The three possible values are:
-              "all"      - all communities
-              "created"  - communities the user created
-              "memberof" - communities the user is a member of
-          parameter "page":
-            If page is not specified, it is assumed first page.
-            If page is bigger than 'total_pages', last page is returned.
+        description: "parameter \"type\":\n  Specify which type of community to list. \n  The three possible values are:\n    \"all\"      - all communities\n    \"created\"  - communities the user created\n    \"memberof\" - communities the user is a member of\nparameter \"page\":\n  If page is not specified, it is assumed first page.\n  If page is bigger than 'total_pages', last page is returned."
 components:
   schemas:
     Post:
@@ -275,7 +280,7 @@ components:
           type: string
         post_type:
           type: string
-          description: Either "discussion" or "questions".
+          description: 'Either "discussion" or "questions".'
         created_at:
           type: string
         likes_num:
