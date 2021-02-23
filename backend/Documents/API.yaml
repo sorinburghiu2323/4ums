@@ -364,6 +364,62 @@ paths:
         '404':
           description: Not Found - Comment/Like does not exist.
       description: Unlike a comment.
+  '/communities/{id}/posts/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: Posts has been returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+                  comments:
+                    $ref: '#/components/schemas/CommentsPaginated'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized - Please login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+                  comments:
+                    $ref: ''
+                  '':
+                    type: string
+        '403':
+          description: Not member of the community
+        '404':
+          description: Not Found - Post not found
+      operationId: get-communities-id-posts-id
+      description: Get a post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
 components:
   schemas:
     Post:
@@ -462,3 +518,31 @@ components:
         - name
         - description
         - created_at
+    CommentsSimple:
+      title: CommentsSimple
+      type: object
+      description: CommentSimple
+      properties:
+        user:
+          $ref: '#/components/schemas/UserSimple'
+        comment:
+          type: string
+        comment_likes:
+          type: integer
+        is_approved:
+          type: boolean
+        create_at:
+          type: string
+    CommentsPaginated:
+      title: CommentsPaginated
+      type: object
+      properties:
+        total_pages:
+          type: integer
+        previous_page:
+          type: integer
+        next_page:
+          type: integer
+        data:
+          $ref: '#/components/schemas/CommentsSimple'
+      description: Paginated Comments
