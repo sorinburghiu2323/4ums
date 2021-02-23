@@ -103,7 +103,7 @@ def show_post(request, community_id, post_id):
         "-created_at"
     )
     final_instance["comments"] = json_paginator(
-        request, post_comments, lambda d: d.serialize_simple()
+        request, post_comments, lambda d: d.serialize()
     )
     return JsonResponse(
         final_instance,

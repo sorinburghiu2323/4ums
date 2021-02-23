@@ -207,12 +207,14 @@ class PostComment(models.Model):
     def __str__(self):
         return self.post.title
 
-    def serialize_simple(self):
+    def serialize(self, request=None):
         return {
             "user": self.user.serialize_simple(),
             "comment": self.comment,
             "comment_likes": PostCommentLike.objects.filter(post_comment=self).count(),
-            "user_liked": not PostCommentLike.objects.filter(post_comment=self, user=self.user).count() == 1,
+            "user_liked": PostCommentLike.objects.filter(user=request.user, post_comment=self).exists()
+            if request
+            else False,
             "is_approved": self.is_approved,
             "created_at": self.created_at,
         }
