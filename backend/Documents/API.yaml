@@ -504,8 +504,8 @@ components:
       type: object
       description: Detailed community serialiser.
       properties:
-        creator_id:
-          type: integer
+        creator:
+          $ref: '#/components/schemas/UserSimple'
         name:
           type: string
         description:
@@ -514,7 +514,7 @@ components:
           type: string
           description: 'ISO8601 timestamp yyyy-mm-ddThh:mm:ss.sTDZ'
       required:
-        - creator_id
+        - creator
         - name
         - description
         - created_at
