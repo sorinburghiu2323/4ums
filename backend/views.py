@@ -62,6 +62,7 @@ def communities(request):
         GET=community_controller.list_communities,
     )
 
+
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def community(request, community_id):

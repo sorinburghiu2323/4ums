@@ -14,5 +14,5 @@ urlpatterns = [
     path("users", views.users),
     path("users/feed", views.feed),
     path("communities", views.communities),
-    path("communities/<int:community_id>", view.community)
+    path("communities/<int:community_id>", view.community),
 ]

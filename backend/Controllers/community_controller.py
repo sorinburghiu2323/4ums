@@ -40,6 +40,7 @@ def create_new(request):
             "Bad request - Name and description are required", status=400, safe=False
         )
 
+
 def join_community(request, community_id):
     """
     Join an existing community.
@@ -53,7 +54,7 @@ def join_community(request, community_id):
 
     if not Community.objects.get(pk=community_id).exists():
         return JsonResponse(
-            f"Not found - No community with the id \"{community_id}\" exists",
+            f'Not found - No community with the id "{community_id}" exists',
             status=404,
             safe=False,
         )
@@ -71,6 +72,7 @@ def join_community(request, community_id):
     CommunityMember.objects.create(community=comm_instance, user=user)
 
     return JsonResponse("Joined successfully", status=200, safe=False)
+
 
 def list_communities(request):
     """
@@ -106,7 +108,9 @@ def list_communities(request):
     elif list_type == "created":
         comms = Community.objects.filter(user=user).order_by("name")
     elif list_type == "memberof":
-        comm_mems = CommunityMember.objects.filter(user=user).order_by("community__name")
+        comm_mems = CommunityMember.objects.filter(user=user).order_by(
+            "community__name"
+        )
         comms = [comm_mem.community for comm_mem in comm_mems]
 
     return JsonResponse(

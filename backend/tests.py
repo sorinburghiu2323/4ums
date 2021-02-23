@@ -5,6 +5,7 @@ from django.test import TestCase
 from backend.Utils.user_validation import validate_user_data, validate_password
 from backend.models import User, Community, CommunityMember
 
+
 class UserValidationTesting(TestCase):
     """
     Test user validation cases.
@@ -55,10 +56,7 @@ class UserValidationTesting(TestCase):
         self.assertEqual(password_validation_wrong, "Passwords did not match.")
 
 
-
-
 class CommunityListEndpointTest(TestCase):
-
     def getWithData(self, url, data):
         json_data = json.dumps(data)
         return self.client.generic(
@@ -73,7 +71,6 @@ class CommunityListEndpointTest(TestCase):
         success = self.client.login(username="test@4ums.co.uk", password="abc")
 
         assert success
-
 
     def test_auth_401(self):
         """Test that the endpoint requires login."""
@@ -114,7 +111,11 @@ class CommunityListEndpointTest(TestCase):
         result = json.loads(response.content.decode())
         expected = [
             {"id": 2, "name": "bobgang", "description": "Bob's gang (cool kids only)"},
-            {"id": 1, "name": "lorem", "description": "lorem ipsum ...",},
+            {
+                "id": 1,
+                "name": "lorem",
+                "description": "lorem ipsum ...",
+            },
         ]
 
         self.assertEqual(2, len(result["data"]))
@@ -157,28 +158,31 @@ class CommunityListEndpointTest(TestCase):
             user=other_user, name="bobgang", description="Bob's gang (cool kids only)"
         )
 
-        #check that only one community (lorem) is returned
+        # check that only one community (lorem) is returned
         response = self.getWithData("/api/communities", {"type": "memberof"})
         self.assertEqual(200, response.status_code)
 
         result = json.loads(response.content.decode())
-        expected = {"id": 1, "name":"lorem", "description": "lorem ipsum ..."}
+        expected = {"id": 1, "name": "lorem", "description": "lorem ipsum ..."}
 
-        self.assertEqual(1,len(result["data"]))
-        self.assertEqual(expected,result["data"][0])
+        self.assertEqual(1, len(result["data"]))
+        self.assertEqual(expected, result["data"][0])
 
-
-        #add the user as a member of the other community (bobgang)
+        # add the user as a member of the other community (bobgang)
         CommunityMember.objects.create(user=self.user, community=comm_instance2)
 
-        #check that both are returned
+        # check that both are returned
         response = self.getWithData("/api/communities", {"type": "memberof"})
         self.assertEqual(200, response.status_code)
 
         result = json.loads(response.content.decode())
         expected = [
             {"id": 2, "name": "bobgang", "description": "Bob's gang (cool kids only)"},
-            {"id": 1, "name": "lorem", "description": "lorem ipsum ...",},
+            {
+                "id": 1,
+                "name": "lorem",
+                "description": "lorem ipsum ...",
+            },
         ]
 
         self.assertEqual(2, len(result["data"]))
