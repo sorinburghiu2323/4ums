@@ -113,4 +113,6 @@ def get_feed(request):
     feed = Post.objects.filter(community__communitymember__user=user).order_by(
         "-created_at"
     )
-    return JsonResponse(json_paginator(feed, request), status=200)
+    return JsonResponse(
+        json_paginator(request, feed, lambda d: d.serialize(request)), status=200
+    )

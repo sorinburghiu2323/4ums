@@ -154,10 +154,12 @@ paths:
                     type: integer
                   previous_page:
                     type: integer
-                  data:
-                    $ref: '#/components/schemas/Post'
                   next_page:
                     type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
                 required:
                   - total_pages
                   - data
@@ -209,11 +211,62 @@ paths:
                 - description
         description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
     parameters: []
+    get:
+      summary: ''
+      operationId: get-communities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: List of communities
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommunitySimple'
+                required:
+                  - total_pages
+                  - data
+        '400':
+          description: 'Bad Request - {description of why the request is bad}'
+        '401':
+          description: Unauthorized - Login required
+      description: Get a (paginated) list of communities (ordered alphabetically by community name)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: type of community included in the list
+                  enum:
+                    - all
+                    - created
+                    - memberof
+                page:
+                  type: integer
+              required:
+                - type
+                - page
+            examples: {}
+        description: "parameter \"type\":\n  Specify which type of community to list. \n  The three possible values are:\n    \"all\"      - all communities\n    \"created\"  - communities the user created\n    \"memberof\" - communities the user is a member of\nparameter \"page\":\n  If page is not specified, it is assumed first page.\n  If page is bigger than 'total_pages', last page is returned."
 components:
   schemas:
     Post:
       title: Post
       type: object
+      description: Post serializer for standard display of Posts.
       properties:
         id:
           type: integer
@@ -239,6 +292,9 @@ components:
         is_community_owner:
           type: boolean
           description: True if the creator of the post is the community owner.
+        is_liked:
+          type: boolean
+          description: True if the logged in user had liked this post.
       required:
         - id
         - community
@@ -250,7 +306,7 @@ components:
         - likes_num
         - comments_num
         - is_community_owner
-      description: Post serializer for standard display of Posts.
+        - is_liked
     CommunitySimple:
       title: CommunitySimple
       type: object
@@ -260,9 +316,12 @@ components:
           type: integer
         name:
           type: string
+        description:
+          type: string
       required:
         - id
         - name
+        - description
     UserSimple:
       title: UserSimple
       type: object

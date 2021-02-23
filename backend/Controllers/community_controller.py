@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.db.utils import IntegrityError
 
 from backend.Utils.user_validation import verify_user_login
+from backend.Utils.paginators import json_paginator
 from backend.models import Community, CommunityMember
 
 
@@ -15,10 +16,8 @@ def create_new(request):
              401 Unauthorized
              409 Conflict
     """
-    try:
-        user_instance = verify_user_login(request)
-    except PermissionDenied:
-        return JsonResponse("Unauthorized - Login required", status=401, safe=False)
+
+    user_instance = request.user
 
     if "name" in request.DATA and "description" in request.DATA:
         try:
@@ -40,3 +39,45 @@ def create_new(request):
         return JsonResponse(
             "Bad request - Name and description are required", status=400, safe=False
         )
+
+
+def list_communities(request):
+    """
+    Get a paginated list of communities.
+
+    Must include 'type' in request body, which should be one of three values:
+        - "all"     : all communities
+        - "memberof": communities the user is a member of
+        - "created" : communities the user created
+
+    :param request: session request
+    :return: 200 OK
+             400 Bad request - {description of why the request is bad}
+             401 Unauthorized - Login required
+    """
+    user = request.user
+    if "type" not in request.DATA:
+        return JsonResponse(
+            "Bad request - List type is required", status=400, safe=False
+        )
+
+    list_type = request.DATA["type"]
+
+    if list_type not in ["all", "created", "memberof"]:
+        return JsonResponse(
+            "Bad request - Type must be one of: 'all', 'created', 'memberof'",
+            status=400,
+            safe=False,
+        )
+
+    if list_type == "all":
+        comms = list(Community.objects.all().order_by("name"))
+    elif list_type == "created":
+        comms = Community.objects.filter(user=user).order_by("name")
+    elif list_type == "memberof":
+        comm_mems = CommunityMember.objects.filter(user=user).order_by("community__name")
+        comms = [comm_mem.community for comm_mem in comm_mems]
+
+    return JsonResponse(
+        json_paginator(request, comms, lambda d: d.serialize_simple()), status=200
+    )
