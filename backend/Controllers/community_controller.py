@@ -118,6 +118,7 @@ def list_communities(request):
         json_paginator(request, comms, lambda d: d.serialize_simple()), status=200
     )
 
+
 def get_community(request, community_id):
     """
     Get a single community.
