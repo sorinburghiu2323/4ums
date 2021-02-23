@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
               required:
                 - username
                 - email
@@ -138,5 +138,395 @@ paths:
             schema:
               type: object
               properties: {}
+  /users/feed:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+                required:
+                  - total_pages
+                  - data
+        '401':
+          description: Unauthorized - Login required.
+      operationId: get-users-feed
+      description: |-
+        Get the feed posts for the logged in user.
+
+        Pagination included: Every page has 20 posts.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+        description: |-
+          If page is not specified, it is assumed first page.
+          If page is bigger than 'total_pages', last page is returned.
+  /communities:
+    post:
+      summary: ''
+      operationId: post-community
+      responses:
+        '201':
+          description: Community Created
+        '400':
+          description: Bad Request - Name and description are required
+        '401':
+          description: Unauthorized - Login required
+        '409':
+          description: Conflict - Name is already in use
+      description: Create a new community
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - name
+                - description
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
+    parameters: []
+    get:
+      summary: ''
+      operationId: get-communities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: List of communities
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommunitySimple'
+                required:
+                  - total_pages
+                  - data
+        '400':
+          description: 'Bad Request - {description of why the request is bad}'
+        '401':
+          description: Unauthorized - Login required
+      description: Get a (paginated) list of communities (ordered alphabetically by community name)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: type of community included in the list
+                  enum:
+                    - all
+                    - created
+                    - memberof
+                page:
+                  type: integer
+              required:
+                - type
+                - page
+            examples: {}
+        description: |-
+          parameter "type":
+            Specify which type of community to list. 
+            The three possible values are:
+              "all"      - all communities
+              "created"  - communities the user created
+              "memberof" - communities the user is a member of
+          parameter "page":
+            If page is not specified, it is assumed first page.
+            If page is bigger than 'total_pages', last page is returned.
+  '/communities/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communitie-id
+      responses:
+        '200':
+          description: 'Joined successfully '
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: 'Not found - No community with the id "{id}" exists'
+        '409':
+          description: Conflict - The user is already a member of that community
+      description: Join a community
+  '/communities/{id}/posts/{id}/likes':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communities-id-posts-id-likes
+      responses:
+        '200':
+          description: OK - Post liked.
+        '401':
+          description: Unauthorized - Login required / Member not part of community.
+        '404':
+          description: Not Found - Community/Post does not exists.
+        '409':
+          description: Conflict - Post is already liked.
+      description: Like a post in a community.
+    delete:
+      summary: ''
+      operationId: delete-communities-id-posts-id-likes
+      responses:
+        '200':
+          description: OK - Post unliked.
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: Not Found - Community/Post/Like does not exist.
+      description: Unlike a post.
+  '/communities/{id}/posts/{id}/comments/{id}/likes':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communities-id-posts-id-comments-id
+      responses:
+        '200':
+          description: OK - Comment liked.
+        '401':
+          description: Unauthorized - Login required / User not member of community.
+        '404':
+          description: Not Found - Comment not found.
+        '409':
+          description: Conflict - Comment is already liked.
+      description: Like a comment.
+    delete:
+      summary: ''
+      operationId: delete-communities-id-posts-id-comments-id-likes
+      responses:
+        '200':
+          description: OK - Comment unliked.
+        '401':
+          description: Unauthorized - Permission denied.
+        '404':
+          description: Not Found - Comment/Like does not exist.
+      description: Unlike a comment.
+  '/communities/{id}/posts/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: Posts has been returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+                  comments:
+                    $ref: '#/components/schemas/CommentsPaginated'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized - Please login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+                  comments:
+                    $ref: ''
+                  '':
+                    type: string
+        '403':
+          description: Not member of the community
+        '404':
+          description: Not Found - Post not found
+      operationId: get-communities-id-posts-id
+      description: Get a post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
 components:
-  schemas: {}
+  schemas:
+    Post:
+      title: Post
+      type: object
+      description: Post serializer for standard display of Posts.
+      properties:
+        id:
+          type: integer
+        community:
+          $ref: '#/components/schemas/CommunitySimple'
+        user:
+          $ref: '#/components/schemas/UserSimple'
+        title:
+          type: string
+        description:
+          type: string
+        post_type:
+          type: string
+          description: Either "discussion" or "questions".
+        created_at:
+          type: string
+        likes_num:
+          type: integer
+          description: Number of likes.
+        comments_num:
+          type: integer
+          description: Number of comments.
+        is_community_owner:
+          type: boolean
+          description: True if the creator of the post is the community owner.
+        is_liked:
+          type: boolean
+          description: True if the logged in user had liked this post.
+      required:
+        - id
+        - community
+        - user
+        - title
+        - description
+        - post_type
+        - created_at
+        - likes_num
+        - comments_num
+        - is_community_owner
+        - is_liked
+    CommunitySimple:
+      title: CommunitySimple
+      type: object
+      description: Simple community serializer.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - id
+        - name
+        - description
+    UserSimple:
+      title: UserSimple
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        points:
+          type: integer
+        is_teacher:
+          type: boolean
+      required:
+        - id
+        - username
+        - points
+        - is_teacher
+      description: Simple user serializer
+    CommentsSimple:
+      title: CommentsSimple
+      type: object
+      description: CommentSimple
+      properties:
+        user:
+          $ref: '#/components/schemas/UserSimple'
+        comment:
+          type: string
+        comment_likes:
+          type: integer
+        is_approved:
+          type: boolean
+        create_at:
+          type: string
+    CommentsPaginated:
+      title: CommentsPaginated
+      type: object
+      properties:
+        total_pages:
+          type: integer
+        previous_page:
+          type: integer
+        next_page:
+          type: integer
+        data:
+          $ref: '#/components/schemas/CommentsSimple'
+      description: Paginated Comments

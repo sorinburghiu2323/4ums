@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <router-view/>
-    <div class="navbar-container">
-      <Navbar />
+    <div>
+      <router-view/>
     </div>
+    <Navbar />
   </div>
 </template>
 
@@ -41,4 +41,5 @@ body{
   left: 0;
   padding: 10px;
 }
+
 </style>

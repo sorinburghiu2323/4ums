@@ -4,6 +4,8 @@ import HomePage from '../views/HomePage.vue'
 import IndividualCommunitiesPage from '../views/IndividualCommunitiesPage.vue'
 import Profile from '../views/Profile.vue'
 import Leaderboard from '../views/Leaderboard.vue'
+import LoginPage from '../views/LoginPage.vue'
+import RegisterPage from '../views/RegisterPage.vue'
 
 Vue.use(VueRouter)
 
@@ -12,6 +14,16 @@ const routes = [
         path: '/',
         name: 'HomePage',
         component: HomePage
+    },
+    {
+        path: '/login',
+        name: 'LoginPage',
+        component: LoginPage
+    },
+    {
+        path: '/register',
+        name: 'RegisterPage',
+        component: RegisterPage,
     },
     {
         path: '/communities',
