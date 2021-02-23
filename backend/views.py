@@ -61,3 +61,12 @@ def communities(request):
         POST=community_controller.create_new,
         GET=community_controller.list_communities,
     )
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def community(request, community_id):
+    return handle_methods(
+        request,
+        POST=community_controller.join_community,
+        args=[community_id],
+    )
