@@ -96,13 +96,7 @@ def list_communities(request):
              401 Unauthorized - Login required
     """
     user = request.user
-    if "type" not in request.DATA:
-        return JsonResponse(
-            "Bad request - List type is required", status=400, safe=False
-        )
-
-    list_type = request.DATA["type"]
-
+    list_type = request.GET.get("type")
     if list_type not in ["all", "created", "memberof"]:
         return JsonResponse(
             "Bad request - Type must be one of: 'all', 'created', 'memberof'",
