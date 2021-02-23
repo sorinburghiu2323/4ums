@@ -36,7 +36,7 @@ def posts(request, community_id):
 
 @csrf_exempt
 def post(request, community_id, post_id):
-    handle_methods(
+    return handle_methods(
         request,
         GET=post_handler.show_post,
         args=[community_id, post_id],

@@ -5,7 +5,7 @@ from backend.Utils.community_validation import (
 )
 from backend.Utils.paginators import json_paginator
 from backend.Utils.post_validation import check_valid_post
-from backend.models import Post
+from backend.models import Post, PostComment
 
 
 def create_post(request, community_id):
@@ -82,13 +82,15 @@ def show_post(request, community_id, post_id):
             request, community_id
         )
     except ValueError:
-        print(check_if_valid(request, community_id))
-        return JsonResponse("Ok - Post has been found.", status=200, safe=False)
+        return check_if_valid(request, community_id)
     if not check_valid_post(comm_instance, post_id):
         print("Goat")
     try:
-        Post.objects.get(id=post_id)
-        return JsonResponse("Ok - Post has been found.", status=200, safe=False)
+        post_instance = Post.objects.get(id=post_id)
+        new_serialized = post_instance.serialize()
+        paginated_comments = json_paginator()
+        new_serialized["comment"] = PostComment.objects.get()
+        return JsonResponse(new_serialized, status=200)
     except Post.DoesNotExist:
         return JsonResponse(
             "Bad Request - Please provide the required body.", status=400, safe=False
