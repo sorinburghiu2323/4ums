@@ -6,6 +6,7 @@ from backend.Utils.community_validation import (
 )
 from backend.Utils.paginators import json_paginator
 from backend.Utils.points_handler import adjust_points
+from backend.Utils.post_validation import check_valid_post
 from backend.models import (
     Post,
     Community,
@@ -56,7 +57,7 @@ def show_posts(request, community_id):
     Show posts.
     :param request: session request.
     :param community_id: id of the community.
-    :return: 200 - Post has been created.
+    :return: 200 - Posts has been returned.
              400 - Bad request.
              401 - Unauthorized.
              403 - Not member of the community
@@ -72,6 +73,40 @@ def show_posts(request, community_id):
     store = Post.objects.filter(community=comm_instance).order_by("-created_at")
     return JsonResponse(
         json_paginator(request, store, lambda d: d.serialize(request)),
+        status=200,
+        safe=False,
+    )
+
+
+def show_post(request, community_id, post_id):
+    """
+    Show a particular post with paginated comments
+    :param request: session request.
+    :param community_id: id of the community.
+    :param post_id: id of the post.
+    :return: 200 - Post has been returned.
+             400 - Bad request.
+             401 - Unauthorized.
+             403 - Not member of the community
+             404 - Not Found - Post not found.
+    """
+    try:  # Check if valid request
+        user_instance, comm_instance, _ = check_if_valid(request, community_id)
+    except ValueError:
+        return check_if_valid(request, community_id)
+    # Return pagination data
+    post_instance = check_valid_post(comm_instance, post_id)
+    if post_instance is None:
+        return JsonResponse("Post does not exist", status=404, safe=False)
+    final_instance = {"post": post_instance.serialize()}
+    post_comments = PostComment.objects.filter(post=post_instance).order_by(
+        "-created_at"
+    )
+    final_instance["comments"] = json_paginator(
+        user_instance, post_comments, lambda d: d.serialize_simple()
+    )
+    return JsonResponse(
+        final_instance,
         status=200,
         safe=False,
     )

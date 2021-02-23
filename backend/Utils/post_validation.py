@@ -3,7 +3,6 @@ from backend.models import Post
 
 def check_valid_post(comm_instance, post_id):
     try:
-        Post.objects.get(id=post_id, community=comm_instance)
-        return True
+        return Post.objects.get(id=post_id, community=comm_instance)
     except Post.DoesNotExist:
-        return False
+        return None
