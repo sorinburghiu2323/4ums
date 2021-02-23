@@ -11,11 +11,11 @@
 
             <div class="input">
                 <p>Email address</p>
-                <input type="text" v-model="email"/>
+                <input v-model="email" type="text"/>
             </div>
             <div class="input">
                 <p>Password</p>
-                <input type="password" v-model="password" @keyup.enter="loginUser()">
+              <input v-model="password" type="password" @keyup.enter="loginUser()">
             </div>
             <div class="text">
                 <p class="link">Forgot your password?</p>
@@ -32,6 +32,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
     name: 'LoginPage',
     data() {
