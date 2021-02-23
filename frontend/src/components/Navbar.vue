@@ -48,7 +48,7 @@ export default {
     background-color: #161626;
     color:rgb(126, 126, 126);
     width: 100%;
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     border-radius: 25px;
