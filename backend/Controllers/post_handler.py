@@ -5,6 +5,7 @@ from backend.Utils.community_validation import (
     check_if_valid,
 )
 from backend.Utils.paginators import json_paginator
+from backend.Utils.points_handler import adjust_points
 from backend.models import (
     Post,
     Community,
@@ -102,14 +103,12 @@ def like_post(request, community_id, post_id):
 
             # Create like and add points to the post creator.
             PostLike.objects.create(user=user, post=post)
-            PointsGained.objects.create(
-                user=post.user,
+            adjust_points(
+                user=user,
+                points=settings.LIKE_POST_PTS,
                 community=community,
                 post=post,
-                points=settings.LIKE_POST_PTS,
             )
-            post.user.points += settings.LIKE_POST_PTS
-            post.user.save()
             return JsonResponse("OK - Post liked.", status=200, safe=False)
 
         return JsonResponse("Conflict - Post is already liked.", status=409, safe=False)
@@ -140,14 +139,12 @@ def unlike_post(request, community_id, post_id):
     user = request.user
     try:
         PostLike.objects.get(user=user, post=post).delete()
-        PointsGained.objects.create(
-            user=post.user,
+        adjust_points(
+            user=user,
+            points=-settings.LIKE_POST_PTS,
             community=community,
             post=post,
-            points=-settings.LIKE_POST_PTS,
         )
-        post.user.points -= settings.LIKE_POST_PTS
-        post.user.save()
         return JsonResponse("OK - Post unliked.", status=200, safe=False)
     except:
         return JsonResponse("Not Found - Like does not exist.", status=404, safe=False)
@@ -182,15 +179,13 @@ def like_comment(request, community_id, post_id, comment_id):
 
             # Create like and add points to the comment creator.
             PostCommentLike.objects.create(user=user, post_comment=comment)
-            PointsGained.objects.create(
-                user=comment.user,
+            adjust_points(
+                user=user,
+                points=settings.LIKE_COMMENT_PTS,
                 community=community,
                 post=post,
                 comment=comment,
-                points=settings.LIKE_COMMENT_PTS,
             )
-            comment.user.points += settings.LIKE_COMMENT_PTS
-            comment.user.save()
             return JsonResponse("OK - Comment liked.", status=200, safe=False)
 
         return JsonResponse(
@@ -227,15 +222,13 @@ def unlike_comment(request, community_id, post_id, comment_id):
     user = request.user
     try:
         PostCommentLike.objects.get(user=user, post_comment=comment).delete()
-        PointsGained.objects.create(
-            user=comment.user,
+        adjust_points(
+            user=user,
+            points=-settings.LIKE_COMMENT_PTS,
             community=community,
             post=post,
             comment=comment,
-            points=-settings.LIKE_COMMENT_PTS,
         )
-        comment.user.points -= settings.LIKE_COMMENT_PTS
-        comment.user.save()
         return JsonResponse("OK - Comment unliked.", status=200, safe=False)
     except:
         return JsonResponse(

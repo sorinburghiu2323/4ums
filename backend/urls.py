@@ -19,5 +19,5 @@ urlpatterns = [
         "communities/<int:community_id>/posts/<int:post_id>/comments/<int:comment_id>/likes",
         views.comment_likes,
     ),
-    path("communities/<int:community_id>", view.community),
+    path("communities/<int:community_id>", views.community),
 ]
