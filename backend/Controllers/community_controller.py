@@ -2,9 +2,11 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
 
+from SoftwareDev import settings
+from backend.Utils.points_handler import adjust_points
 from backend.Utils.user_validation import verify_user_login
 from backend.Utils.paginators import json_paginator
-from backend.models import Community, CommunityMember
+from backend.models import Community, CommunityMember, PointsGained
 
 
 def create_new(request):
@@ -70,6 +72,11 @@ def join_community(request, community_id):
         )
 
     CommunityMember.objects.create(community=comm_instance, user=user)
+    adjust_points(
+        user=comm_instance.user,
+        points=settings.JOIN_COMMUNITY_PTS,
+        community=comm_instance,
+    )
 
     return JsonResponse("Joined successfully", status=200, safe=False)
 
