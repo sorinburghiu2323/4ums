@@ -57,7 +57,6 @@ class UserValidationTesting(TestCase):
 
 
 class CommunityListEndpointTest(TestCase):
-
     def setUp(self):
 
         self.user = User.objects.create_superuser(

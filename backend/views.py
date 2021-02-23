@@ -91,5 +91,6 @@ def community(request, community_id):
     return handle_methods(
         request,
         POST=community_controller.join_community,
+        GET=community_controller.get_community,
         args=[community_id],
     )
