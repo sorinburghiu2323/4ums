@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: Bool to whether the user is applied for a teacher's account.
+                  description: "Bool to whether the user is applied for a teacher's account."
               required:
                 - username
                 - email
@@ -204,7 +204,7 @@ paths:
               required:
                 - name
                 - description
-        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
+        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
     parameters: []
     get:
       summary: ''
@@ -381,7 +381,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: Posts has been returned.
+          description: OK
           content:
             application/json:
               schema:
@@ -390,36 +390,36 @@ paths:
                   post:
                     $ref: '#/components/schemas/Post'
                   comments:
-                    $ref: '#/components/schemas/CommentsPaginated'
-        '400':
-          description: Bad Request
+                    type: object
+                    properties:
+                      total_pages:
+                        type: integer
+                      previous_page:
+                        type: integer
+                      next_page:
+                        type: integer
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Comment'
+                required:
+                  - post
+                  - comments
+              examples: {}
         '401':
-          description: Unauthorized - Please login
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  post:
-                    $ref: '#/components/schemas/Post'
-                  comments:
-                    $ref: ''
-                  '':
-                    type: string
-        '403':
-          description: Not member of the community
+          description: Unauthorised - Login required / User must be member of community.
         '404':
           description: Not Found - Post not found
       operationId: get-communities-id-posts-id
-      description: Get a post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                page:
-                  type: integer
+      description: |-
+        Get a post by id.
+        This includes the comments paginated.
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Page number to get.
 components:
   schemas:
     Post:
@@ -439,7 +439,7 @@ components:
           type: string
         post_type:
           type: string
-          description: Either "discussion" or "questions".
+          description: 'Either "discussion" or "questions".'
         created_at:
           type: string
         likes_num:
@@ -518,8 +518,8 @@ components:
         - name
         - description
         - created_at
-    CommentsSimple:
-      title: CommentsSimple
+    Comment:
+      title: Comment
       type: object
       description: CommentSimple
       properties:
@@ -531,18 +531,13 @@ components:
           type: integer
         is_approved:
           type: boolean
-        create_at:
+        created_at:
           type: string
-    CommentsPaginated:
-      title: CommentsPaginated
-      type: object
-      properties:
-        total_pages:
-          type: integer
-        previous_page:
-          type: integer
-        next_page:
-          type: integer
-        data:
-          $ref: '#/components/schemas/CommentsSimple'
-      description: Paginated Comments
+        is_liked:
+          type: boolean
+          description: True if the logged in user has liked this comment.
+      required:
+        - user
+        - comment
+        - comment_likes
+        - created_at
