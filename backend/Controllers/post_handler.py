@@ -10,7 +10,6 @@ from backend.models import (
     Post,
     Community,
     PostLike,
-    PointsGained,
     PostComment,
     PostCommentLike,
     CommunityMember,
@@ -52,9 +51,9 @@ def create_post(request, community_id):
     )
 
 
-def show_post(request, community_id):
+def show_posts(request, community_id):
     """
-    Create a post.
+    Show posts.
     :param request: session request.
     :param community_id: id of the community.
     :return: 200 - Post has been created.
