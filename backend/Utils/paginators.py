@@ -25,7 +25,7 @@ def json_paginator(request, data_to_paginate: list, serialize: callable) -> dict
     POSTS_PER_PAGE = 20  # Amount of posts that can fit in a page.
     paginator = Paginator(data_to_paginate, POSTS_PER_PAGE)
     try:
-        data_to_paginate = paginator.page(int(request.DATA["page"]))
+        data_to_paginate = paginator.page(int(request.GET.get("page")))
     except EmptyPage:
         data_to_paginate = paginator.page(paginator.num_pages)
     except:

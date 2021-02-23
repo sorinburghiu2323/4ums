@@ -61,3 +61,35 @@ def communities(request):
         POST=community_controller.create_new,
         GET=community_controller.list_communities,
     )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def post_likes(request, community_id, post_id):
+    return handle_methods(
+        request,
+        POST=post_handler.like_post,
+        DELETE=post_handler.unlike_post,
+        args=[community_id, post_id],
+    )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def comment_likes(request, community_id, post_id, comment_id):
+    return handle_methods(
+        request,
+        POST=post_handler.like_comment,
+        DELETE=post_handler.unlike_comment,
+        args=[community_id, post_id, comment_id],
+    )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def community(request, community_id):
+    return handle_methods(
+        request,
+        POST=community_controller.join_community,
+        args=[community_id],
+    )
