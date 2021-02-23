@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router/router.js'
+
 // Fontawesome documentation: https://www.npmjs.com/package/@fortawesome/vue-fontawesome 
 
 // Regular style icons
@@ -38,6 +39,10 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 
 Vue.config.productionTip = false
+
+// Cookie library
+var VueCookie = require('vue-cookie');
+Vue.use(VueCookie);
 
 new Vue({
   router,

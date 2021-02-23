@@ -2,7 +2,7 @@
     <div class="container">
         <div class="register-form">
             <div class="header">
-                <p>Register</p>
+                <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
             </div>
             <div class="pass-requirements" v-if="showRequirements">
                 <p>Password requirements: </p>
@@ -15,21 +15,27 @@
                 </ul>
             </div>
             <div class="input">
+                <div class="color-bar" style="background: #FFED00"></div>
                 <input type="text" placeholder="First name" v-model="firstName"/>
             </div>
             <div class="input">
+                <div class="color-bar" style="background: #FFED00"></div>
                 <input type="text" placeholder="Last name" v-model="lastName"/>
             </div>
             <div class="input">
+                <div class="color-bar" style="background: #B437FF"></div>
                 <input type="text" placeholder="Username" v-model="username"/>
             </div>
             <div class="input">
-                <input type="email" placeholder="Email" v-model="email" />
+                <div class="color-bar" style="background: #FB6D13"></div>
+                <input type="email" placeholder="University Email" v-model="email" />
             </div>
             <div class="input">
+                <div class="color-bar" style="background: #D223AF"></div>
                 <input type="password" placeholder="Password" v-model="password" >
             </div>
             <div class="input">
+                <div class="color-bar" style="background: #D223AF"></div>
                 <input type="password" placeholder="Confirm password" v-model="passwordConfirmation">
                 <p style="color: red; font-size: 12px;">{{errMessage}}</p>
             </div>
@@ -159,7 +165,7 @@ export default {
                 console.log(response);
                 this.errMessage = '';
                 this.termErrMessage = '';
-                this.$router.push('homepage');
+                this.$router.push('feed');
             })
             .catch((error) =>{
                 console.error(error);
@@ -228,7 +234,25 @@ export default {
 
 .input{
     text-align: left;
-    margin: 10px 0px 10px 0px;
+}
+
+.input input {
+    width: 96%;
+    height:46px;
+    margin-left: 8px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    color: white;
+    background: rgb(40,44,58);
+    background: linear-gradient(90deg, rgba(40,44,58,1) 0%, rgba(27,30,40,1) 35%, rgba(8,9,11,1) 100%);
+    padding-left: 15px;
+}
+
+input::placeholder {
+    font-weight: 500;
+    color: white;
 }
 
 .input p {
@@ -237,6 +261,8 @@ export default {
 
 .text {
     text-align: left;
+    color: white;
+    font-weight: 500;
 }
 
 .terms {
@@ -244,25 +270,28 @@ export default {
     flex-direction: column;
     margin: 10px 0px 10px 0px;
     text-align: left;
-}
-.input input {
-    width: 100%;
-    height:25px;
-    border-radius: 8px;
-    border: 1px solid black;
-    outline: none;
+    color: white;
+    font-weight: 500;
 }
 
+
 .register-btn {
-    background: white;
+    background: linear-gradient(270deg, rgba(101,255,167,1) 10%, rgba(52,235,233,1) 100%);
     width: 80px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: 25px;
     border: 1px solid black;
     outline: none;
     cursor: pointer;
+    font-weight: 600;
 }
 
+.color-bar {
+    height: 48px;
+    width: 15px;
+    border-radius: 10px 0px 0 10px;
+    position: absolute;
+}
 
 .link {
     cursor: pointer;
