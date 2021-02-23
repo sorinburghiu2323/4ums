@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import router from '../router/router'
 
 export default {
     data() {
@@ -27,7 +26,12 @@ export default {
             this.buttonVisible = false;
         },
         createPost: function(type) {
-            router.push(this.$route.path+"post/"+type)
+            this.$router.push({
+            name: 'CreatePost',
+            params: {
+                type: type,
+                }
+            })
         },
         close: function() {
             this.selectVisible = false;

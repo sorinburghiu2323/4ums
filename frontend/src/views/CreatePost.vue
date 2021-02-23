@@ -93,6 +93,8 @@ export default {
     right: 2vh;
     font-size: 2.5vh;
     border-width: 0;
+    outline: none;
+    cursor: pointer;
 }
 
 </style>
