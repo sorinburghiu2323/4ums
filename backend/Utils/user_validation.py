@@ -1,6 +1,8 @@
 import re
+from functools import wraps
 
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
 
 from backend.models import User
 
@@ -24,6 +26,35 @@ def verify_user_login(request):
     if user.is_authenticated:
         return user
     raise PermissionDenied("Account does not exist.")
+
+
+def user_login_required(msg):
+    """
+    Decorator that can be applied to a view which requires the user to be logged in.
+    If the user is not logged in a JSON response, status 401, is returned containing
+    the message passed to the decorator.
+    Example use:
+
+        @user_login_required("Unauthorized - Login required.")
+        def foo(request):
+
+    :param msg: JSON response returned if the user is not logged in.
+    :return: decorator
+    """
+
+    def decorator(view):
+        @wraps(view)
+        def wrapper(*args, **kwargs):
+            request = args[0]
+            user = request.user
+            if user.is_authenticated:
+                return view(*args, **kwargs)
+
+            return JsonResponse(msg, status=401, safe=False)
+
+        return wrapper
+
+    return decorator
 
 
 def validate_user_data(first_name, last_name, email, username):
