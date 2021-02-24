@@ -110,8 +110,9 @@ def comments(request, community_id, post_id):
     return handle_methods(
         request,
         POST=comment_controller.make_comment,
-        args=[community_id,post_id],
+        args=[community_id, post_id],
     )
+
 
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt

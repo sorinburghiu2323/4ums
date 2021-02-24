@@ -12,12 +12,13 @@ from backend.models import (
     PostCommentLike,
 )
 
+
 def make_comment(request, community_id, post_id):
     """
     Add a comment.
-    :param request:
-    :param community_id:
-    :param post_id:
+    :param request: session request
+    :param community_id: id of community that the post is in
+    :param post_id: id of the post being commented on
     :return: 201 Created
              401 Unauthorized
              400 Bad request
@@ -44,7 +45,7 @@ def make_comment(request, community_id, post_id):
 
     user = request.user
 
-    if not CommunityMember.objects.filter(community=comm_instance,user=user).exists():
+    if not CommunityMember.objects.filter(community=comm_instance, user=user).exists():
         return JsonResponse(
             "Unauthorized - User is not a member of that community.",
             status=401,
@@ -70,198 +71,198 @@ def make_comment(request, community_id, post_id):
     return JsonResponse("Comment created", status=200, safe=False)
 
 
-    def like_comment(request, community_id, post_id, comment_id):
-        """
-        Like a comment.
-        :param request: session request.
-        :param community_id: id of community.
-        :param post_id: id of post.
-        :param comment_id: id of comment.
-        :return: 200 - comment liked.
-                 401 - permission denied.
-                 404 - comment not found.
-                 409 - conflict.
-        """
+def like_comment(request, community_id, post_id, comment_id):
+    """
+    Like a comment.
+    :param request: session request.
+    :param community_id: id of community.
+    :param post_id: id of post.
+    :param comment_id: id of comment.
+    :return: 200 - comment liked.
+             401 - permission denied.
+             404 - comment not found.
+             409 - conflict.
+    """
 
-        # Check if community, post and comment exists.
-        try:
-            community = Community.objects.get(id=community_id)
-            post = Post.objects.get(id=post_id, community=community)
-            comment = PostComment.objects.get(id=comment_id, post=post)
-        except:
-            return JsonResponse(
-                "Not Found - Comment does not exist.", status=404, safe=False
-            )
-
-        user = request.user
-        if CommunityMember.objects.filter(user=user, community=community).exists():
-            if not PostCommentLike.objects.filter(user=user, post_comment=comment).exists():
-
-                # Create like and add points to the comment creator.
-                PostCommentLike.objects.create(user=user, post_comment=comment)
-                adjust_points(
-                    user=comment.user,
-                    points=settings.LIKE_COMMENT_PTS,
-                    community=community,
-                    post=post,
-                    comment=comment,
-                )
-                return JsonResponse("OK - Comment liked.", status=200, safe=False)
-
-            return JsonResponse(
-                "Conflict - Comment is already liked.", status=409, safe=False
-            )
+    # Check if community, post and comment exists.
+    try:
+        community = Community.objects.get(id=community_id)
+        post = Post.objects.get(id=post_id, community=community)
+        comment = PostComment.objects.get(id=comment_id, post=post)
+    except:
         return JsonResponse(
-            "Unauthorized - User is not part of community.", status=401, safe=False
+            "Not Found - Comment does not exist.", status=404, safe=False
         )
 
+    user = request.user
+    if CommunityMember.objects.filter(user=user, community=community).exists():
+        if not PostCommentLike.objects.filter(user=user, post_comment=comment).exists():
 
-    def unlike_comment(request, community_id, post_id, comment_id):
-        """
-        Unlike a comment.
-        :param request: session request.
-        :param community_id: id of community.
-        :param post_id: id of post.
-        :param comment_id: id of comment.
-        :return: 200 - comment liked.
-                 401 - permission denied.
-                 404 - comment not found.
-        """
-
-        # Check if community, post and comment exists.
-        try:
-            community = Community.objects.get(id=community_id)
-            post = Post.objects.get(id=post_id, community=community)
-            comment = PostComment.objects.get(id=comment_id, post=post)
-        except:
-            return JsonResponse(
-                "Not Found - Comment does not exist.", status=404, safe=False
-            )
-
-        # Try to find like and delete it and subtract points from the post creator.
-        user = request.user
-        try:
-            PostCommentLike.objects.get(user=user, post_comment=comment).delete()
+            # Create like and add points to the comment creator.
+            PostCommentLike.objects.create(user=user, post_comment=comment)
             adjust_points(
                 user=comment.user,
-                points=-settings.LIKE_COMMENT_PTS,
+                points=settings.LIKE_COMMENT_PTS,
                 community=community,
                 post=post,
                 comment=comment,
             )
-            return JsonResponse("OK - Comment unliked.", status=200, safe=False)
-        except:
-            return JsonResponse(
-                "Not Found - Comment does not exist.", status=404, safe=False
+            return JsonResponse("OK - Comment liked.", status=200, safe=False)
+
+        return JsonResponse(
+            "Conflict - Comment is already liked.", status=409, safe=False
+        )
+    return JsonResponse(
+        "Unauthorized - User is not part of community.", status=401, safe=False
+    )
+
+
+def unlike_comment(request, community_id, post_id, comment_id):
+    """
+    Unlike a comment.
+    :param request: session request.
+    :param community_id: id of community.
+    :param post_id: id of post.
+    :param comment_id: id of comment.
+    :return: 200 - comment liked.
+             401 - permission denied.
+             404 - comment not found.
+    """
+
+    # Check if community, post and comment exists.
+    try:
+        community = Community.objects.get(id=community_id)
+        post = Post.objects.get(id=post_id, community=community)
+        comment = PostComment.objects.get(id=comment_id, post=post)
+    except:
+        return JsonResponse(
+            "Not Found - Comment does not exist.", status=404, safe=False
+        )
+
+    # Try to find like and delete it and subtract points from the post creator.
+    user = request.user
+    try:
+        PostCommentLike.objects.get(user=user, post_comment=comment).delete()
+        adjust_points(
+            user=comment.user,
+            points=-settings.LIKE_COMMENT_PTS,
+            community=community,
+            post=post,
+            comment=comment,
+        )
+        return JsonResponse("OK - Comment unliked.", status=200, safe=False)
+    except:
+        return JsonResponse(
+            "Not Found - Comment does not exist.", status=404, safe=False
+        )
+
+
+def approve_comment(request, community_id, post_id, comment_id):
+    """
+    Approve a comment.
+    :param request: session request.
+    :param community_id: id of community.
+    :param post_id: id of post.
+    :param comment_id: id of comment.
+    :return: 200 - comment approved.
+             401 - permission denied.
+             404 - comment not found.
+             409 - conflict.
+    """
+
+    # Check if community, post and comment exists.
+    try:
+        community = Community.objects.get(id=community_id)
+        post = Post.objects.get(id=post_id, community=community)
+        comment = PostComment.objects.get(id=comment_id, post=post)
+    except:
+        return JsonResponse(
+            "Not Found - Comment does not exist.", status=404, safe=False
+        )
+
+    user = request.user
+    if (
+        CommunityMember.objects.filter(user=user, community=community).exists()
+        and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
+    ):
+        if not PostComment.objects.filter(post=post, is_approved=True).exists():
+
+            # Approve comment and add points to creator and post creator.
+            comment.is_approved = True
+            comment.save()
+            adjust_points(
+                user=user,
+                points=settings.CHOOSE_CORRECT_ANSWER_PTS,
+                community=community,
+                post=post,
+                comment=comment,
             )
-
-
-    def approve_comment(request, community_id, post_id, comment_id):
-        """
-        Approve a comment.
-        :param request: session request.
-        :param community_id: id of community.
-        :param post_id: id of post.
-        :param comment_id: id of comment.
-        :return: 200 - comment approved.
-                 401 - permission denied.
-                 404 - comment not found.
-                 409 - conflict.
-        """
-
-        # Check if community, post and comment exists.
-        try:
-            community = Community.objects.get(id=community_id)
-            post = Post.objects.get(id=post_id, community=community)
-            comment = PostComment.objects.get(id=comment_id, post=post)
-        except:
-            return JsonResponse(
-                "Not Found - Comment does not exist.", status=404, safe=False
+            adjust_points(
+                user=comment.user,
+                points=settings.CORRECT_ANSWER_PTS,
+                community=community,
+                post=post,
+                comment=comment,
             )
+            return JsonResponse("OK - Comment approved.", status=200, safe=False)
 
-        user = request.user
-        if (
-            CommunityMember.objects.filter(user=user, community=community).exists()
-            and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
-        ):
-            if not PostComment.objects.filter(post=post, is_approved=True).exists():
+        return JsonResponse(
+            "Conflict - A comment has already been approved.", status=409, safe=False
+        )
+    return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
 
-                # Approve comment and add points to creator and post creator.
-                comment.is_approved = True
-                comment.save()
-                adjust_points(
-                    user=user,
-                    points=settings.CHOOSE_CORRECT_ANSWER_PTS,
-                    community=community,
-                    post=post,
-                    comment=comment,
-                )
-                adjust_points(
-                    user=comment.user,
-                    points=settings.CORRECT_ANSWER_PTS,
-                    community=community,
-                    post=post,
-                    comment=comment,
-                )
-                return JsonResponse("OK - Comment approved.", status=200, safe=False)
 
-            return JsonResponse(
-                "Conflict - A comment has already been approved.", status=409, safe=False
+def disapprove_comment(request, community_id, post_id, comment_id):
+    """
+    Disapprove a comment.
+    :param request: session request.
+    :param community_id: id of community.
+    :param post_id: id of post.
+    :param comment_id: id of comment.
+    :return: 200 - comment disapproved.
+             401 - permission denied.
+             404 - comment not found.
+    """
+
+    # Check if community, post and comment exists.
+    try:
+        community = Community.objects.get(id=community_id)
+        post = Post.objects.get(id=post_id, community=community)
+        comment = PostComment.objects.get(id=comment_id, post=post)
+    except:
+        return JsonResponse(
+            "Not Found - Comment does not exist.", status=404, safe=False
+        )
+
+    user = request.user
+    if (
+        CommunityMember.objects.filter(user=user, community=community).exists()
+        and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
+    ):
+        if PostComment.objects.filter(id=comment_id, is_approved=True).exists():
+
+            # Approve comment and adjust points to creator and post creator.
+            comment.is_approved = False
+            comment.save()
+            adjust_points(
+                user=user,
+                points=-settings.CHOOSE_CORRECT_ANSWER_PTS,
+                community=community,
+                post=post,
+                comment=comment,
             )
-        return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
-
-
-    def disapprove_comment(request, community_id, post_id, comment_id):
-        """
-        Disapprove a comment.
-        :param request: session request.
-        :param community_id: id of community.
-        :param post_id: id of post.
-        :param comment_id: id of comment.
-        :return: 200 - comment disapproved.
-                 401 - permission denied.
-                 404 - comment not found.
-        """
-
-        # Check if community, post and comment exists.
-        try:
-            community = Community.objects.get(id=community_id)
-            post = Post.objects.get(id=post_id, community=community)
-            comment = PostComment.objects.get(id=comment_id, post=post)
-        except:
-            return JsonResponse(
-                "Not Found - Comment does not exist.", status=404, safe=False
+            adjust_points(
+                user=comment.user,
+                points=-settings.CORRECT_ANSWER_PTS,
+                community=community,
+                post=post,
+                comment=comment,
             )
+            return JsonResponse("OK - Comment disapproved.", status=200, safe=False)
 
-        user = request.user
-        if (
-            CommunityMember.objects.filter(user=user, community=community).exists()
-            and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
-        ):
-            if PostComment.objects.filter(id=comment_id, is_approved=True).exists():
-
-                # Approve comment and adjust points to creator and post creator.
-                comment.is_approved = False
-                comment.save()
-                adjust_points(
-                    user=user,
-                    points=-settings.CHOOSE_CORRECT_ANSWER_PTS,
-                    community=community,
-                    post=post,
-                    comment=comment,
-                )
-                adjust_points(
-                    user=comment.user,
-                    points=-settings.CORRECT_ANSWER_PTS,
-                    community=community,
-                    post=post,
-                    comment=comment,
-                )
-                return JsonResponse("OK - Comment disapproved.", status=200, safe=False)
-
-            return JsonResponse(
-                "Conflict - This comment is not approved to be disapproved.",
-                status=404,
-                safe=False,
-            )
-        return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
+        return JsonResponse(
+            "Conflict - This comment is not approved to be disapproved.",
+            status=404,
+            safe=False,
+        )
+    return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
