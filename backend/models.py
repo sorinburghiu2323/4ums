@@ -100,18 +100,15 @@ class Community(models.Model):
         return self.name
 
     def serialize_simple(self):
-        return {"id": self.id, "name": self.name, "description": self.description}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description
+        }
 
     def serialize(self):
         return {
-            "user": self.user,
-            "name": self.name,
-            "description": self.description,
-            "created_at": self.created_at,
-        }
-
-    def serialize_full(self):
-        return {
+            "id": self.id,
             "creator": self.user.serialize_simple(),
             "name": self.name,
             "description": self.description,
@@ -217,6 +214,7 @@ class PostComment(models.Model):
 
     def serialize(self, request=None):
         return {
+            "id": self.id,
             "user": self.user.serialize_simple(),
             "comment": self.comment,
             "comment_likes": PostCommentLike.objects.filter(post_comment=self).count(),
