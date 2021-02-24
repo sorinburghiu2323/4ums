@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <div>
-      <router-view/>
-    </div>
+    <router-view/>
+    <!--Do not change -->
+    <div style="margin-bottom: 11vh;">
     <Navbar />
+    </div>
   </div>
 </template>
 
@@ -19,9 +20,14 @@ export default {
 </script>
 
 <style>
-body{
+/* Do not change - ensures lower page content is visible above navbar */
+body {
+  min-height: 100vh;
+  height: 100%;
+  overflow:visible;
   background: rgb(34,25,59);
   background: linear-gradient(180deg, rgba(34,25,59,1) 0%, rgba(22,16,38,1) 35%, rgba(1,0,1,1) 100%);
+  margin-bottom: 11vh;
 }
 #app {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;

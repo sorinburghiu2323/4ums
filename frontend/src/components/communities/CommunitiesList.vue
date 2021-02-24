@@ -1,11 +1,7 @@
 <template>
   <div class="container">
-      <CommunityDisplay />
-      <CommunityDisplay />
-      <CommunityDisplay />
-      <CommunityDisplay />
-      <CommunityDisplay />
-      <CommunityDisplay />
+      <CommunityDisplay v-for="(community,index) in communities" :key="index"
+      :community="community" :myCommunities="true"/>
   </div>
 </template>
 
@@ -15,6 +11,9 @@ export default {
     name: 'CommunitiesList',
     components: {
         CommunityDisplay,
+    },
+    props: {
+        communities: Array,
     }
 
 }
