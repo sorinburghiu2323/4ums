@@ -1,7 +1,7 @@
 <template>
   <div class="container">
       <CommunityDisplay v-for="(community,index) in communities" :key="index"
-      :community="community" :myCommunities="true"/>
+      :community="community" :myCommunity="myCommunities"/>
   </div>
 </template>
 
@@ -14,6 +14,10 @@ export default {
     },
     props: {
         communities: Array,
+        myCommunities: {
+            default: true,
+            type: Boolean,
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <div class="color-box" :class="{'my-communities': myCommunities}">
+      <div class="color-box" :class="{'my-communities': myCommunity}">
           
       </div>
       <div class="details">
@@ -8,7 +8,7 @@
               <p>{{community.name}}</p>
           </div>
           <div class="description">
-              <p>{{community.description}}sdkjfkdjakbf asdjahbdhaasdasd asjdbhdasgasdvasdvajsdvh</p>              
+              <p>{{community.description}}</p>              
           </div>
       </div>
   </div>
@@ -19,7 +19,7 @@ export default {
     name: 'CommunityDisplay',
     props: {
         community: Object,
-        myCommunities: {
+        myCommunity: {
             default: false,
             type: Boolean,
         }
@@ -46,6 +46,8 @@ export default {
     width: 20px;
     border-radius: 25px 0px 0 25px;
     position: absolute;
+    background: rgb(254,155,47);
+    background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
 }
 
 .my-communities{

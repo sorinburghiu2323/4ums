@@ -28,11 +28,11 @@
 
           <!--Communities user is a member of -->
           <CommunitiesList v-if="loadedCommunities && !showAllCommunities"
-          :communities="myCommunities"/>
+          :communities="myCommunities" :myCommunities="true"/>
 
           <!-- all Communities -->
           <CommunitiesList v-if="loadedCommunities && showAllCommunities"
-          :communities="allCommunities"/>
+          :communities="allCommunities" :myCommunities="false"/>
 
           <button v-if="loadMore" class="load-more-btn" @click="loadMoreCommunities">Load more</button>
       </div>
