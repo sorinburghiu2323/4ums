@@ -1,7 +1,11 @@
 from django.views.decorators.csrf import csrf_exempt
 
-from backend.Controllers import community_controller
-from backend.Controllers import user_controller, post_handler
+from backend.Controllers import (
+    community_controller,
+    user_controller,
+    post_handler,
+    comment_controller,
+)
 from backend.Utils.http_method_handler import handle_methods
 from backend.Utils.user_validation import user_login_required
 
@@ -88,8 +92,8 @@ def post_likes(request, community_id, post_id):
 def comment_likes(request, community_id, post_id, comment_id):
     return handle_methods(
         request,
-        POST=post_handler.like_comment,
-        DELETE=post_handler.unlike_comment,
+        POST=comment_controller.like_comment,
+        DELETE=comment_controller.unlike_comment,
         args=[community_id, post_id, comment_id],
     )
 
@@ -102,4 +106,13 @@ def community(request, community_id):
         POST=community_controller.join_community,
         GET=community_controller.get_community,
         args=[community_id],
+    )
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def comments(request, community_id, post_id):
+    return handle_methods(
+        request,
+        POST=comment_controller.make_comment,
+        args=[community_id,post_id],
     )
