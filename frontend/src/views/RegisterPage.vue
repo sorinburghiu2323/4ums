@@ -155,8 +155,7 @@ export default {
                 is_teacher: 'false',
                 password_repeat: this.passwordConfirmation,
             })
-            .then((response) => {
-                console.log(response);
+            .then(() => {
                 this.errMessage = '';
                 this.termErrMessage = '';
                 this.$router.push('homepage');

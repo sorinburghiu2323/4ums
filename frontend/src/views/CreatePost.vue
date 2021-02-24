@@ -59,8 +59,7 @@ export default {
           description: this.description,
           post_type: this.type,
         })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           document.getElementById("success").innerHTML = "Posted!";
         })
         .catch((error) => {
