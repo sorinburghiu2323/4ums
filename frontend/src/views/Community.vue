@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <CreatePostButton />
         <router-link class="nav-link" to="../communities">
             <p id="back">
                 <font-awesome-icon :icon="['fas', 'arrow-left']" /> Communities
@@ -42,10 +43,12 @@
 <script>
 import axios from 'axios';
 import Post from '@/components/posts/Post.vue';
+import CreatePostButton from '../components/CreatePostButton.vue'
 export default {
     name: 'Community',
     components: {
         Post,
+        CreatePostButton,
     },
     data() {
         return {
@@ -56,7 +59,11 @@ export default {
             posts: [],
             loadMore: false,
             joined: true,
+            id: null,
         }
+    },
+    created() {
+        this.id = this.$route.params.id;
     },
     mounted() {
         this.getCommunity();

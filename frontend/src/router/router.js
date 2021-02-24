@@ -1,5 +1,6 @@
 import CommunitiesPage from "../views/CommunitiesPage.vue";
 import CreateCommunity from "../views/CreateCommunity.vue";
+import CreatePost from "../views/CreatePost.vue";
 import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
@@ -12,13 +13,18 @@ import Feed from '../views/Feed.vue'
 import axios from 'axios'
 
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
     name: "Feed",
     component: Feed,
+  },
+  {
+    path: "/communities/post/:type",
+    name: "CreatePost",
+    component: CreatePost,
   },
   {
     path: "/login",
