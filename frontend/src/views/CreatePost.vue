@@ -2,9 +2,16 @@
   <div id="form">
     <div id="communityBox">
       <font-awesome-icon style="color: #5ff9ab" :icon="['fas', 'users']" />
-      Community {{ this.id }}
-      <button v-on:click="showCommunities()">Show</button>
+      Select a Community
+      <select v-model="community">
+        <option v-for="comm in this.communities" :key="comm" :value="comm">
+          {{ comm.name }}
+        </option>
+      </select>
     </div>
+
+    <p id="success"></p>
+
     <input
       id="title"
       v-model="title"
@@ -24,20 +31,28 @@
 
 <script>
 import axios from "axios";
+//import params from "./params.json";
 
 export default {
   name: "CreatePost",
   created() {
-    this.id = this.$route.params.id;
     this.type = this.$route.params.type;
-    this.communityName = this.getCommunityName();
   },
   methods: {
     createPost: function() {
       // Get the inputs from the form and send it to backend
 
-      console.log("Hello");
-      var post_url = "api/communities/" + this.id.toString() + "/posts";
+      if (this.title === "") {
+        document.getElementById("success").innerHTML = "Title is required";
+        document.getElementById("success").style = "color: red";
+        return;
+      } else if (this.community.name === "") {
+        document.getElementById("success").innerHTML = "TCommunity is required";
+        document.getElementById("success").style = "color: red";
+        return;
+      }
+      var post_url =
+        "api/communities/" + this.community.id.toString() + "/posts";
       axios
         .post(post_url, {
           title: this.title,
@@ -53,15 +68,25 @@ export default {
           document.getElementById("success").style = "color: red;";
         });
     },
-    showCommunities: function() {},
-    getCommunityName: function() {},
   },
   data() {
     return {
       title: "",
       description: "",
       type: "",
+      communities: [],
+      showCommunitiesFlag: false,
+      community: { name: "" },
     };
+  },
+  mounted() {
+    axios
+      .get("api/communities?type=memberof", {
+        type: "memberof",
+      })
+      .then((response) => {
+        this.communities = response.data.data;
+      });
   },
 };
 </script>

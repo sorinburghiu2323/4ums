@@ -97,6 +97,7 @@ def list_communities(request):
     """
     user = request.user
     list_type = request.GET.get("type")
+    print(list_type)
     if list_type not in ["all", "created", "memberof"]:
         return JsonResponse(
             "Bad request - Type must be one of: 'all', 'created', 'memberof'",

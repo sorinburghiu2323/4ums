@@ -40,6 +40,7 @@ export default {
       this.$router.push({
         name: "CreatePost",
         params: {
+          id: this.id,
           type: type,
         },
       });
