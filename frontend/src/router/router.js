@@ -8,6 +8,7 @@ import Profile from "../components/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Post from "@/views/Post";
 
 Vue.use(VueRouter);
 
@@ -52,6 +53,11 @@ const routes = [
     name: "PreviewCommunity",
     component: PreviewCommunity,
   },
+  {
+    path: "/communities/:id/posts/:postId",
+    name: "Post",
+    component: Post,
+  }
 ];
 
 const router = new VueRouter({
