@@ -53,8 +53,7 @@ def join_community(request, community_id):
              404 Not found
              409 Conflict
     """
-
-    if not Community.objects.get(pk=community_id).exists():
+    if not Community.objects.filter(pk=community_id).exists():
         return JsonResponse(
             f'Not found - No community with the id "{community_id}" exists',
             status=404,

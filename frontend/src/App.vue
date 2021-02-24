@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <div>
-      <router-view/>
-    </div>
+    <router-view/>
+    <!--Do not change -->
+    <div style="margin-bottom: 11vh;">
     <Navbar />
+    </div>
   </div>
 </template>
 
@@ -19,19 +20,32 @@ export default {
 </script>
 
 <style>
-
-* {
-  margin: 0;
+/* Do not change - ensures lower page content is visible above navbar */
+body {
+  min-height: 100vh;
+  height: 100%;
+  overflow:visible;
+  background: rgb(34,25,59);
+  background: linear-gradient(180deg, rgba(34,25,59,1) 0%, rgba(22,16,38,1) 35%, rgba(1,0,1,1) 100%);
+  margin-bottom: 11vh;
 }
-
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  background-image: linear-gradient(to bottom, #22193b, #161626);
-  height: 100vh;
+  color: white;
+}
+.navbar-container {
+  margin-top: 200px;
+}
+.navigation-display {
+  color: #7E7E7E;
+  font-size: 12px;
+  position: absolute;
+  top:0;
+  left: 0;
+  padding: 10px;
 }
 
 </style>

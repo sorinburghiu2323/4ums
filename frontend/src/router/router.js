@@ -1,11 +1,12 @@
-import Communities from "../components/Communities.vue";
+import CommunitiesPage from "../views/CommunitiesPage.vue";
 import CreateCommunity from "../views/CreateCommunity.vue";
 import HomePage from "../views/HomePage.vue";
-import Leaderboard from "../components/Leaderboard.vue";
+import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
-import Profile from "../components/Profile.vue";
+import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
+import Community from "../views/Community.vue"
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Post from "@/views/Post";
@@ -31,7 +32,7 @@ const routes = [
   {
     path: "/communities",
     name: "Communities",
-    component: Communities,
+    component: CommunitiesPage,
   },
   {
     path: "/profile",
@@ -57,6 +58,11 @@ const routes = [
     path: "/communities/:id/posts/:postId",
     name: "Post",
     component: Post,
+  },
+  {
+    path: '/community/:id',
+    name: 'Community',
+    component: Community,
   }
 ];
 
