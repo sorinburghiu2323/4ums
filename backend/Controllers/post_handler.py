@@ -294,8 +294,10 @@ def approve_comment(request, community_id, post_id, comment_id):
         )
 
     user = request.user
-    if CommunityMember.objects.filter(user=user, community=community).exists() and \
-            Post.objects.filter(id=post_id, user=user, post_type="question").exists():
+    if (
+        CommunityMember.objects.filter(user=user, community=community).exists()
+        and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
+    ):
         if not PostComment.objects.filter(post=post, is_approved=True).exists():
 
             # Approve comment and add points to creator and post creator.
@@ -320,9 +322,7 @@ def approve_comment(request, community_id, post_id, comment_id):
         return JsonResponse(
             "Conflict - A comment has already been approved.", status=409, safe=False
         )
-    return JsonResponse(
-        "Unauthorized - Permission denied.", status=401, safe=False
-    )
+    return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
 
 
 def disapprove_comment(request, community_id, post_id, comment_id):
@@ -348,8 +348,10 @@ def disapprove_comment(request, community_id, post_id, comment_id):
         )
 
     user = request.user
-    if CommunityMember.objects.filter(user=user, community=community).exists() and \
-            Post.objects.filter(id=post_id, user=user, post_type="question").exists():
+    if (
+        CommunityMember.objects.filter(user=user, community=community).exists()
+        and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
+    ):
         if PostComment.objects.filter(id=comment_id, is_approved=True).exists():
 
             # Approve comment and adjust points to creator and post creator.
@@ -372,8 +374,8 @@ def disapprove_comment(request, community_id, post_id, comment_id):
             return JsonResponse("OK - Comment disapproved.", status=200, safe=False)
 
         return JsonResponse(
-            "Conflict - This comment is not approved to be disapproved.", status=404, safe=False
+            "Conflict - This comment is not approved to be disapproved.",
+            status=404,
+            safe=False,
         )
-    return JsonResponse(
-        "Unauthorized - Permission denied.", status=401, safe=False
-    )
+    return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
