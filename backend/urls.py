@@ -16,7 +16,7 @@ urlpatterns = [
     path("users/feed", views.feed),
     path("communities", views.communities),
     path("communities/<int:community_id>/posts/<int:post_id>/likes", views.post_likes),
-    path("communities/<int:community_id>/post/<int:post_id>/comments", views.comments)
+    path("communities/<int:community_id>/post/<int:post_id>/comments", views.comments),
     path(
         "communities/<int:community_id>/posts/<int:post_id>/comments/<int:comment_id>/likes",
         views.comment_likes,
