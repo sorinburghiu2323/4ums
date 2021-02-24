@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: 4ums API
+  title: API
   version: '1.0'
   contact:
     name: Group D Team
@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
               required:
                 - username
                 - email
@@ -204,7 +204,7 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
     get:
       summary: ''
@@ -420,47 +420,43 @@ paths:
           in: query
           name: page
           description: Page number to get.
-  '/communities/{id}/posts/{id}/comments/{id}/approve':
+  '/communities/{cid}/posts/{pid}/comments':
     parameters:
       - schema:
           type: string
-        name: id
+        name: cid
         in: path
         required: true
       - schema:
           type: string
-        name: id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: id
+        name: pid
         in: path
         required: true
     post:
       summary: ''
-      operationId: post-communities-id-posts-id-comments-id-approve
+      operationId: post-communities-cid-posts-pid-comments
       responses:
-        '200':
-          description: OK - Comment approved.
+        '201':
+          description: Comment created
+        '400':
+          description: Bad Request - Must include comment string.
         '401':
-          description: Unauthorized - Permission denied.
+          description: Unauthorized - Login required.
         '404':
-          description: Not Found - Comment does not exist.
-        '409':
-          description: Conflict - Comment is already approved.
-      description: 'Approve a comment, given the user trying to is the creator of the post.'
-    delete:
-      summary: ''
-      operationId: delete-communities-id-posts-id-comments-id-approve
-      responses:
-        '200':
-          description: OK - Comment dissaproved.
-        '401':
-          description: Unauthorized - Permission denied.
-        '404':
-          description: Not Found - Comment not found.
-      description: Disapprove a comment.
+          description: 'Not Found - No post/comment with id "{id}" exists.'
+      description: Add a comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  description: String body of comment
+              required:
+                - comment
+        description: Content of the comment to post.
 components:
   schemas:
     Post:
@@ -480,7 +476,7 @@ components:
           type: string
         post_type:
           type: string
-          description: 'Either "discussion" or "questions".'
+          description: Either "discussion" or "questions".
         created_at:
           type: string
         likes_num:
@@ -554,14 +550,11 @@ components:
         created_at:
           type: string
           description: 'ISO8601 timestamp yyyy-mm-ddThh:mm:ss.sTDZ'
-        id:
-          type: integer
       required:
         - creator
         - name
         - description
         - created_at
-        - id
     Comment:
       title: Comment
       type: object
@@ -580,11 +573,8 @@ components:
         is_liked:
           type: boolean
           description: True if the logged in user has liked this comment.
-        id:
-          type: integer
       required:
         - user
         - comment
         - comment_likes
         - created_at
-        - id
