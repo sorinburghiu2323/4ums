@@ -5,8 +5,6 @@ from backend.Controllers import user_controller, post_handler
 from backend.Utils.http_method_handler import handle_methods
 from backend.Utils.user_validation import user_login_required
 
-# AUTH VIEWS
-
 
 @csrf_exempt
 def login(request):
@@ -41,9 +39,6 @@ def post(request, community_id, post_id):
         GET=post_handler.show_post,
         args=[community_id, post_id],
     )
-
-
-# USER VIEWS
 
 
 @csrf_exempt
@@ -102,4 +97,15 @@ def community(request, community_id):
         POST=community_controller.join_community,
         GET=community_controller.get_community,
         args=[community_id],
+    )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def comment_approve(request, community_id, post_id, comment_id):
+    return handle_methods(
+        request,
+        POST=post_handler.approve_comment,
+        DELETE=post_handler.disapprove_comment,
+        args=[community_id, post_id, comment_id],
     )

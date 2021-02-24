@@ -132,8 +132,8 @@ AUTH_USER_MODEL = "backend.User"
 
 # Point values.
 
-LIKE_POST_PTS = 5  # Points gained when someone likes your post
-LIKE_COMMENT_PTS = 6  # Points gained when someone comments on your post
-CHOOSE_CORRECT_ANSWER_PTS = 2  # Points gained when you approve an answer
-CORRECT_ANSWER_PTS = 20  # Points gained when your answer gets approved
-JOIN_COMMUNITY_PTS = 1  # Points gained when someone joins your community
+LIKE_POST_PTS = 50  # Points gained when someone likes your post
+LIKE_COMMENT_PTS = 60  # Points gained when someone comments on your post
+CHOOSE_CORRECT_ANSWER_PTS = 20  # Points gained when you approve an answer
+CORRECT_ANSWER_PTS = 200  # Points gained when your answer gets approved
+JOIN_COMMUNITY_PTS = 10  # Points gained when someone joins your community
