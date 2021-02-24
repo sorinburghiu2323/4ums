@@ -49,10 +49,12 @@ def check_if_valid(request, community_id):
     comm_instance = get_community(community_id)
     if comm_instance is None:
         return JsonResponse("Community does not exist", status=404, safe=False)
+
     try:
         user_instance = verify_user_login(request)  # Verify that the user exists
     except PermissionDenied:
         return JsonResponse("Unauthorized - Login required.", status=401, safe=False)
+
     comm_member = check_member(community_id, user_instance)
     if comm_member is None:
         return JsonResponse("User not member of that community", status=403, safe=False)

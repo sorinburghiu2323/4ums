@@ -21,6 +21,7 @@ import {
   faUser,
   faUsers,
   faHome,
+  faArrowLeft
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -35,7 +36,8 @@ library.add(
   faTrophy,
   faUsers,
   faUser,
-  faHome
+  faHome,
+  faArrowLeft
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
