@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: 4ums API
+  title: API
   version: '1.0'
   contact:
     name: Group D Team
@@ -432,6 +432,8 @@ paths:
         name: pid
         in: path
         required: true
+    post:
+      summary: ''
       operationId: post-communities-cid-posts-pid-comments
       responses:
         '201':
@@ -455,47 +457,6 @@ paths:
               required:
                 - comment
         description: Content of the comment to post.
-  '/communities/{id}/posts/{id}/comments/{id}/approve':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-    post:
-      summary: ''
-      operationId: post-communities-id-posts-id-comments-id-approve
-      responses:
-        '200':
-          description: OK - Comment approved.
-        '401':
-          description: Unauthorized - Permission denied.
-        '404':
-          description: Not Found - Comment does not exist.
-        '409':
-          description: Conflict - Comment is already approved.
-      description: 'Approve a comment, given the user trying to is the creator of the post.'
-    delete:
-      summary: ''
-      operationId: delete-communities-id-posts-id-comments-id-approve
-      responses:
-        '200':
-          description: OK - Comment dissaproved.
-        '401':
-          description: Unauthorized - Permission denied.
-        '404':
-          description: Not Found - Comment not found.
-      description: Disapprove a comment.
 components:
   schemas:
     Post:
@@ -589,14 +550,11 @@ components:
         created_at:
           type: string
           description: 'ISO8601 timestamp yyyy-mm-ddThh:mm:ss.sTDZ'
-        id:
-          type: integer
       required:
         - creator
         - name
         - description
         - created_at
-        - id
     Comment:
       title: Comment
       type: object
@@ -615,11 +573,8 @@ components:
         is_liked:
           type: boolean
           description: True if the logged in user has liked this comment.
-        id:
-          type: integer
       required:
         - user
         - comment
         - comment_likes
         - created_at
-        - id
