@@ -170,7 +170,7 @@ h1 {
     color: white;
     outline: none;
     font-weight: 600;
-    border-radius: 8px;
+    border-radius: 25px;
     border: none;
     background: rgb(40,44,58);
     background: linear-gradient(90deg, rgba(40,44,58,1) 0%, rgba(27,30,40,1) 35%, rgba(8,9,11,1) 100%);

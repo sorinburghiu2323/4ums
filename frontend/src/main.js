@@ -5,7 +5,7 @@ import router from './router/router.js'
 
 // Regular style icons
 import {
-  library 
+  library,
 } from '@fortawesome/fontawesome-svg-core'
 // Brand style icons
 import { 
@@ -21,7 +21,8 @@ import {
   faUser,
   faUsers,
   faHome,
-  faArrowLeft
+  faArrowLeft,
+  faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -37,7 +38,8 @@ library.add(
   faUsers,
   faUser,
   faHome,
-  faArrowLeft
+  faArrowLeft,
+  faThumbsUp,
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

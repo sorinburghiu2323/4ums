@@ -6,6 +6,7 @@ import LoginPage from "../views/LoginPage.vue";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
+import Community from "../views/Community.vue"
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -52,6 +53,11 @@ const routes = [
     name: "PreviewCommunity",
     component: PreviewCommunity,
   },
+  {
+    path: '/community/:id',
+    name: 'Community',
+    component: Community,
+  }
 ];
 
 const router = new VueRouter({

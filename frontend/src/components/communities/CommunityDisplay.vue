@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" @click="navigateToCommunity()">
       <div class="color-box" :class="{'my-communities': myCommunity}">
           
       </div>
@@ -23,6 +23,16 @@ export default {
             default: false,
             type: Boolean,
         }
+    },
+    methods: {
+        navigateToCommunity() {
+            this.$router.push({
+                name:'Community',
+                params:{
+                    id: this.community.id
+                }
+            });
+        },
     }
 }
 </script>
