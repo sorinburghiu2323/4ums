@@ -118,7 +118,7 @@ def comments(request, community_id, post_id):
 def comment_approve(request, community_id, post_id, comment_id):
     return handle_methods(
         request,
-        POST=post_handler.approve_comment,
-        DELETE=post_handler.disapprove_comment,
+        POST=comment_controller.approve_comment,
+        DELETE=comment_controller.disapprove_comment,
         args=[community_id, post_id, comment_id],
     )
