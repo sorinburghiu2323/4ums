@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <button
       v-if="this.buttonVisible"
       id="circleButton"
@@ -53,19 +53,14 @@ export default {
 };
 </script>
 
-<style>
-#title {
-  color: black;
-  font-family: "Trebuchet MS";
-  font-size: 2vh;
-}
+<style scoped>
 
 #circleButton {
   border-radius: 50%;
   background-image: linear-gradient(to bottom right, #7632be, #7632be);
   height: 15vh;
   width: 15vh;
-  position: absolute;
+  position: fixed;
   bottom: 10vh;
   right: 0;
   font-size: 2.5vh;
@@ -73,12 +68,18 @@ export default {
   z-index: 1;
 }
 
+#title {
+  color: black;
+  font-family: "Trebuchet MS";
+  font-size: 2vh;
+}
+
 #iconContainer {
   background-color: #8a3bfe;
   width: 100%;
   border-radius: 20% 20% 0 0;
   height: 21vh;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0px;
   text-align: center;

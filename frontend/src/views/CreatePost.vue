@@ -4,7 +4,7 @@
       <font-awesome-icon style="color: #5ff9ab" :icon="['fas', 'users']" />
       Select a Community
       <select v-model="community">
-        <option v-for="comm in this.communities" :key="comm" :value="comm">
+        <option v-for="(comm,index) in this.communities" :key="index" :value="comm">
           {{ comm.name }}
         </option>
       </select>
@@ -61,6 +61,12 @@ export default {
         })
         .then(() => {
           document.getElementById("success").innerHTML = "Posted!";
+          this.$router.push({
+            name: "Community",
+            params: {
+              id: this.community.id,
+            },
+          });
         })
         .catch((error) => {
           document.getElementById("success").innerHTML = error.response.data;
@@ -91,6 +97,7 @@ export default {
 </script>
 
 <style scoped>
+
 #communityBox {
   width: 99%;
   background-color: #222531;
