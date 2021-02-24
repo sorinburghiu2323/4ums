@@ -68,12 +68,8 @@ export default {
             const url = 'api/communities/' + community_id;
             axios.get(url)
             .then((response) => {
-                console.log(response);
                 this.community = response.data;
                 this.loadedCommunity = true;
-            })
-            .catch((error)=>{
-                console.log('could not fetch community', error);
             })
         },
         getPosts() {
@@ -106,13 +102,12 @@ export default {
             const community_id = this.$route.params.id;
             const url = 'api/communities/' + community_id;
             axios.post(url)
-            .then((response) => {
-                console.log(response);
+            .then(() => {
                 this.joined = true;
                 this.getPosts();
             })
             .catch((error)=>{
-                console.log('Could not join community', error);
+                console.error('Could not join community', error);
             })
         }
     }

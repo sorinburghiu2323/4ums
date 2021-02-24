@@ -48,12 +48,11 @@ export default {
         loginUser() {
             
             axios.post('api/login', {email: this.email, password: this.password})
-            .then((response) => {
-                console.log(response);
+            .then(() => {
                 this.failedLogin = false;
                 this.$router.push('homepage');
             })
-            .catch((error) =>{
+            .catch(() =>{
                 console.error(error);
                 this.failedLogin = true;
             })
