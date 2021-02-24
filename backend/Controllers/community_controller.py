@@ -136,4 +136,4 @@ def get_community(request, community_id):
             safe=False,
         )
 
-    return JsonResponse(comm_instance.serialize_full(), status=200, safe=True)
+    return JsonResponse(comm_instance.serialize(), status=200, safe=True)

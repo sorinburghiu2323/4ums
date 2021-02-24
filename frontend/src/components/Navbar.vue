@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
-    <router-link class="nav-link" to="../" v-on:click="goTo('homepage')"
-      ><div id="homepage" v-on:click="goTo('homepage')" style="color: gray">
+    <router-link class="nav-link" to="../" v-on:click="goTo('feed')"
+      ><div id="feed" v-on:click="goTo('feed')" style="color: gray">
         <font-awesome-icon :icon="['fas', 'home']" />
         <p class="icon">Feed</p>
       </div></router-link
@@ -38,7 +38,7 @@ export default {
   name: "Navbar",
   data: function() {
     return {
-      pages: ["homepage", "communities", "profile", "leaderboard"],
+      pages: ["feed", "communities", "profile", "leaderboard"],
     };
   },
   methods: {
