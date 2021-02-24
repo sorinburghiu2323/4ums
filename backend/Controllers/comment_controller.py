@@ -107,4 +107,47 @@ def make_comment(request, community_id, post_id):
              404 Not found
     """
 
-    pass
+    try:
+        comm_instance = Community.objects.get(pk=community_id)
+    except Community.DoesNotExist:
+        return JsonResponse(
+            f'Not found - No community with id "{community_id}" exists.',
+            status=404,
+            safe=False,
+        )
+
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse(
+            f'Not found - No post with id "{post_id}" exists.',
+            status=404,
+            safe=False,
+        )
+
+    user = request.user
+
+    if not CommunityMember.objects.get(community=comm_instance,user=user).exists():
+        return JsonResponse(
+            "Unauthorized - User is not a member of that community.",
+            status=401,
+            safe=False,
+        )
+
+    if "comment" not in request.DATA:
+        return JsonResponse(
+            "Bad request - Must include comment string.", status=400, safe=False
+        )
+
+    new_comment = PostComment.objects.create(
+        user=user, post=post, comment=request.DATA["comment"]
+    )
+    adjust_points(
+        points=settings.MAKE_COMMENT_PTS,
+        user=user,
+        community=comm_instance,
+        post=post,
+        comment=new_comment,
+    )
+
+    return JsonResponse("Commented created", status=200, safe=False)
