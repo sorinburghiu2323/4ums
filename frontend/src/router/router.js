@@ -1,63 +1,66 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Feed from '../views/Feed.vue'
-import LoginPage from '../views/LoginPage.vue'
-import RegisterPage from '../views/RegisterPage.vue'
-
-import Communities from '../components/Communities.vue'
+import CommunitiesPage from "../views/CommunitiesPage.vue";
 import CreateCommunity from "../views/CreateCommunity.vue";
-import Leaderboard from '../components/Leaderboard.vue'
+import Leaderboard from "../views/Leaderboard.vue";
+import LoginPage from "../views/LoginPage.vue";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
-import Profile from "../components/Profile.vue";
+import Profile from "../views/Profile.vue";
+import RegisterPage from "../views/RegisterPage.vue";
+import Community from "../views/Community.vue"
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Feed from '../views/Feed.vue'
 import axios from 'axios'
 
-// import store from '../store.js'
 
 Vue.use(VueRouter)
 
 const routes = [
-    {
-        path: '/',
-        name: 'Feed',
-        component: Feed
-    },
-    {
-        path: '/login',
-        name: 'LoginPage',
-        component: LoginPage
-    },
-
-    {
-        path: '/register',
-        name: 'RegisterPage',
-        component: RegisterPage,
-    },
-    {
-        path: '/communities',
-        name: 'Communities',
-        component: Communities
-    },
-    {
-        path: '/profile',
-        name: 'Profile',
-        component: Profile
-    },
-    {
-        path: '/leaderboard',
-        name: 'Leaderboard',
-        component: Leaderboard
-    },
-    {
-        path: "/communities/create",
-        name: "CreateCommunity",
-        component: CreateCommunity,
-    },
-    {
-        path: "/communities/create/preview",
-        name: "PreviewCommunity",
-        component: PreviewCommunity,
-    },
-]
+  {
+    path: "/",
+    name: "Feed",
+    component: Feed,
+  },
+  {
+    path: "/login",
+    name: "LoginPage",
+    component: LoginPage,
+  },
+  {
+    path: "/register",
+    name: "RegisterPage",
+    component: RegisterPage,
+  },
+  {
+    path: "/communities",
+    name: "Communities",
+    component: CommunitiesPage,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+  },
+  {
+    path: "/leaderboard",
+    name: "Leaderboard",
+    component: Leaderboard,
+  },
+  {
+    path: "/communities/create",
+    name: "CreateCommunity",
+    component: CreateCommunity,
+  },
+  {
+    path: "/communities/create/preview",
+    name: "PreviewCommunity",
+    component: PreviewCommunity,
+  },
+  {
+    path: '/community/:id',
+    name: 'Community',
+    component: Community,
+  }
+];
 
 const router = new VueRouter({
     routes
@@ -68,9 +71,8 @@ router.beforeEach((to, from, next) => {
         // Direct user to login if they are not authenticated
         axios.get('api/communities?type=all')
         .catch((err)=> {
-            console.log(err);
+            console.error(err);
             if(to.path !== '/login' && to.path !== '/register') {
-                console.log('3');
                 return next({
                     path: '/login',
                 });
