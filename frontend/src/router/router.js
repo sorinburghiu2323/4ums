@@ -5,8 +5,10 @@ import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 
 import Communities from '../components/Communities.vue'
-import Profile from '../components/Profile.vue'
+import CreateCommunity from "../views/CreateCommunity.vue";
 import Leaderboard from '../components/Leaderboard.vue'
+import PreviewCommunity from "../views/PreviewCommunity.vue";
+import Profile from "../components/Profile.vue";
 import axios from 'axios'
 
 // import store from '../store.js'
@@ -44,7 +46,17 @@ const routes = [
         path: '/leaderboard',
         name: 'Leaderboard',
         component: Leaderboard
-    }
+    },
+    {
+        path: "/communities/create",
+        name: "CreateCommunity",
+        component: CreateCommunity,
+    },
+    {
+        path: "/communities/create/preview",
+        name: "PreviewCommunity",
+        component: PreviewCommunity,
+    },
 ]
 
 const router = new VueRouter({

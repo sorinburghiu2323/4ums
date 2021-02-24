@@ -19,13 +19,9 @@ export default {
 </script>
 
 <style>
-html {
-}
 
-body {
-  background: rgb(34,25,59);
-  background: linear-gradient(180deg, rgba(34,25,59,1) 0%, rgba(22,16,38,1) 35%, rgba(1,0,1,1) 100%);
-
+* {
+  margin: 0;
 }
 
 #app {
@@ -34,6 +30,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-image: linear-gradient(to bottom, #22193b, #161626);
+  height: 100vh;
 }
 
 </style>

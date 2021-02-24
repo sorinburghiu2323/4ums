@@ -57,12 +57,6 @@ class UserValidationTesting(TestCase):
 
 
 class CommunityListEndpointTest(TestCase):
-    def getWithData(self, url, data):
-        json_data = json.dumps(data)
-        return self.client.generic(
-            "GET", url, data=json_data.encode(), content_type="application/json"
-        )
-
     def setUp(self):
 
         self.user = User.objects.create_superuser(
@@ -89,7 +83,7 @@ class CommunityListEndpointTest(TestCase):
     def test_get_invalid_400(self):
         """Test that the endpoint requires "type" to be a specific value."""
 
-        response = self.getWithData("/api/communities", {"type": "banana"})
+        response = self.client.get("/api/communities", {"type": "banana"})
         self.assertEqual(400, response.status_code)
 
     def test_get_valid_all(self):
@@ -105,7 +99,7 @@ class CommunityListEndpointTest(TestCase):
             user=other_user, name="bobgang", description="Bob's gang (cool kids only)"
         )
 
-        response = self.getWithData("/api/communities", {"type": "all"})
+        response = self.client.get("/api/communities", {"type": "all"})
         self.assertEqual(200, response.status_code)
 
         result = json.loads(response.content.decode())
@@ -134,7 +128,7 @@ class CommunityListEndpointTest(TestCase):
             user=other_user, name="bobgang", description="Bob's gang (cool kids only)"
         )
 
-        response = self.getWithData("/api/communities", {"type": "created"})
+        response = self.client.get("/api/communities", {"type": "created"})
         self.assertEqual(200, response.status_code)
 
         result = json.loads(response.content.decode())
@@ -159,7 +153,7 @@ class CommunityListEndpointTest(TestCase):
         )
 
         # check that only one community (lorem) is returned
-        response = self.getWithData("/api/communities", {"type": "memberof"})
+        response = self.client.get("/api/communities", {"type": "memberof"})
         self.assertEqual(200, response.status_code)
 
         result = json.loads(response.content.decode())
@@ -172,7 +166,7 @@ class CommunityListEndpointTest(TestCase):
         CommunityMember.objects.create(user=self.user, community=comm_instance2)
 
         # check that both are returned
-        response = self.getWithData("/api/communities", {"type": "memberof"})
+        response = self.client.get("/api/communities", {"type": "memberof"})
         self.assertEqual(200, response.status_code)
 
         result = json.loads(response.content.decode())

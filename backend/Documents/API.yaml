@@ -170,17 +170,12 @@ paths:
         Get the feed posts for the logged in user.
 
         Pagination included: Every page has 20 posts.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                page:
-                  type: integer
-        description: |-
-          If page is not specified, it is assumed first page.
-          If page is bigger than 'total_pages', last page is returned.
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: page number to get
   /communities:
     post:
       summary: ''
@@ -241,26 +236,22 @@ paths:
         '401':
           description: Unauthorized - Login required
       description: Get a (paginated) list of communities (ordered alphabetically by community name)
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                type:
-                  type: string
-                  description: type of community included in the list
-                  enum:
-                    - all
-                    - created
-                    - memberof
-                page:
-                  type: integer
-              required:
-                - type
-                - page
-            examples: {}
-        description: "parameter \"type\":\n  Specify which type of community to list. \n  The three possible values are:\n    \"all\"      - all communities\n    \"created\"  - communities the user created\n    \"memberof\" - communities the user is a member of\nparameter \"page\":\n  If page is not specified, it is assumed first page.\n  If page is bigger than 'total_pages', last page is returned."
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - all
+              - created
+              - memberof
+          in: query
+          name: type
+          description: type of list to generate
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: number of the page to retrieve (defaults to 1)
   '/communities/{id}':
     parameters:
       - schema:
@@ -281,6 +272,21 @@ paths:
         '409':
           description: Conflict - The user is already a member of that community
       description: Join a community
+    get:
+      summary: ''
+      operationId: get-communities-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityFull'
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: 'Not found - No community with the id "{id}" exists'
+      description: Get an individual community.
   '/communities/{id}/posts/{id}/likes':
     parameters:
       - schema:
@@ -358,6 +364,62 @@ paths:
         '404':
           description: Not Found - Comment/Like does not exist.
       description: Unlike a comment.
+  '/communities/{id}/posts/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+                  comments:
+                    type: object
+                    properties:
+                      total_pages:
+                        type: integer
+                      previous_page:
+                        type: integer
+                      next_page:
+                        type: integer
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Comment'
+                required:
+                  - post
+                  - comments
+              examples: {}
+        '401':
+          description: Unauthorised - Login required / User must be member of community.
+        '404':
+          description: Not Found - Post not found
+      operationId: get-communities-id-posts-id
+      description: |-
+        Get a post by id.
+        This includes the comments paginated.
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+          description: Page number to get.
 components:
   schemas:
     Post:
@@ -437,3 +499,45 @@ components:
         - points
         - is_teacher
       description: Simple user serializer
+    CommunityFull:
+      title: CommunityFull
+      type: object
+      description: Detailed community serialiser.
+      properties:
+        creator:
+          $ref: '#/components/schemas/UserSimple'
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          description: 'ISO8601 timestamp yyyy-mm-ddThh:mm:ss.sTDZ'
+      required:
+        - creator
+        - name
+        - description
+        - created_at
+    Comment:
+      title: Comment
+      type: object
+      description: CommentSimple
+      properties:
+        user:
+          $ref: '#/components/schemas/UserSimple'
+        comment:
+          type: string
+        comment_likes:
+          type: integer
+        is_approved:
+          type: boolean
+        created_at:
+          type: string
+        is_liked:
+          type: boolean
+          description: True if the logged in user has liked this comment.
+      required:
+        - user
+        - comment
+        - comment_likes
+        - created_at
