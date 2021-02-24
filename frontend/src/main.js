@@ -20,7 +20,7 @@ library.add(
     faUsers,
     faUser,
     faHome,
-    faArrowLeft
+    faArrowLeft,
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

@@ -110,6 +110,14 @@ class Community(models.Model):
             "created_at": self.created_at,
         }
 
+    def serialize_full(self):
+        return {
+            "creator": self.user.serialize_simple(),
+            "name": self.name,
+            "description": self.description,
+            "created_at": self.created_at,
+        }
+
 
 class CommunityMember(models.Model):
     """
@@ -207,11 +215,14 @@ class PostComment(models.Model):
     def __str__(self):
         return self.post.title
 
-    def serialize(self):
+    def serialize(self, request=None):
         return {
-            "user": self.user,
-            "post": self.post,
+            "user": self.user.serialize_simple(),
             "comment": self.comment,
+            "comment_likes": PostCommentLike.objects.filter(post_comment=self).count(),
+            "user_liked": PostCommentLike.objects.filter(user=request.user, post_comment=self).exists()
+            if request
+            else False,
             "is_approved": self.is_approved,
             "created_at": self.created_at,
         }

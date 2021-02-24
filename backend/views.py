@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 
-from backend.Controllers import user_controller, post_handler
 from backend.Controllers import community_controller
+from backend.Controllers import user_controller, post_handler
 from backend.Utils.http_method_handler import handle_methods
 from backend.Utils.user_validation import user_login_required
 
@@ -29,8 +29,17 @@ def posts(request, community_id):
     return handle_methods(
         request,
         POST=post_handler.create_post,
-        GET=post_handler.show_post,
+        GET=post_handler.show_posts,
         args=[community_id],
+    )
+
+
+@csrf_exempt
+def post(request, community_id, post_id):
+    return handle_methods(
+        request,
+        GET=post_handler.show_post,
+        args=[community_id, post_id],
     )
 
 
@@ -91,5 +100,6 @@ def community(request, community_id):
     return handle_methods(
         request,
         POST=community_controller.join_community,
+        GET=community_controller.get_community,
         args=[community_id],
     )
