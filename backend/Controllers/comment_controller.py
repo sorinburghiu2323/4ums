@@ -1,5 +1,8 @@
 from django.http import JsonResponse
 
+from SoftwareDev import settings
+
+from backend.Utils.points_handler import adjust_points
 
 from backend.models import (
     Community,
@@ -120,14 +123,14 @@ def make_comment(request, community_id, post_id):
         post = Post.objects.get(pk=post_id)
     except Post.DoesNotExist:
         return JsonResponse(
-            f'Not found - No post with id "{post_id}" exists.',
+            f'Not found - No post with id "{post_id}" exists (in community with id "{community_id}").',
             status=404,
             safe=False,
         )
 
     user = request.user
 
-    if not CommunityMember.objects.get(community=comm_instance,user=user).exists():
+    if not CommunityMember.objects.filter(community=comm_instance,user=user).exists():
         return JsonResponse(
             "Unauthorized - User is not a member of that community.",
             status=401,
@@ -150,4 +153,4 @@ def make_comment(request, community_id, post_id):
         comment=new_comment,
     )
 
-    return JsonResponse("Commented created", status=200, safe=False)
+    return JsonResponse("Comment created", status=200, safe=False)
