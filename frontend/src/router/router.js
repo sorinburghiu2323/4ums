@@ -7,6 +7,7 @@ import RegisterPage from '../views/RegisterPage.vue'
 import Communities from '../components/Communities.vue'
 import Profile from '../components/Profile.vue'
 import Leaderboard from '../components/Leaderboard.vue'
+import axios from 'axios'
 
 // import store from '../store.js'
 
@@ -51,17 +52,19 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(to.path);
-if (to.name !== from.name) {
-    const isAuthenticated = Vue.cookie.get('authenticated');
-    if(isAuthenticated !== 'true'  && to.path !== '/login' && to.path !== '/register') {
-        return next({
-            path: '/login',
+    if (to.name !== from.name) {
+        // Direct user to login if they are not authenticated
+        axios.get('api/communities?type=all')
+        .catch((err)=> {
+            console.log(err);
+            if(to.path !== '/login' && to.path !== '/register') {
+                console.log('3');
+                return next({
+                    path: '/login',
+                });
+            }
         });
-    } else {
-        next();
     }
-}
-// next();
+    next();
 });
 export default router

@@ -49,22 +49,16 @@ export default {
             
             axios.post('api/login', {email: this.email, password: this.password})
             .then((response) => {
-                this.setAuthCookie('true');
                 console.log(response);
                 this.failedLogin = false;
                 this.$router.push('feed');
             })
             .catch((error) =>{
                 console.error(error);
-                this.setAuthCookie('false');
                 this.failedLogin = true;
             })
 
         },
-        setAuthCookie(value) {
-            this.$cookie.set('authenticated', value, 1);
-            console.log(this.$cookie.get('authenticated'));
-        }
     }
 
 }
