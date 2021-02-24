@@ -10,7 +10,9 @@ import { faFontAwesome } from "@fortawesome/free-brands-svg-icons";
 // Solid style icons
 import {
   faUserSecret,
-  faSort,
+  faSort, 
+  faSearch,
+  faCog,
   faTrophy,
   faUser,
   faUsers,
@@ -19,6 +21,8 @@ import {
   faAlignLeft,
   faTimesCircle,
   faCommentDots,
+  faArrowLeft,
+  faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -28,6 +32,8 @@ library.add(
   faUserSecret,
   faSort,
   faFontAwesome,
+  faSearch,
+  faCog,
   faTrophy,
   faUsers,
   faUser,
@@ -35,12 +41,20 @@ library.add(
   faQuestion,
   faAlignLeft,
   faTimesCircle,
-  faCommentDots
+  faCommentDots,
+  faArrowLeft,
+  faThumbsUp,
 );
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
+
+// Cookie library
+var VueCookie = require('vue-cookie');
+Vue.use(VueCookie);
 
 new Vue({
   router,

@@ -1,23 +1,25 @@
-import Communities from "../views/Communities.vue";
-import Community from "../views/Community.vue";
+import CommunitiesPage from "../views/CommunitiesPage.vue";
+import CreateCommunity from "../views/CreateCommunity.vue";
 import CreatePost from "../views/CreatePost.vue";
-import HomePage from "../views/HomePage.vue";
-import Leaderboard from "../components/Leaderboard.vue";
+import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
-import Profile from "../components/Profile.vue";
+import PreviewCommunity from "../views/PreviewCommunity.vue";
+import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
+import Community from "../views/Community.vue"
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Feed from '../views/Feed.vue'
+import axios from 'axios'
 
-//import Communities from '../components/Communities.vue'
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "HomePage",
-    component: HomePage,
+    name: "Feed",
+    component: Feed,
   },
   {
     path: "/communities/post/:type",
@@ -35,9 +37,9 @@ const routes = [
     component: RegisterPage,
   },
   {
-    path: "/communities/:id",
+    path: "/communities",
     name: "Communities",
-    component: Communities,
+    component: CommunitiesPage,
   },
   {
     path: "/profile",
@@ -50,14 +52,39 @@ const routes = [
     component: Leaderboard,
   },
   {
-    path: "/communities/:id",
-    name: "Community",
-    component: Community,
+    path: "/communities/create",
+    name: "CreateCommunity",
+    component: CreateCommunity,
   },
+  {
+    path: "/communities/create/preview",
+    name: "PreviewCommunity",
+    component: PreviewCommunity,
+  },
+  {
+    path: '/community/:id',
+    name: 'Community',
+    component: Community,
+  }
 ];
 
 const router = new VueRouter({
-  routes,
-});
+    routes
+})
 
-export default router;
+router.beforeEach((to, from, next) => {
+    if (to.name !== from.name) {
+        // Direct user to login if they are not authenticated
+        axios.get('api/communities?type=all')
+        .catch((err)=> {
+            console.error(err);
+            if(to.path !== '/login' && to.path !== '/register') {
+                return next({
+                    path: '/login',
+                });
+            }
+        });
+    }
+    next();
+});
+export default router

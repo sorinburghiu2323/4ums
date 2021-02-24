@@ -1,5 +1,10 @@
-# SoftwareDev
-ECM2434 Group D Project
+# 4ums
+
+ECM2434 Group D Software Engineering Project
+
+4ums is a platform that offers students a ground for creating communities where they can interact with each other,
+as well as with their lecturers. In addition, 4ums consists of a gamification aspect to encourage students to
+be part of communities and help each other.
 
 ## Setup
 
