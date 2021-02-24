@@ -52,7 +52,7 @@ export default {
                 this.failedLogin = false;
                 this.$router.push('feed');
             })
-            .catch(() =>{
+            .catch((error) =>{
                 console.error(error);
                 this.failedLogin = true;
             })
