@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
-    <router-link class="nav-link" to="../" v-on:click="goTo('homepage')"
-      ><div id="homepage" v-on:click="goTo('homepage')" style="color: gray">
+    <router-link class="nav-link" to="../" v-on:click="goTo('feed')"
+      ><div id="feed" v-on:click="goTo('feed')" style="color: gray">
         <font-awesome-icon :icon="['fas', 'home']" />
         <p class="icon">Feed</p>
       </div></router-link
@@ -38,7 +38,7 @@ export default {
   name: "Navbar",
   data: function() {
     return {
-      pages: ["homepage", "communities", "profile", "leaderboard"],
+      pages: ["feed", "communities", "profile", "leaderboard"],
     };
   },
   methods: {
@@ -53,18 +53,16 @@ export default {
         }
       }
     },
-  },
-  mounted() {
-    for (var i = 1; i < 4; i++) {
-      document.getElementById(this.pages[i]).style.color = "rgb(126, 126, 126)";
+    mounted() {
+        var pageName = this.$route.fullPath;
+        var pageName2 = pageName.substring(1);
+        var slashIndex = pageName2.indexOf('/');
+        console.log(slashIndex)
+        for (var i=1; i<4; i++) {
+            document.getElementById(this.pages[i]).style.color = "rgb(126, 126, 126)";
+        }
+        document.getElementById(pageName2).style = "color: #5FF9AB";
     }
-    var path = this.$route.fullPath;
-    var location = path.substring(1);
-    var slashIndex = location.indexOf("/");
-    if (slashIndex != -1) {
-      location = location.substring(0, slashIndex);
-    }
-    document.getElementById(location).style.color = "#5FF9AB";
   },
 };
 </script>
@@ -88,11 +86,13 @@ export default {
 
 .nav-link{
     text-decoration: none !important;
+    text-align: center;
 }
 
 .icon {
-  font-size: 2vh;
-  margin-top: 1vh;
-  margin-bottom: 1vh;
+    font-size: 2vh;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    text-align: center;
 }
 </style>

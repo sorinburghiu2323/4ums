@@ -86,11 +86,8 @@ export default {
           name: this.name,
           description: this.description,
         })
-        .then((response) => {
-          console.log(response);
-        })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     },
   },
