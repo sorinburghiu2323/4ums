@@ -9,7 +9,7 @@ import RegisterPage from "../views/RegisterPage.vue";
 import Community from "../views/Community.vue"
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Post from "@/views/Post";
+import Post from "@/components/posts/Post.vue"
 import Feed from '../views/Feed.vue'
 import axios from 'axios'
 
@@ -35,37 +35,37 @@ const routes = [
         path: "/register",
         name: "RegisterPage",
         component: RegisterPage,
-  },
-  {
-    path: "/communities",
-    name: "Communities",
-    component: CommunitiesPage,
-  },
-  {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
-  },
-  {
-    path: "/leaderboard",
-    name: "Leaderboard",
-    component: Leaderboard,
-  },
-  {
-    path: "/communities/create",
-    name: "CreateCommunity",
-    component: CreateCommunity,
-  },
-  {
-    path: "/communities/create/preview",
-    name: "PreviewCommunity",
-    component: PreviewCommunity,
-  },
-  {
-    path: "/communities/:id/posts/:postId",
-    name: "Post",
-      component: Post,
-  },
+    },
+    {
+        path: "/communities",
+        name: "Communities",
+        component: CommunitiesPage,
+    },
+    {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
+    },
+    {
+        path: "/leaderboard",
+        name: "Leaderboard",
+        component: Leaderboard,
+    },
+    {
+        path: "/communities/create",
+        name: "CreateCommunity",
+        component: CreateCommunity,
+    },
+    {
+        path: "/communities/create/preview",
+        name: "PreviewCommunity",
+        component: PreviewCommunity,
+    },
+    {
+        path: "/communities/:id/posts/:postId",
+        name: "Post",
+        component: Post,
+    },
     {
         path: '/community/:id',
         name: 'Community',

@@ -1,34 +1,42 @@
 <template>
   <div id="nav">
-    <router-link class="nav-link" to="../" v-on:click="goTo('feed')"
-      ><div id="feed" v-on:click="goTo('feed')" style="color: gray">
-        <font-awesome-icon :icon="['fas', 'home']" />
+    <router-link class="nav-link" to="/" v-on:click="goTo('feed')"
+    >
+      <div id="feed" style="color: gray" v-on:click="goTo('feed')">
+        <font-awesome-icon :icon="['fas', 'home']"/>
         <p class="icon">Feed</p>
-      </div></router-link
+      </div>
+    </router-link
     >
     <router-link
-      class="nav-link"
-      to="../communities"
-      v-on:click="goTo('communities')"
-      ><div id="communities" v-on:click="goTo('communities')">
-        <font-awesome-icon :icon="['fas', 'users']" />
+        class="nav-link"
+        to="/communities"
+        v-on:click="goTo('communities')"
+    >
+      <div id="communities" v-on:click="goTo('communities')">
+        <font-awesome-icon :icon="['fas', 'users']"/>
         <p class="icon">Communities</p>
-      </div></router-link
+      </div>
+    </router-link
     >
-    <router-link class="nav-link" to="../profile" v-on:click="goTo('profile')"
-      ><div id="profile" v-on:click="goTo('profile')">
-        <font-awesome-icon :icon="['fas', 'user']" />
+    <router-link class="nav-link" to="/profile" v-on:click="goTo('profile')"
+    >
+      <div id="profile" v-on:click="goTo('profile')">
+        <font-awesome-icon :icon="['fas', 'user']"/>
         <p class="icon">Profile</p>
-      </div></router-link
+      </div>
+    </router-link
     >
     <router-link
-      class="nav-link"
-      to="../leaderboard"
-      v-on:click="goTo('leaderboard')"
-      ><div id="leaderboard" v-on:click="goTo('leaderboard')">
-        <font-awesome-icon :icon="['fas', 'trophy']" />
+        class="nav-link"
+        to="/leaderboard"
+        v-on:click="goTo('leaderboard')"
+    >
+      <div id="leaderboard" v-on:click="goTo('leaderboard')">
+        <font-awesome-icon :icon="['fas', 'trophy']"/>
         <p class="icon">Leaderboard</p>
-      </div></router-link
+      </div>
+    </router-link
     >
   </div>
 </template>
@@ -47,9 +55,9 @@ export default {
       document.getElementById(location).style.color = "#5FF9AB";
       // this.$router.replace(location)
       for (var i = 0; i < 4; i++) {
-        if (this.pages[i] != location) {
+        if (this.pages[i] !== location) {
           document.getElementById(this.pages[i]).style.color =
-            "rgb(126, 126, 126)";
+              "rgb(126, 126, 126)";
         }
       }
     },
