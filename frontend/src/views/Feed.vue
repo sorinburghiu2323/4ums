@@ -69,7 +69,6 @@ export default {
       await axios.get('api/users/feed', {params: {page: this.currentPage}})
           .then((response) => {
             this.loadedPosts = false;
-            console.log(response);
             for (let i = 0; i < response.data.data.length; i++) {
               this.allPosts.push(response.data.data[i]);
             }
@@ -161,19 +160,4 @@ export default {
   margin: auto;
 }
 
-.load-more-btn {
-  padding: 8px;
-  margin: 5px;
-  border-radius: 25px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  width: 150px;
-  margin: auto;
-  margin-bottom: 10px;
-  font-weight: 600;
-  background: rgb(254, 155, 47);
-  background: linear-gradient(90deg, rgba(254, 155, 47, 1) 0%, rgba(254, 101, 15, 1) 35%);
-  box-shadow: 0px 5px 40px #C35456;
-}
 </style>

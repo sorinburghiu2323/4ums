@@ -10,6 +10,7 @@ import {faFontAwesome} from "@fortawesome/free-brands-svg-icons";
 import {
   faAlignLeft,
   faArrowLeft,
+  faCheckCircle,
   faCog,
   faCommentDots,
   faHome,
@@ -45,6 +46,7 @@ library.add(
     faArrowLeft,
     faThumbsUp,
     faQuestionCircle,
+    faCheckCircle
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
