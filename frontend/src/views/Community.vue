@@ -17,11 +17,11 @@
               <p>{{community.description}}</p>              
             </div>
             <div class="join-community">
-                <button class="join-community-btn" v-if="!joined"
+                <button v-if="!joined" class="join-community-btn"
                 @click="joinCommunity()">Join Community</button>
             </div>
             <div class="search-section">
-                <input type="text" placeholder="Search for a thread..."/>
+                <input placeholder="Search for a thread..." type="text"/>
                 <div class="search-icon">
                     <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
                 </div>
@@ -44,6 +44,7 @@
 import axios from 'axios';
 import Post from '@/components/posts/Post.vue';
 import CreatePostButton from '../components/CreatePostButton.vue'
+
 export default {
     name: 'Community',
     components: {
@@ -87,12 +88,8 @@ export default {
                 for(var i = 0; i < response.data.data.length; i++) {
                     this.posts.push(response.data.data[i]);
                 }
-                if(response.data.next_page != null) {
-                    this.loadMore = true;
-                } else {
-                    this.loadMore = false;
-                }
-                this.loadedPosts = true;
+              this.loadMore = response.data.next_page != null;
+              this.loadedPosts = true;
             })
             .catch((error)=>{
                 if(error.response.status === 403) {

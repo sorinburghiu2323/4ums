@@ -2,30 +2,31 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/router.js";
 // Fontawesome documentation: https://www.npmjs.com/package/@fortawesome/vue-fontawesome
-
 // Regular style icons
-import { library } from "@fortawesome/fontawesome-svg-core";
+import {library} from "@fortawesome/fontawesome-svg-core";
 // Brand style icons
-import { faFontAwesome } from "@fortawesome/free-brands-svg-icons";
+import {faFontAwesome} from "@fortawesome/free-brands-svg-icons";
 // Solid style icons
 import {
-  faUserSecret,
-  faSort, 
-  faSearch,
+  faAlignLeft,
+  faArrowLeft,
+  faCheckCircle,
   faCog,
+  faCommentDots,
+  faHome,
+  faQuestion,
+  faQuestionCircle,
+  faSearch,
+  faSort,
+  faThumbsUp,
+  faTimesCircle,
   faTrophy,
   faUser,
   faUsers,
-  faHome,
-  faQuestion,
-  faAlignLeft,
-  faTimesCircle,
-  faCommentDots,
-  faArrowLeft,
-  faThumbsUp,
+  faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
 
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 // Add icons here after import
 library.add(
@@ -34,16 +35,18 @@ library.add(
   faFontAwesome,
   faSearch,
   faCog,
-  faTrophy,
-  faUsers,
-  faUser,
-  faHome,
-  faQuestion,
-  faAlignLeft,
-  faTimesCircle,
-  faCommentDots,
-  faArrowLeft,
-  faThumbsUp,
+    faTrophy,
+    faUsers,
+    faUser,
+    faHome,
+    faQuestion,
+    faAlignLeft,
+    faTimesCircle,
+    faCommentDots,
+    faArrowLeft,
+    faThumbsUp,
+    faQuestionCircle,
+    faCheckCircle
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
