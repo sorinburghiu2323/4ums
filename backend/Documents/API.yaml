@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: Bool to whether the user is applied for a teacher's account.
+                  description: "Bool to whether the user is applied for a teacher's account."
               required:
                 - username
                 - email
@@ -204,7 +204,7 @@ paths:
               required:
                 - name
                 - description
-        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
+        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
     parameters: []
     get:
       summary: ''
@@ -457,6 +457,47 @@ paths:
               required:
                 - comment
         description: Content of the comment to post.
+  /users/me:
+    put:
+      summary: ''
+      operationId: put-users-me
+      responses:
+        '200':
+          description: OK - User updated.
+        '400':
+          description: 'Bad Request - {description of why request is bad}'
+        '401':
+          description: Unauthorized - Login required.
+      description: Settings endpoint.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                password_repeat:
+                  type: string
+                  description: Required if password is set.
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                hide_leaderboard:
+                  type: boolean
+                  description: True if user wishes to hide leaderboard.
+                username:
+                  type: string
+              required:
+                - email
+                - first_name
+                - last_name
+                - hide_leaderboard
+                - username
+        description: Password can be updated individually without all the other fields being required.
 components:
   schemas:
     Post:
@@ -476,7 +517,7 @@ components:
           type: string
         post_type:
           type: string
-          description: Either "discussion" or "questions".
+          description: 'Either "discussion" or "questions".'
         created_at:
           type: string
         likes_num:

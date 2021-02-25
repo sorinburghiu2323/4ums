@@ -26,4 +26,5 @@ urlpatterns = [
         "communities/<int:community_id>/posts/<int:post_id>/comments/<int:comment_id>/approve",
         views.comment_approve,
     ),
+    path("users/me", views.users_me),
 ]

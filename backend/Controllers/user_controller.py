@@ -116,3 +116,56 @@ def get_feed(request):
     return JsonResponse(
         json_paginator(request, feed, lambda d: d.serialize(request)), status=200
     )
+
+
+def update_me(request):
+    """
+    Update users given correct fields.
+    :param request: session request.
+    :return: 200 - user updated.
+             400 - bad request.
+             401 - login required.
+    """
+    user = request.user
+    password_updated = False
+    if "password" in request.DATA and "password_repeat" in request.DATA:
+        update_password = validate_password(
+            request.DATA["password"], request.DATA["password_repeat"]
+        )
+        if update_password:
+            return JsonResponse(
+                "Bad Request - " + update_password, status=400, safe=False
+            )
+
+        # Update password.
+        user.set_password(request.DATA["password"])
+        user.save()
+        password_updated = True
+
+    if (
+        "email" in request.DATA
+        and "first_name" in request.DATA
+        and "last_name" in request.DATA
+        and "email" in request.DATA
+        and "hide_leaderboard" in request.DATA
+        and "username" in request.DATA
+    ):
+        update_valid = validate_user_data(
+            request.DATA["first_name"],
+            request.DATA["last_name"],
+            request.DATA["email"],
+            request.DATA["username"],
+        )
+        if update_valid:
+            return JsonResponse("Bad Request - " + update_valid, status=400, safe=False)
+
+        # Update user.
+        user.first_name = request.DATA["first_name"]
+        user.last_name = request.DATA["last_name"]
+        user.email = request.DATA["email"]
+        user.username = request.DATA["username"]
+        user.save()
+
+    elif not password_updated:
+        return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
+    return JsonResponse("OK - User updated.", status=200, safe=False)
