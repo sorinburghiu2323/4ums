@@ -164,6 +164,7 @@ def update_me(request):
         user.last_name = request.DATA["last_name"]
         user.email = request.DATA["email"]
         user.username = request.DATA["username"]
+        user.hide_leaderboard = request.DATA["hide_leaderboard"]
         user.save()
 
     elif not password_updated:
