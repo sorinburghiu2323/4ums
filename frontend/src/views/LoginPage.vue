@@ -10,11 +10,11 @@
 
             <div class="input">
                 <div class="color-bar" style="background: #FB6D13"></div>
-                <input type="text" v-model="email" placeholder="Email address"/>
+                <input v-model="email" placeholder="Email address" type="text"/>
             </div>
             <div class="input">
                 <div class="color-bar" style="background: #8A3BFE"></div>
-                <input type="password" v-model="password" placeholder="Password"
+                <input v-model="password" placeholder="Password" type="password"
                 @keyup.enter="loginUser()">
             </div>
             <div>
@@ -32,15 +32,17 @@
 
 <script>
 import axios from 'axios'
+import Feed from "@/views/Feed";
+
 export default {
-    name: 'LoginPage',
-    data() {
-        return {
-            email: '',
-            password: '',
-            failedLogin: false,
-        }
-    },
+  name: 'LoginPage',
+  data() {
+    return {
+      email: '',
+      password: '',
+      failedLogin: false,
+    }
+  },
     methods: {
         navigate(path) {
             this.$router.push(path);
@@ -49,8 +51,8 @@ export default {
             
             axios.post('api/login', {email: this.email, password: this.password})
             .then(() => {
-                this.failedLogin = false;
-                this.$router.push('feed');
+              this.failedLogin = false;
+              this.$router.push(Feed);
             })
             .catch((error) =>{
                 console.error(error);

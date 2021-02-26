@@ -1,50 +1,53 @@
 <template>
-  <div class="container" @click="navigateToPost()">
-        <div class="details">
-          <div class="title">
-            <p>{{ post.title }}</p>
-          </div>
-          <div class="description">
-            <p>{{ post.description }}</p>
-          </div>
-          <div class="date">
-            <p>{{ date_time }}</p>
-          </div>
+  <div @click='navigateToPost'>
+    <div class="containers">
+      <div class="details">
+        <div class="title">
+          <p>{{ post.title }}</p>
+        </div>
+        <div class="description">
+          <p>{{ post.description }}</p>
+        </div>
+        <div class="date">
+          <p>{{ date_time }}</p>
+        </div>
 
-          <div v-if="post_type === 'question' && !is_answered">
-            <div class="open">
-              <div class="oval">
-              </div>
-              <font-awesome-icon :icon="['fa', 'question-circle']"></font-awesome-icon>
-              <p>Open</p>
+        <div v-if="post_type === 'question' && !is_answered">
+          <div class="open">
+            <div class="oval">
             </div>
-          </div>
-          <div v-else-if="post_type === 'discussion'">
-            <div class="discussion">
-              <div class="oval">
-              </div>
-              <font-awesome-icon :icon="['fa', 'comment-dots']"></font-awesome-icon>
-              <p>Discussion</p>
-            </div>
-          </div>
-          <div v-else>
-            <div class="answer">
-              <div class="oval">
-              </div>
-              <font-awesome-icon :icon="['fa', 'check-circle']"></font-awesome-icon>
-              <p>Answered</p>
-            </div>
+            <font-awesome-icon :icon="['fa', 'question-circle']"></font-awesome-icon>
+            <p>Open</p>
           </div>
         </div>
-    <div class="likes">
-      <div class="like-icon">
-        <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+        <div v-else-if="post_type === 'discussion'">
+          <div class="discussion">
+            <div class="oval">
+            </div>
+            <font-awesome-icon :icon="['fa', 'comment-dots']"></font-awesome-icon>
+            <p>Discussion</p>
+          </div>
+        </div>
+        <div v-else>
+          <div class="answer">
+            <div class="oval">
+            </div>
+            <font-awesome-icon :icon="['fa', 'check-circle']"></font-awesome-icon>
+            <p>Answered</p>
+          </div>
+        </div>
       </div>
-      <div class="like-count">{{ post.likes_num }}</div>
+      <div class="likes">
+        <div class="like-icon">
+          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+        </div>
+        <div class="like-count">{{ post.likes_num }}</div>
+      </div>
+      <div class="author">
+        <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
+      </div>
     </div>
-    <div class="author">
-      <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
-    </div>
+
   </div>
 </template>
 <script>
@@ -61,14 +64,20 @@ export default {
     return {
       info: 3,
       post_type: this.post.post_type,
-      is_answered: this.post.is_liked,
-      date_time: moment((this.post.create_at)).format('DD/MM/YY')
+      is_answered: this.post["is_liked"],
+      date_time: moment((this.post["create_at"])).format('DD/MM/YY'),
     }
   },
   methods: {
     navigateToPost() {
-
-    },
+      this.$router.push({
+        name: 'PostPage',
+        params: {
+          id: this.post.community.id,
+          postId: this.post.id
+        }
+      })
+    }
 
   }
 
@@ -76,7 +85,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.containers {
   z-index: -1;
   cursor: pointer;
   display: flex;

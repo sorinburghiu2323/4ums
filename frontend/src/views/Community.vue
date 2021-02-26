@@ -1,42 +1,44 @@
 <template>
     <div class="container">
-        <CreatePostButton />
-        <router-link class="nav-link" to="../communities">
-            <p id="back">
-                <font-awesome-icon :icon="['fas', 'arrow-left']" /> Communities
-            </p>
-        </router-link>
-        <div v-if="loadedCommunity" class="community-content">
-            <div class="header">
-                <h1>{{community.name}}</h1>
-                <div class="settings-icon">
-                    <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
-                </div>
-            </div>
-            <div class="description">
-              <p>{{community.description}}</p>              
-            </div>
-            <div class="join-community">
-                <button v-if="!joined" class="join-community-btn"
-                @click="joinCommunity()">Join Community</button>
-            </div>
-            <div class="search-section">
-                <input placeholder="Search for a thread..." type="text"/>
-                <div class="search-icon">
-                    <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
-                </div>
-            </div>
-            <div v-if="loadedPosts && joined"> 
-              <Post v-for="(post, index) in posts" :key="index"
-              :post="post"/>
-            </div>
-            <div v-else-if="!joined" style="margin-top: 50px;"> 
-              Join community to see posts...
-            </div>
-         
+      <CreatePostButton/>
+      <router-link class="nav-link" to="/communities">
+        <p id="back">
+          <font-awesome-icon :icon="['fas', 'arrow-left']"/>
+          Communities
+        </p>
+      </router-link>
+      <div v-if="loadedCommunity" class="community-content">
+        <div class="header">
+          <h1>{{ community.name }}</h1>
+          <div class="settings-icon">
+            <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
+          </div>
+        </div>
+        <div class="description">
+          <p>{{ community.description }}</p>
+        </div>
+        <div class="join-community">
+          <button v-if="!joined" class="join-community-btn"
+                  @click="joinCommunity()">Join Community
+          </button>
+        </div>
+        <div class="search-section">
+          <input placeholder="Search for a thread..." type="text"/>
+          <div class="search-icon">
+            <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
+          </div>
+        </div>
+        <div v-if="loadedPosts && joined">
+          <Post v-for="(post, index) in posts" :key="index"
+                :post="post"/>
+        </div>
+        <div v-else-if="!joined" style="margin-top: 50px;">
+          Join community to see posts...
+        </div>
+
         <button v-if="loadMore" class="load-more-btn" @click="loadMorePosts()">Load more</button>
 
-        </div>
+      </div>
   </div>
 </template>
 
@@ -72,39 +74,40 @@ export default {
     },
     methods: {
         getCommunity() {
-            const community_id = this.$route.params.id;
-            const url = 'api/communities/' + community_id;
-            axios.get(url)
-            .then((response) => {
+          const community_id = this.$route.params.id;
+          const url = '/api/communities/' + community_id;
+          axios.get(url)
+              .then((response) => {
+                console.log(response);
                 this.community = response.data;
                 this.loadedCommunity = true;
-            })
+              })
         },
         getPosts() {
-            const community_id = this.$route.params.id;
-            const url = 'api/communities/' + community_id + '/posts';
-            axios.get(url, {params: {page: this.currentPage}})
-            .then((response) => {
-                for(var i = 0; i < response.data.data.length; i++) {
-                    this.posts.push(response.data.data[i]);
+          const community_id = this.$route.params.id;
+          const url = '/api/communities/' + community_id + '/posts';
+          axios.get(url, {params: {page: this.currentPage}})
+              .then((response) => {
+                for (let i = 0; i < response.data.data.length; i++) {
+                  this.posts.push(response.data.data[i]);
                 }
-              this.loadMore = response.data.next_page != null;
-              this.loadedPosts = true;
-            })
-            .catch((error)=>{
-                if(error.response.status === 403) {
-                    this.joined = false;
+                this.loadMore = response.data["next_page"] !== null;
+                this.loadedPosts = true;
+              })
+              .catch((error) => {
+                if (error.response.status === 403) {
+                  this.joined = false;
                 }
-                
-            })          
+
+              })
         },
         loadMorePosts() {
             this.currentPage += 1;
             this.getPosts();
         },
         joinCommunity() {
-            const community_id = this.$route.params.id;
-            const url = 'api/communities/' + community_id;
+          const community_id = this.$route.params.id;
+          const url = '/api/communities/' + community_id;
             axios.post(url)
             .then(() => {
                 this.joined = true;
