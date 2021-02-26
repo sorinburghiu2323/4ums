@@ -498,6 +498,29 @@ paths:
                 - hide_leaderboard
                 - username
         description: Password can be updated individually without all the other fields being required.
+  '/users/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: Not Found - User does not exist.
+      operationId: get-users-id
+      description: Get individual user profile.
 components:
   schemas:
     Post:
@@ -619,3 +642,30 @@ components:
         - comment
         - comment_likes
         - created_at
+    User:
+      title: User
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        points:
+          type: integer
+        is_teacher:
+          type: boolean
+          description: True if user is teacher.
+        leaderboard_position:
+          type: integer
+          description: '[Optional] If user has hide_leaderboard False.'
+      required:
+        - id
+        - username
+        - first_name
+        - last_name
+        - points
+        - is_teacher
