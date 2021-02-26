@@ -123,3 +123,12 @@ def comment_approve(request, community_id, post_id, comment_id):
         DELETE=comment_controller.disapprove_comment,
         args=[community_id, post_id, comment_id],
     )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def users_me(request):
+    return handle_methods(
+        request,
+        PUT=user_controller.update_me,
+    )
