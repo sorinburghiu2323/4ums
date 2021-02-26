@@ -142,7 +142,7 @@ def update_me(request):
         user.save()
         password_updated = True
 
-    if (
+    elif (
         "email" in request.DATA
         and "first_name" in request.DATA
         and "last_name" in request.DATA
