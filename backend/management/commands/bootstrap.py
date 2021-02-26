@@ -139,11 +139,13 @@ class Command(BaseCommand):
                         user=t,
                         post=post,
                     )
-                    comment = PostComment.objects.create(
-                        user=t,
-                        post=post,
-                        comment="Lorem ipsum dolor sit amet",
-                    )
+                    for i in range(10):
+                        comment = PostComment.objects.create(
+                            user=t,
+                            post=post,
+                            comment="Lorem ipsum dolor sit amet",
+                        )
+
                     for t2 in team_2:
                         PostCommentLike.objects.create(
                             user=t2,

@@ -1,5 +1,16 @@
 <template>
-  <div @click='navigateToPost'>
+  <div v-if="loadedPost" id="infinite" class="container">
+    <router-link class="nav-link" to="..">
+      <p id="back">
+        <font-awesome-icon :icon="['fas', 'arrow-left']"/>
+        {{ post.community.name }}
+      </p>
+    </router-link>
+    <div class="header">
+      <div class="settings-icon">
+        <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
+      </div>
+    </div>
     <div class="containers">
       <div class="details">
         <div class="title">
@@ -12,7 +23,7 @@
           <p>{{ date_time }}</p>
         </div>
 
-        <div v-if="post_type === 'question' && !is_answered">
+        <div v-if="post_type === 'question' && !isAnswered">
           <div class="open">
             <div class="oval">
             </div>
@@ -47,40 +58,93 @@
         <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
       </div>
     </div>
-
+    <div v-if="loadedPost" class="comments-list">
+      <Comment v-for="(comment, index) in allComments" :key="index"
+               :comment="comment"/>
+    </div>
   </div>
 </template>
-<script>
-import moment from 'moment'
 
+<script>
+
+import axios from "axios";
+import Comment from "@/components/posts/Comment";
+import moment from "moment";
+import LoginPage from "@/views/LoginPage";
 
 export default {
-  name: 'Post',
-  props: {
-    post: Object,
+  name: "PostPage",
+  components: {
+    Comment
   },
-
+  watch: {
+    showPost() {
+      this.currentPage = 1;
+      this.allComments = [];
+      this.loadedPost = false;
+      this.getPost();
+    }
+  },
   data() {
     return {
-      info: 3,
-      post_type: this.post.post_type,
-      is_answered: this.post["is_liked"],
-      date_time: moment((this.post["create_at"])).format('DD/MM/YY'),
+      id: this.$route.params.id,
+      postId: this.$route.params.postId,
+      loadedPost: false,
+      currentPage: 1,
+      bottomOfPageReached: false,
+      errorLoadingPosts: false,
+      loadMore: false,
+      scrolledToBottom: false,
+      allComments: [],
+      post: Object,
+      post_type: "discussion",
+      date_time: '10/20/30',
+      isAnswered: false
     }
   },
+  mounted() {
+    this.getPost();
+    this.scroll();
+  },
   methods: {
-    navigateToPost() {
-      this.$router.push({
-        name: 'PostPage',
-        params: {
-          id: this.post.community.id,
-          postId: this.post.id
+    scroll() {
+      window.onscroll = () => {
+        let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
+            document.body.scrollTop) + window.innerHeight;
+        if (bottomOfWindow >= document.documentElement.offsetHeight - 200) {
+          if (this.loadMore) {
+            this.loadMoreComments();
+            this.loadMore = false;
+          }
         }
-      })
+      }
+    },
+    async getPost() {
+      await axios.get('/api/communities/' + this.id + '/posts/' + this.postId, {params: {page: this.currentPage}})
+          .then((response) => {
+            this.loadedPost = false;
+            this.post = response.data.post;
+            for (let i = 0; i < response.data.comments.data.length; i++) {
+              this.allComments.push(response.data.comments.data[i]);
+            }
+            this.date_time = moment((this.post["created_at"])).format('DD/MM/YY');
+            this.post_type = this.post["post_type"];
+            this.loadMore = response.data.comments["next_page"] !== null;
+            this.isAnswered = response.data.comments["data"]["is_approved"];
+            this.loadedPost = true;
+          }).catch((error) => {
+            console.error(error);
+            if (error.response.status === 401) {
+              this.$router.push(LoginPage);
+            }
+            this.loadedPosts = false;
+          })
+    },
+    loadMoreComments() {
+      this.currentPage += 1;
+      this.getPost();
     }
-
   }
-
 }
 </script>
 
@@ -95,8 +159,7 @@ export default {
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
-  border-radius: 25px;
-  background: linear-gradient(to right, #272B39, #1D2029);
+  background: linear-gradient(to right, #272B39, #1E212B);
   position: relative;
 }
 
@@ -104,8 +167,12 @@ export default {
   margin: 20px auto 20px 25px;
 }
 
+.comments-list {
+  margin-top: 20px;
+}
+
 .details p {
-    margin: 0;
+  margin: 0;
 }
 
 .details .title {
@@ -115,18 +182,18 @@ export default {
 }
 
 .title p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* number of lines to show */
-    -webkit-box-orient: vertical;
-    text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+  text-align: left;
 }
 
 .details .description {
-    height: 70%;
-    font-size: 15px;
-    color: white;
+  height: 70%;
+  font-size: 15px;
+  color: #7e7e7e;
 }
 
 .description p {
@@ -263,16 +330,17 @@ export default {
   margin: auto;
   margin-left: 10px;
 }
+
 .author {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    color: #7e7e7e;
-    font-style: italic;
-    margin-right: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: #7e7e7e;
+  font-style: italic;
+  margin-right: 10px;
 }
 
 .author-name {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 </style>
