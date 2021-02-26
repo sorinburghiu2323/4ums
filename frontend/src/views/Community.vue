@@ -78,7 +78,6 @@ export default {
           const url = '/api/communities/' + community_id;
           axios.get(url)
               .then((response) => {
-                console.log(response);
                 this.community = response.data;
                 this.loadedCommunity = true;
               })

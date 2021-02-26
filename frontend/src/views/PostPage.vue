@@ -130,7 +130,6 @@ export default {
             this.date_time = moment((this.post["created_at"])).format('DD/MM/YY');
             this.post_type = this.post["post_type"];
             this.loadMore = response.data.comments["next_page"] !== null;
-            console.log(response.data.comments);
             this.isAnswered = response.data.comments["data"]["is_approved"];
             this.loadedPost = true;
           }).catch((error) => {

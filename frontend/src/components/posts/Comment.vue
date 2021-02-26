@@ -37,7 +37,6 @@ export default {
     comment: Object
   },
   data() {
-    console.log(this.comment.comment);
     return {
       info: 3,
       comment_data: this.comment.comment,
