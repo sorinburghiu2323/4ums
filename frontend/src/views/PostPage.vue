@@ -104,10 +104,23 @@ export default {
   },
   mounted() {
     this.getPost();
+    this.scroll();
   },
   methods: {
+    scroll() {
+      window.onscroll = () => {
+        let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
+            document.body.scrollTop) + window.innerHeight;
+        if (bottomOfWindow >= document.documentElement.offsetHeight - 200) {
+          if (this.loadMore) {
+            this.loadMoreComments();
+            this.loadMore = false;
+          }
+        }
+      }
+    },
     async getPost() {
-      await axios.get('/api/communities/' + this.id + '/posts/' + this.postId)
+      await axios.get('/api/communities/' + this.id + '/posts/' + this.postId, {params: {page: this.currentPage}})
           .then((response) => {
             this.loadedPost = false;
             this.post = response.data.post;
@@ -117,6 +130,7 @@ export default {
             this.date_time = moment((this.post["created_at"])).format('DD/MM/YY');
             this.post_type = this.post["post_type"];
             this.loadMore = response.data.comments["next_page"] !== null;
+            console.log(response.data.comments);
             this.isAnswered = response.data.comments["data"]["is_approved"];
             this.loadedPost = true;
           }).catch((error) => {
@@ -127,6 +141,10 @@ export default {
             this.loadedPosts = false;
           })
     },
+    loadMoreComments() {
+      this.currentPage += 1;
+      this.getPost();
+    }
   }
 }
 </script>
