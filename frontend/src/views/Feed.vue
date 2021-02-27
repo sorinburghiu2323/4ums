@@ -12,11 +12,16 @@
         <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
       </div>
     </div>
-    <div v-if="loadedPosts">
+    <div v-if="loadedPosts && !noPosts">
       <div class="post-content">
         <Post v-for="(post, index) in allPosts" :key="index"
               :post="post"/>
       </div>
+    </div>
+    <div v-else-if="noPosts">
+      <h3>
+        There are no posts left for you to view, maybe join more communities?
+      </h3>
     </div>
   </div>
 </template>
@@ -46,6 +51,7 @@ export default {
       errorLoadingPosts: false,
       loadMore: false,
       scrolledToBottom: false,
+      noPosts: false
     }
   },
   mounted() {
@@ -69,6 +75,9 @@ export default {
       await axios.get('api/users/feed', {params: {page: this.currentPage}})
           .then((response) => {
             this.loadedPosts = false;
+            if (this.currentPage === 1 && response.data.data.length === 0) {
+              this.noPosts = true;
+            }
             for (let i = 0; i < response.data.data.length; i++) {
               this.allPosts.push(response.data.data[i]);
             }
