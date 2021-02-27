@@ -143,3 +143,10 @@ def users(request, user_id):
         GET=user_controller.get_user,
         args=[user_id],
     )
+
+@csrf_exempt
+def leaderboard(request):
+    return handle_methods(
+        request,
+        GET=user_controller.get_leaderboard
+    )
