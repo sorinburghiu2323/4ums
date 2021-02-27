@@ -1,7 +1,8 @@
 <template>
   <div class="container">
       <CommunityDisplay v-for="(community,index) in communities" :key="index"
-      :community="community" :myCommunity="myCommunities"/>
+      :community="community" :communityType="communityType"
+      :editMode="editMode"/>
   </div>
 </template>
 
@@ -14,9 +15,15 @@ export default {
     },
     props: {
         communities: Array,
-        myCommunities: {
-            default: true,
-            type: Boolean,
+        communityType: String,
+    },
+    computed: {
+        editMode() {
+            if(this.$route.name === 'Manage') {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

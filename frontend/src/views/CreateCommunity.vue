@@ -89,6 +89,7 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+      this.$router.push({name: 'Communities'});
     },
   },
   data() {
@@ -226,7 +227,7 @@ export default {
 }
 
 .inputBox {
-  width: 99%;
+  width: 90vw;
   border: 0;
   color: white;
   background-image: linear-gradient(to right, #262b38, #1d2029);
