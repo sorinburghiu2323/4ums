@@ -103,6 +103,7 @@ def community(request, community_id):
         args=[community_id],
     )
 
+
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def community_leave(request, community_id):
