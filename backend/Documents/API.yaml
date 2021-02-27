@@ -287,6 +287,26 @@ paths:
         '404':
           description: 'Not found - No community with the id "{id}" exists'
       description: Get an individual community.
+  '/communities/{id}/leave':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communities-id-leave
+      responses:
+        '200':
+          description: User has left the community
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: 'Not found - No community with the id "{id}" exists'
+        '409':
+          description: Conflict - The user is not part of that community
+      description: Leave a community
   '/communities/{id}/posts/{id}/likes':
     parameters:
       - schema:

@@ -106,6 +106,16 @@ def community(request, community_id):
 
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
+def community_leave(request, community_id):
+    return handle_methods(
+        request,
+        POST=community_controller.leave_community,
+        args=[community_id],
+    )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
 def comments(request, community_id, post_id):
     return handle_methods(
         request,
