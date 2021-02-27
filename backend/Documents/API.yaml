@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
               required:
                 - username
                 - email
@@ -204,7 +204,7 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
     get:
       summary: ''
@@ -534,6 +534,26 @@ paths:
           description: Not Found - User does not exist.
       operationId: get-users-id
       description: Get individual user profile.
+  '/communities/{id}/leave':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communities-id-leave
+      responses:
+        '200':
+          description: User has left the community
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: 'Not found - No community with the id "{id}" exists'
+        '409':
+          description: Conflict - The user is not part of that community
+      description: Leave a community
 components:
   schemas:
     Post:
@@ -553,7 +573,7 @@ components:
           type: string
         post_type:
           type: string
-          description: 'Either "discussion" or "questions".'
+          description: Either "discussion" or "questions".
         created_at:
           type: string
         likes_num:
