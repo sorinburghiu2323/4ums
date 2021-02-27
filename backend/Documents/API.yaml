@@ -498,6 +498,19 @@ paths:
                 - hide_leaderboard
                 - username
         description: Password can be updated individually without all the other fields being required.
+    get:
+      summary: ''
+      operationId: get-users-me
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized - Login required.
+      description: Get logged in user profile.
   '/users/{id}':
     parameters:
       - schema:
@@ -645,6 +658,7 @@ components:
     User:
       title: User
       type: object
+      description: User data for profile with points attached.
       properties:
         id:
           type: integer
@@ -662,6 +676,33 @@ components:
         leaderboard_position:
           type: integer
           description: '[Optional] If user has hide_leaderboard False.'
+        graphs:
+          type: object
+          properties:
+            recent:
+              type: array
+              description: |-
+                Activity in the last 4 weeks.
+                Each object is a week.
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  points:
+                    type: integer
+            top_communities:
+              type: array
+              description: |-
+                Top 3 most used communities.
+                Each object is a community.
+              items:
+                type: object
+                properties:
+                  community:
+                    $ref: '#/components/schemas/CommunitySimple'
+                  points:
+                    type: integer
       required:
         - id
         - username

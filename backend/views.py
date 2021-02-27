@@ -130,5 +130,16 @@ def comment_approve(request, community_id, post_id, comment_id):
 def users_me(request):
     return handle_methods(
         request,
+        GET=user_controller.get_user(request, request.user.id),
         PUT=user_controller.update_me,
+    )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def users(request, user_id):
+    return handle_methods(
+        request,
+        GET=user_controller.get_user,
+        args=[user_id],
     )
