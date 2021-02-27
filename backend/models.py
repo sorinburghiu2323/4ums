@@ -86,6 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "last_name": self.last_name,
             "points": self.points,
             "is_teacher": self.is_teacher,
+            "hide_leaderboard": self.hide_leaderboard,
             "leaderboard_position": self.ranking()
             if not self.hide_leaderboard
             else None,
