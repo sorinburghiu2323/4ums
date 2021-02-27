@@ -27,4 +27,5 @@ urlpatterns = [
         views.comment_approve,
     ),
     path("users/me", views.users_me),
+    path("users/<int:user_id>", views.users),
 ]

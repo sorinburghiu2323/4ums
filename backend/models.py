@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.db.models import Count
 from django.utils import timezone
 
 
@@ -76,6 +77,25 @@ class User(AbstractBaseUser, PermissionsMixin):
             "points": self.points,
             "is_teacher": self.is_teacher,
         }
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "points": self.points,
+            "is_teacher": self.is_teacher,
+            "leaderboard_position": self.ranking()
+            if not self.hide_leaderboard
+            else None,
+        }
+
+    def ranking(self):
+        aggregate = User.objects.filter(points=self.points).aggregate(
+            ranking=Count("points")
+        )
+        return aggregate["ranking"] + 1
 
 
 # Community Class

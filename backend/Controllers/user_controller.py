@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
 from backend.Utils.paginators import json_paginator
+from backend.Utils.points_handler import graph_recent, get_graphs
 from backend.Utils.user_validation import (
     validate_user_data,
     validate_password,
@@ -170,3 +171,21 @@ def update_me(request):
     elif not password_updated:
         return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
     return JsonResponse("OK - User updated.", status=200, safe=False)
+
+
+def get_user(request, user_id):
+    """
+    Endpoint for profile given a user id.
+    :param request: session request.
+    :param user_id: id of user.
+    :return: 200 - user profile.
+             401 - login required.
+             404 - user not found.
+    """
+    try:
+        get_user = User.objects.get(id=user_id)
+    except:
+        return JsonResponse("Not Found - User does not exist.", status=404, safe=False)
+    response = get_user.serialize()
+    response["graphs"] = get_graphs(get_user)
+    return JsonResponse(response, status=200)
