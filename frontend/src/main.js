@@ -23,7 +23,8 @@ import {
   faTrophy,
   faUser,
   faUsers,
-  faUserSecret
+  faUserSecret,
+  faEdit
 } from "@fortawesome/free-solid-svg-icons";
 
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
@@ -46,7 +47,8 @@ library.add(
     faArrowLeft,
     faThumbsUp,
     faQuestionCircle,
-    faCheckCircle
+    faCheckCircle,
+    faEdit
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
