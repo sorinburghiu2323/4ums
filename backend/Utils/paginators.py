@@ -22,7 +22,7 @@ def json_paginator(request, data_to_paginate: list, serialize: callable) -> dict
                     "data": (serialised response),
                 }
     """
-    POSTS_PER_PAGE = 4  # Amount of posts that can fit in a page.
+    POSTS_PER_PAGE = 20  # Amount of posts that can fit in a page.
     paginator = Paginator(data_to_paginate, POSTS_PER_PAGE)
     # If the request is for all pages, return all data
 
