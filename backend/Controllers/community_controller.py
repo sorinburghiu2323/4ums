@@ -80,6 +80,41 @@ def join_community(request, community_id):
     return JsonResponse("Joined successfully", status=200, safe=False)
 
 
+def leave_community(request, community_id):
+    """
+    Leave a community
+    :param request: session request.
+    :param community_id: id of community to leave.
+    :return: 200 OK
+             401 Unauthorized
+             404 Not found
+             409 Conflict
+    """
+
+    try:
+        comm_instance = Community.objects.get(pk=community_id)
+    except Community.DoesNotExist:
+        return JsonResponse(
+            f'Not found - No community with the id "{community_id}" exists',
+            status=404,
+            safe=False,
+        )
+
+    user = request.user
+
+    try:
+        comm_member_instance = CommunityMember.objects.get(
+            community=comm_instance, user=user
+        )
+    except CommunityMember.DoesNotExist:
+        return JsonResponse(
+            "Conflict - The user is not part of that community", status=409, safe=False
+        )
+
+    comm_member_instance.delete()
+    return JsonResponse("User has left the community", status=200, safe=False)
+
+
 def list_communities(request):
     """
     Get a paginated list of communities.
