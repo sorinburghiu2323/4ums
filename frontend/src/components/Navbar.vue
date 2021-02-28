@@ -51,10 +51,11 @@ export default {
   },
   mounted() {
     let pageName = this.$route.fullPath;
-    let pageName2 = pageName.substring(1);
+    let pageName2 = pageName.substring(1).split("/")[0];
     for (let i = 1; i < 4; i++) {
       document.getElementById(this.pages[i]).style.color = "rgb(126, 126, 126)";
     }
+
     if (pageName2 === "") {
       document.getElementById(this.pages[0]).style.color = "#5FF9AB";
     } else {

@@ -9,9 +9,10 @@ import RegisterPage from "../views/RegisterPage.vue";
 import Community from "../views/Community.vue"
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Post from "@/components/posts/Post.vue"
 import Feed from '../views/Feed.vue'
 import axios from 'axios'
+import PostPage from "@/views/PostPage";
+import NotFound from "@/views/NotFound";
 
 Vue.use(VueRouter);
 
@@ -63,13 +64,18 @@ const routes = [
     },
     {
         path: "/communities/:id/posts/:postId",
-        name: "Post",
-        component: Post,
+        name: "PostPage",
+        component: PostPage,
     },
     {
-        path: '/community/:id',
+        path: '/communities/:id',
         name: 'Community',
         component: Community,
+    },
+    {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound,
     }
 ];
 

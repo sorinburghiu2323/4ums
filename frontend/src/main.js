@@ -54,7 +54,7 @@ library.add(
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
-
+Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
 // Cookie library

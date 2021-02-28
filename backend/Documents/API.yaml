@@ -287,6 +287,26 @@ paths:
         '404':
           description: 'Not found - No community with the id "{id}" exists'
       description: Get an individual community.
+  '/communities/{id}/leave':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communities-id-leave
+      responses:
+        '200':
+          description: User has left the community
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: 'Not found - No community with the id "{id}" exists'
+        '409':
+          description: Conflict - The user is not part of that community
+      description: Leave a community
   '/communities/{id}/posts/{id}/likes':
     parameters:
       - schema:
@@ -498,6 +518,42 @@ paths:
                 - hide_leaderboard
                 - username
         description: Password can be updated individually without all the other fields being required.
+    get:
+      summary: ''
+      operationId: get-users-me
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized - Login required.
+      description: Get logged in user profile.
+  '/users/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized - Login required.
+        '404':
+          description: Not Found - User does not exist.
+      operationId: get-users-id
+      description: Get individual user profile.
 components:
   schemas:
     Post:
@@ -619,3 +675,58 @@ components:
         - comment
         - comment_likes
         - created_at
+    User:
+      title: User
+      type: object
+      description: User data for profile with points attached.
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        points:
+          type: integer
+        is_teacher:
+          type: boolean
+          description: True if user is teacher.
+        leaderboard_position:
+          type: integer
+          description: '[Optional] If user has hide_leaderboard False.'
+        graphs:
+          type: object
+          properties:
+            recent:
+              type: array
+              description: |-
+                Activity in the last 4 weeks.
+                Each object is a week.
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  points:
+                    type: integer
+            top_communities:
+              type: array
+              description: |-
+                Top 3 most used communities.
+                Each object is a community.
+              items:
+                type: object
+                properties:
+                  community:
+                    $ref: '#/components/schemas/CommunitySimple'
+                  points:
+                    type: integer
+      required:
+        - id
+        - username
+        - first_name
+        - last_name
+        - points
+        - is_teacher
