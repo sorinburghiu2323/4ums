@@ -189,3 +189,16 @@ def get_user(request, user_id):
     response = get_user.serialize()
     response["graphs"] = get_graphs(get_user)
     return JsonResponse(response, status=200)
+
+
+def get_leaderboard(request):
+    """
+    Get the leaderboard.
+    :param requet: session request.
+    :return: 200 OK
+    """
+
+    leaderboard = []
+
+
+    return JsonResponse(leaderboard,status=200)
