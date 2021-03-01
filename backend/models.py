@@ -96,11 +96,24 @@ class User(AbstractBaseUser, PermissionsMixin):
             else None,
         }
 
+    def serialize_leaderboard(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "points": self.points,
+            "leaderboard_position": self.ranking(),
+        }
+
     def ranking(self):
-        aggregate = User.objects.filter(points=self.points).aggregate(
-            ranking=Count("points")
-        )
-        return aggregate["ranking"] + 1
+        # given that all users with equal points should be of equal ranking
+        # ranking should be calculated by "points class"
+        # to do this, we use .distinct() to get each unique number of points
+        # ie, each "points class". then, the ranking of each points class
+        # can be evaluated by counting the number of classes with more points
+        # plus 1, so that the top position is "1st" not "0th"
+        return User.objects.filter(
+            hide_leaderboard=False, is_staff=False
+        ).values("points").distinct().filter(points__gt=self.points).count() + 1
 
 
 # Community Class

@@ -214,12 +214,16 @@ def get_user(request, user_id):
 
 def get_leaderboard(request):
     """
-    Get the leaderboard.
+    Get the leaderboard; a (paginated) list of all users ordered by ranking
     :param requet: session request.
     :return: 200 OK
     """
 
-    leaderboard = []
+    users = User.objects.filter(
+        is_staff=False, hide_leaderboard=False
+    ).order_by('-points')
 
-
-    return JsonResponse(leaderboard,status=200)
+    return JsonResponse(
+        json_paginator(request, users, lambda d: d.serialize_leaderboard()),
+        status=200,
+    )

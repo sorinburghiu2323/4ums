@@ -35,5 +35,5 @@ urlpatterns = [
     ),
     path("users/me", views.users_me),
     path("users/<int:user_id>", views.users),
-    path("users/leaderboard", views.leaderboard)
+    path("users/leaderboard", views.leaderboard),
 ]
