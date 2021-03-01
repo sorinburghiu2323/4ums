@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
                 description:
                   type: string
               required:
@@ -206,7 +206,7 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
     get:
       summary: ''
@@ -561,6 +561,30 @@ paths:
           description: Not Found - User does not exist.
       operationId: get-users-id
       description: Get individual user profile.
+  /users/leaderboard:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserLeaderboard'
+      operationId: get-users-leaderboard
+      description: 'Get a (paginated) list of users, sorted by points (descending).'
 components:
   schemas:
     Post:
@@ -580,7 +604,7 @@ components:
           type: string
         post_type:
           type: string
-          description: 'Either "discussion" or "questions".'
+          description: Either "discussion" or "questions".
         created_at:
           type: string
         likes_num:
@@ -752,3 +776,21 @@ components:
         - last_name
         - points
         - is_teacher
+    UserLeaderboard:
+      title: UserLeaderboard
+      type: object
+      description: Basic user details needed for displaying on the leaderboard.
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        points:
+          type: integer
+        leaderboard_position:
+          type: integer
+      required:
+        - id
+        - username
+        - points
+        - leaderboard_position
