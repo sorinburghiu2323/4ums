@@ -98,7 +98,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def serialize_leaderboard(self, rank):
         #don't use self.ranking(); rank is calculated more efficiently
-        #(using less DB queries) by the leaderboard endpoint 
+        #(using less DB queries) by the leaderboard endpoint
         return {
             "id": self.id,
             "username": self.username,
@@ -107,7 +107,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         }
 
     def ranking(self):
-        # given that all users with equal points should be of equal ranking
+        # given that all users with equal points should be of equal ranking,
         # ranking should be calculated by "points class"
         # to do this, we use .distinct() to get each unique number of points
         # ie, each "points class". then, the ranking of each points class
