@@ -55,6 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )  # When the user applies for a teacher account.
     is_teacher = models.BooleanField(default=False)
     hide_leaderboard = models.BooleanField(default=False)
+    description = models.TextField(null=True, blank=True)  # Bio
 
     # Permission fields
     is_staff = models.BooleanField(default=False)
@@ -84,6 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "username": self.username,
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "description": self.description,
             "points": self.points,
             "is_teacher": self.is_teacher,
             "hide_leaderboard": self.hide_leaderboard,
@@ -106,22 +108,21 @@ class Community(models.Model):
     and has user as a foreign key
     """
 
-    user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True
-    )  # Creator of the Community
-    name = models.CharField(
-        max_length=255, unique=True
-    )  # Set the Name of the Community
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)  # Creator
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField(max_length=255)  # Community Description
-    created_at = models.DateTimeField(
-        default=timezone.now
-    )  # Time of Community Being Created
+    colour = models.CharField(max_length=255, null=True, blank=True)  # Colour theme of community
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
 
     def serialize_simple(self):
-        return {"id": self.id, "name": self.name, "description": self.description}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description
+        }
 
     def serialize(self):
         return {
@@ -129,6 +130,7 @@ class Community(models.Model):
             "creator": self.user.serialize_simple(),
             "name": self.name,
             "description": self.description,
+            "colour": self.colour,
             "created_at": self.created_at,
         }
 
@@ -205,13 +207,6 @@ class PostLike(models.Model):
     def __str__(self):
         return self.post.title
 
-    def serialize(self):
-        return {
-            "user": self.user,
-            "post": self.post,
-            "created_at": self.created_at,
-        }
-
 
 # PostComment Class
 class PostComment(models.Model):
@@ -258,13 +253,6 @@ class PostCommentLike(models.Model):
 
     def __str__(self):
         return self.post_comment.__str__()
-
-    def serialize(self):
-        return {
-            "user": self.user,
-            "post_comment": self.post_comment,
-            "created_at": self.created_at,
-        }
 
 
 class PointsGained(models.Model):
