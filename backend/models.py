@@ -96,12 +96,14 @@ class User(AbstractBaseUser, PermissionsMixin):
             else None,
         }
 
-    def serialize_leaderboard(self):
+    def serialize_leaderboard(self, rank):
+        #don't use self.ranking(); rank is calculated more efficiently
+        #(using less DB queries) by the leaderboard endpoint 
         return {
             "id": self.id,
             "username": self.username,
             "points": self.points,
-            "leaderboard_position": self.ranking(),
+            "leaderboard_position": rank,
         }
 
     def ranking(self):

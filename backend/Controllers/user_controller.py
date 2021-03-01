@@ -9,6 +9,7 @@ from backend.Utils.user_validation import (
     validate_password,
     verify_user_login,
 )
+from backend.Utils.leaderboard_processing import get_leaderboard_info
 from backend.models import User, Post
 
 
@@ -212,6 +213,11 @@ def get_user(request, user_id):
     return JsonResponse(response, status=200)
 
 
+def lb_serializer(data):
+    user = data['user']
+    rank = data['rank']
+    return user.serialize_leaderboard(rank)
+
 def get_leaderboard(request):
     """
     Get the leaderboard; a (paginated) list of all users ordered by ranking
@@ -219,11 +225,9 @@ def get_leaderboard(request):
     :return: 200 OK
     """
 
-    users = User.objects.filter(
-        is_staff=False, hide_leaderboard=False
-    ).order_by('-points')
+    leaderboardData = get_leaderboard_info()
 
     return JsonResponse(
-        json_paginator(request, users, lambda d: d.serialize_leaderboard()),
+        json_paginator(request, leaderboardData, lb_serializer),
         status=200,
     )
