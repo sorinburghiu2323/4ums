@@ -41,14 +41,16 @@ paths:
                 is_teacher:
                   type: boolean
                   description: "Bool to whether the user is applied for a teacher's account."
+                description:
+                  type: string
               required:
                 - username
                 - email
                 - first_name
                 - last_name
                 - password
-                - is_teacher
                 - password_repeat
+                - is_teacher
   /login:
     post:
       summary: ''
@@ -511,13 +513,18 @@ paths:
                   description: True if user wishes to hide leaderboard.
                 username:
                   type: string
+                description:
+                  type: string
               required:
                 - email
                 - first_name
                 - last_name
                 - hide_leaderboard
                 - username
-        description: Password can be updated individually without all the other fields being required.
+                - description
+        description: |-
+          Password can be updated individually without all the other fields being required.
+          When updating user data, you must include all fields.
     get:
       summary: ''
       operationId: get-users-me
@@ -611,10 +618,13 @@ components:
           type: string
         description:
           type: string
+        colour:
+          type: string
       required:
         - id
         - name
         - description
+        - colour
     UserSimple:
       title: UserSimple
       type: object
@@ -647,11 +657,17 @@ components:
         created_at:
           type: string
           description: 'ISO8601 timestamp yyyy-mm-ddThh:mm:ss.sTDZ'
+        colour:
+          type: string
+        id:
+          type: integer
       required:
         - creator
         - name
         - description
         - created_at
+        - colour
+        - id
     Comment:
       title: Comment
       type: object
@@ -670,11 +686,14 @@ components:
         is_liked:
           type: boolean
           description: True if the logged in user has liked this comment.
+        id:
+          type: integer
       required:
         - user
         - comment
         - comment_likes
         - created_at
+        - id
     User:
       title: User
       type: object
@@ -723,6 +742,9 @@ components:
                     $ref: '#/components/schemas/CommunitySimple'
                   points:
                     type: integer
+        description:
+          type: string
+          description: Bio
       required:
         - id
         - username

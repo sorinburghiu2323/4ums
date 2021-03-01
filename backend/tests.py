@@ -96,7 +96,9 @@ class CommunityListEndpointTest(TestCase):
             username="bob", email="bob@4ums.co.uk", password="opensaysame"
         )
         Community.objects.create(
-            user=other_user, name="bobgang", description="Bob's gang (cool kids only)"
+            user=other_user,
+            name="bobgang",
+            description="Bob's gang (cool kids only)",
         )
 
         response = self.client.get("/api/communities", {"type": "all"})
@@ -104,7 +106,11 @@ class CommunityListEndpointTest(TestCase):
 
         result = json.loads(response.content.decode())
         expected = [
-            {"id": 2, "name": "bobgang", "description": "Bob's gang (cool kids only)"},
+            {
+                "id": 2,
+                "name": "bobgang",
+                "description": "Bob's gang (cool kids only)",
+            },
             {
                 "id": 1,
                 "name": "lorem",
@@ -125,7 +131,9 @@ class CommunityListEndpointTest(TestCase):
             username="bob", email="bob@4ums.co.uk", password="opensaysame"
         )
         Community.objects.create(
-            user=other_user, name="bobgang", description="Bob's gang (cool kids only)"
+            user=other_user,
+            name="bobgang",
+            description="Bob's gang (cool kids only)",
         )
 
         response = self.client.get("/api/communities", {"type": "created"})
@@ -149,7 +157,9 @@ class CommunityListEndpointTest(TestCase):
             username="bob", email="bob@4ums.co.uk", password="opensaysame"
         )
         comm_instance2 = Community.objects.create(
-            user=other_user, name="bobgang", description="Bob's gang (cool kids only)"
+            user=other_user,
+            name="bobgang",
+            description="Bob's gang (cool kids only)",
         )
 
         # check that only one community (lorem) is returned
@@ -171,7 +181,11 @@ class CommunityListEndpointTest(TestCase):
 
         result = json.loads(response.content.decode())
         expected = [
-            {"id": 2, "name": "bobgang", "description": "Bob's gang (cool kids only)"},
+            {
+                "id": 2,
+                "name": "bobgang",
+                "description": "Bob's gang (cool kids only)",
+            },
             {
                 "id": 1,
                 "name": "lorem",
