@@ -5,7 +5,14 @@ from django.http.multipartparser import MultiPartParser
 
 
 def handle_methods(
-    request, GET=None, POST=None, PUT=None, PATCH=None, DELETE=None, args=[], kwargs={}
+    request,
+    GET=None,
+    POST=None,
+    PUT=None,
+    PATCH=None,
+    DELETE=None,
+    args=[],
+    kwargs={},
 ):
     """
     REST Method Handler.

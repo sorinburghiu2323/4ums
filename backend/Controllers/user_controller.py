@@ -22,14 +22,20 @@ def user_login(request):
     """
     if "email" in request.DATA and "password" in request.DATA:
         user = authenticate(
-            request, username=request.DATA["email"], password=request.DATA["password"]
+            request,
+            username=request.DATA["email"],
+            password=request.DATA["password"],
         )
         if user is not None:
             login(request, user)
             return JsonResponse("OK - User logged in.", status=200, safe=False)
-        return JsonResponse("Not Found - User not found.", status=404, safe=False)
+        return JsonResponse(
+            "Not Found - User not found.", status=404, safe=False
+        )
     return JsonResponse(
-        "Bad Request - Please provide the required json body.", status=400, safe=False
+        "Bad Request - Please provide the required json body.",
+        status=400,
+        safe=False,
     )
 
 
@@ -82,7 +88,7 @@ def user_register(request):
             )
 
         # Create user.
-        User.objects.create_user(
+        new_user = User.objects.create_user(
             email=request.DATA["email"],
             password=request.DATA["password"],
             username=request.DATA["username"],
@@ -90,10 +96,16 @@ def user_register(request):
             last_name=request.DATA["last_name"],
             teacher_request=request.DATA["is_teacher"].lower() == "true",
         )
+
+        if "description" in request.DATA:
+            new_user.description = request.DATA["description"]
+
         return JsonResponse("Created - User created.", status=201, safe=False)
 
     return JsonResponse(
-        "Bad Request - Please provide the required json body.", status=400, safe=False
+        "Bad Request - Please provide the required json body.",
+        status=400,
+        safe=False,
     )
 
 
@@ -108,14 +120,17 @@ def get_feed(request):
     try:
         user = verify_user_login(request)
     except PermissionDenied:
-        return JsonResponse("Unauthorized - Login required.", status=401, safe=False)
+        return JsonResponse(
+            "Unauthorized - Login required.", status=401, safe=False
+        )
 
     # Get feed data and paginate it.
     feed = Post.objects.filter(community__communitymember__user=user).order_by(
         "-created_at"
     )
     return JsonResponse(
-        json_paginator(request, feed, lambda d: d.serialize(request)), status=200
+        json_paginator(request, feed, lambda d: d.serialize(request)),
+        status=200,
     )
 
 
@@ -150,6 +165,7 @@ def update_me(request):
         and "email" in request.DATA
         and "hide_leaderboard" in request.DATA
         and "username" in request.DATA
+        and "description" in request.DATA
     ):
         update_valid = validate_user_data(
             request.DATA["first_name"],
@@ -158,7 +174,9 @@ def update_me(request):
             request.DATA["username"],
         )
         if update_valid:
-            return JsonResponse("Bad Request - " + update_valid, status=400, safe=False)
+            return JsonResponse(
+                "Bad Request - " + update_valid, status=400, safe=False
+            )
 
         # Update user.
         user.first_name = request.DATA["first_name"]
@@ -166,9 +184,10 @@ def update_me(request):
         user.email = request.DATA["email"]
         user.username = request.DATA["username"]
         user.hide_leaderboard = request.DATA["hide_leaderboard"]
+        user.description = request.DATA["description"]
         user.save()
 
-    elif not password_updated:
+    if not password_updated:
         return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
     return JsonResponse("OK - User updated.", status=200, safe=False)
 
@@ -185,7 +204,9 @@ def get_user(request, user_id):
     try:
         get_user = User.objects.get(id=user_id)
     except:
-        return JsonResponse("Not Found - User does not exist.", status=404, safe=False)
+        return JsonResponse(
+            "Not Found - User does not exist.", status=404, safe=False
+        )
     response = get_user.serialize()
     response["graphs"] = get_graphs(get_user)
     return JsonResponse(response, status=200)

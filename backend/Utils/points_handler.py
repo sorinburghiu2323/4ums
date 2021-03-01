@@ -85,7 +85,9 @@ def graph_top_communities(points_gained: [PointsGained], user: User):
         community_list.append(
             {
                 "community": comm.serialize_simple(),
-                "points": comm_pts["points__sum"] if comm_pts["points__sum"] else 0,
+                "points": comm_pts["points__sum"]
+                if comm_pts["points__sum"]
+                else 0,
             }
         )
     communities_top = sorted(community_list, key=lambda k: -k["points"])[:3]
