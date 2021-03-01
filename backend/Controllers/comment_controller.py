@@ -45,7 +45,9 @@ def make_comment(request, community_id, post_id):
 
     user = request.user
 
-    if not CommunityMember.objects.filter(community=comm_instance, user=user).exists():
+    if not CommunityMember.objects.filter(
+        community=comm_instance, user=user
+    ).exists():
         return JsonResponse(
             "Unauthorized - User is not a member of that community.",
             status=401,
@@ -96,7 +98,9 @@ def like_comment(request, community_id, post_id, comment_id):
 
     user = request.user
     if CommunityMember.objects.filter(user=user, community=community).exists():
-        if not PostCommentLike.objects.filter(user=user, post_comment=comment).exists():
+        if not PostCommentLike.objects.filter(
+            user=user, post_comment=comment
+        ).exists():
 
             # Create like and add points to the comment creator.
             PostCommentLike.objects.create(user=user, post_comment=comment)
@@ -183,7 +187,9 @@ def approve_comment(request, community_id, post_id, comment_id):
     user = request.user
     if (
         CommunityMember.objects.filter(user=user, community=community).exists()
-        and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
+        and Post.objects.filter(
+            id=post_id, user=user, post_type="question"
+        ).exists()
     ):
         if not PostComment.objects.filter(post=post, is_approved=True).exists():
 
@@ -204,12 +210,18 @@ def approve_comment(request, community_id, post_id, comment_id):
                 post=post,
                 comment=comment,
             )
-            return JsonResponse("OK - Comment approved.", status=200, safe=False)
+            return JsonResponse(
+                "OK - Comment approved.", status=200, safe=False
+            )
 
         return JsonResponse(
-            "Conflict - A comment has already been approved.", status=409, safe=False
+            "Conflict - A comment has already been approved.",
+            status=409,
+            safe=False,
         )
-    return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
+    return JsonResponse(
+        "Unauthorized - Permission denied.", status=401, safe=False
+    )
 
 
 def disapprove_comment(request, community_id, post_id, comment_id):
@@ -237,7 +249,9 @@ def disapprove_comment(request, community_id, post_id, comment_id):
     user = request.user
     if (
         CommunityMember.objects.filter(user=user, community=community).exists()
-        and Post.objects.filter(id=post_id, user=user, post_type="question").exists()
+        and Post.objects.filter(
+            id=post_id, user=user, post_type="question"
+        ).exists()
     ):
         if PostComment.objects.filter(id=comment_id, is_approved=True).exists():
 
@@ -258,11 +272,15 @@ def disapprove_comment(request, community_id, post_id, comment_id):
                 post=post,
                 comment=comment,
             )
-            return JsonResponse("OK - Comment disapproved.", status=200, safe=False)
+            return JsonResponse(
+                "OK - Comment disapproved.", status=200, safe=False
+            )
 
         return JsonResponse(
             "Conflict - This comment is not approved to be disapproved.",
             status=404,
             safe=False,
         )
-    return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
+    return JsonResponse(
+        "Unauthorized - Permission denied.", status=401, safe=False
+    )

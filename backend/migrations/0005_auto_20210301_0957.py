@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('backend', '0004_pointsgained_comment'),
+        ("backend", "0004_pointsgained_comment"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='community',
-            name='colour',
+            model_name="community",
+            name="colour",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='description',
+            model_name="user",
+            name="description",
             field=models.TextField(blank=True, null=True),
         ),
     ]

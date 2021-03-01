@@ -44,7 +44,10 @@ class Migration(migrations.Migration):
                 ("is_staff", models.BooleanField(default=False)),
                 ("is_superuser", models.BooleanField(default=False)),
                 ("is_active", models.BooleanField(default=True)),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "groups",
                     models.ManyToManyField(
@@ -86,7 +89,10 @@ class Migration(migrations.Migration):
                 ),
                 ("name", models.CharField(max_length=255, unique=True)),
                 ("description", models.TextField(max_length=255)),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "user",
                     models.ForeignKey(
@@ -122,7 +128,10 @@ class Migration(migrations.Migration):
                         max_length=20,
                     ),
                 ),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "community",
                     models.ForeignKey(
@@ -153,11 +162,15 @@ class Migration(migrations.Migration):
                 ),
                 ("comment", models.TextField(max_length=255)),
                 ("is_approved", models.BooleanField(default=0, null=True)),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "post",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="backend.Post"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="backend.Post",
                     ),
                 ),
                 (
@@ -181,11 +194,15 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "post",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="backend.Post"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="backend.Post",
                     ),
                 ),
                 (
@@ -209,7 +226,10 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "post_comment",
                     models.ForeignKey(
@@ -238,7 +258,10 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "community",
                     models.ForeignKey(

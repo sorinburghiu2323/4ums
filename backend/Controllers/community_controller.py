@@ -1,12 +1,10 @@
-from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
 
 from SoftwareDev import settings
 from backend.Utils.points_handler import adjust_points
-from backend.Utils.user_validation import verify_user_login
 from backend.Utils.paginators import json_paginator
-from backend.models import Community, CommunityMember, PointsGained
+from backend.models import Community, CommunityMember
 
 
 def create_new(request):
@@ -33,13 +31,20 @@ def create_new(request):
                 "Conflict - Name is already in use", status=409, safe=False
             )
 
-        CommunityMember.objects.create(user=user_instance, community=new_community)
+        # Assign colour to community if its included in request.
+        if "colour" in request.DATA:
+            new_community.colour = request.DATA["colour"]
+            new_community.save()
 
+        CommunityMember.objects.create(
+            user=user_instance, community=new_community
+        )
         return JsonResponse("Community created", status=201, safe=False)
-
     else:
         return JsonResponse(
-            "Bad request - Name and description are required", status=400, safe=False
+            "Bad request - Name and description are required",
+            status=400,
+            safe=False,
         )
 
 
@@ -63,7 +68,9 @@ def join_community(request, community_id):
     comm_instance = Community.objects.get(pk=community_id)
     user = request.user
 
-    if CommunityMember.objects.filter(community=comm_instance, user=user).exists():
+    if CommunityMember.objects.filter(
+        community=comm_instance, user=user
+    ).exists():
         return JsonResponse(
             "Conflict - The user is already a member of that community",
             status=409,
@@ -108,7 +115,9 @@ def leave_community(request, community_id):
         )
     except CommunityMember.DoesNotExist:
         return JsonResponse(
-            "Conflict - The user is not part of that community", status=409, safe=False
+            "Conflict - The user is not part of that community",
+            status=409,
+            safe=False,
         )
 
     comm_member_instance.delete()
@@ -150,7 +159,8 @@ def list_communities(request):
         comms = [comm_mem.community for comm_mem in comm_mems]
 
     return JsonResponse(
-        json_paginator(request, comms, lambda d: d.serialize_simple()), status=200
+        json_paginator(request, comms, lambda d: d.serialize_simple()),
+        status=200,
     )
 
 

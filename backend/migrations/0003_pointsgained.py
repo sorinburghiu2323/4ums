@@ -26,7 +26,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("points", models.IntegerField()),
-                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "created_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
                 (
                     "community",
                     models.ForeignKey(

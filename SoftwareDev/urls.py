@@ -20,7 +20,8 @@ from django.shortcuts import render
 
 vue_urls = [
     re_path(
-        r"^(?:.*/|)", lambda request: HttpResponse(render(request, "vue_index.html"))
+        r"^(?:.*/|)",
+        lambda request: HttpResponse(render(request, "vue_index.html")),
     ),
 ]
 
