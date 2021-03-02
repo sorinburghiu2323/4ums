@@ -108,15 +108,15 @@ export default {
           console.error(error);
           this.loadedCommunities = false;
         })
-        },
-        loadMoreCommunities() {
-          this.currentPage++;
-          if (this.showOtherCommunities) {
-            this.getOtherCommunities();
-          } else {
-            this.getMyCommunities();
-          }
+      },
+      loadMoreCommunities() {
+        this.currentPage++;
+        if (this.showOtherCommunities) {
+          this.getOtherCommunities();
+        } else {
+          this.getMyCommunities();
         }
+      }
     },
 
 }
