@@ -1,16 +1,27 @@
 <template>
   <div class="container" @click="navigateToCommunity()">
-      <div class="color-box" :class="{'my-communities': myCommunity}">
-          
-      </div>
+      <div class="color-box" :class="communityType"></div>
       <div class="details">
           <div class="title">
-              <p>{{community.name}}</p>
+              <p>{{community.name}}</p> 
           </div>
+
+          <div v-if="editMode" class="editBtn">
+              <button v-if="communityType == 'memberof'"
+              class="leave" @click.stop.prevent="leaveCommunity()">
+                  Leave
+              </button>
+              <button v-if="communityType == 'created'"
+              class="delete" @click.stop.prevent="deleteCommunity()">
+                  Delete
+              </button>
+          </div>
+
           <div class="description">
               <p>{{community.description}}</p>              
           </div>
       </div>
+
   </div>
 </template>
 
@@ -19,7 +30,8 @@ export default {
     name: 'CommunityDisplay',
     props: {
         community: Object,
-        myCommunity: {
+        communityType: String,
+        editMode: {
             default: false,
             type: Boolean,
         }
@@ -33,6 +45,12 @@ export default {
                 }
             });
         },
+        leaveCommunity() {
+            this.$root.$emit('updateCommunities');
+        },
+        deleteCommunity() {
+            this.$root.$emit('updateCommunities');
+        }
     }
 }
 </script>
@@ -56,19 +74,28 @@ export default {
     width: 20px;
     border-radius: 25px 0px 0 25px;
     position: absolute;
+}
+
+.all {
     background: rgb(254,155,47);
     background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
 }
-
-.my-communities{
+.memberof {
     background: rgb(52,235,233);
     background: linear-gradient(270deg, rgba(52,235,233,1) 0%, rgba(101,255,167,1) 35%);   
+}
+.created {
+    background: rgb(253,248,98);
+    background: linear-gradient(270deg, rgb(253,248,98) 0%, rgba(255,237,0,1) 35%);
 }
 
 .details {
     margin: auto;
     margin-left: 25px;
-
+    margin-right: 0;
+    padding-right: 10px;
+    width: 100%;
+    position: relative;
 }
 
 .details p {
@@ -79,6 +106,9 @@ export default {
     font-size: 20px;
     height: 30%;
     margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
 }
 
 .details .description {
@@ -95,4 +125,29 @@ export default {
    -webkit-box-orient: vertical;
 }
 
+.editBtn{
+    position: absolute;
+    top: -10px;
+    right: 20px;
+}
+
+.editBtn button {
+    width: 100px;
+    height: 25px;
+    border-radius: 25px;;
+    text-align: center;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.leave {
+    background: linear-gradient(270deg, rgba(52,235,233,1) 0%, rgba(101,255,167,1) 35%);
+}
+
+.delete {
+    background: rgb(254,155,47);
+    background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
+}
 </style>
