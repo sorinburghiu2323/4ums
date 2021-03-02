@@ -52,7 +52,7 @@ export default {
         return;
       }
       var post_url =
-        "api/communities/" + this.community.id.toString() + "/posts";
+        "/api/communities/" + this.community.id.toString() + "/posts";
       axios
         .post(post_url, {
           title: this.title,

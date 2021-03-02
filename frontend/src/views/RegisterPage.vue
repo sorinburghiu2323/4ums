@@ -152,7 +152,7 @@ export default {
                 return false;
             }
 
-            axios.post('api/users', {
+            axios.post('/api/users', {
                 email: this.email,
                 username: this.username, 
                 password: this.password, 
@@ -164,7 +164,7 @@ export default {
             .then(() => {
                 this.errMessage = '';
                 this.termErrMessage = '';
-                this.$router.push('feed');
+                this.$router.push('Feed');
             })
             .catch((error) =>{
                 console.error(error);

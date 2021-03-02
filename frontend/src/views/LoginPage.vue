@@ -32,7 +32,7 @@
 
 <script>
 import axios from 'axios'
-import Feed from "@/views/Feed";
+import Feed from "@/views/Feed.vue";
 
 export default {
   name: 'LoginPage',
@@ -49,7 +49,7 @@ export default {
         },
         loginUser() {
             
-            axios.post('api/login', {email: this.email, password: this.password})
+            axios.post('/api/login', {email: this.email, password: this.password})
             .then(() => {
               this.failedLogin = false;
               this.$router.push(Feed);
