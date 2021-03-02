@@ -561,6 +561,32 @@ paths:
           description: Not Found - User does not exist.
       operationId: get-users-id
       description: Get individual user profile.
+  /users/leaderboard:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserLeaderboard'
+        '401':
+          description: Unauthorized - Login required.
+      operationId: get-users-leaderboard
+      description: 'Get a (paginated) list of users, sorted by points (descending).'
 components:
   schemas:
     Post:
@@ -756,3 +782,21 @@ components:
         - last_name
         - points
         - is_teacher
+    UserLeaderboard:
+      title: UserLeaderboard
+      type: object
+      description: Basic user details needed for displaying on the leaderboard.
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        points:
+          type: integer
+        leaderboard_position:
+          type: integer
+      required:
+        - id
+        - username
+        - points
+        - leaderboard_position

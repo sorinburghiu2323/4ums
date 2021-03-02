@@ -210,3 +210,38 @@ def get_user(request, user_id):
     response = get_user.serialize()
     response["graphs"] = get_graphs(get_user)
     return JsonResponse(response, status=200)
+
+
+def lb_serializer(data):
+    user = data['user']
+    rank = data['rank']
+    return user.serialize_leaderboard(rank)
+
+def get_leaderboard(request):
+    """
+    Get the leaderboard; a (paginated) list of all users ordered by ranking
+    :param requet: session request.
+    :return: 200 OK
+             401 Unauthorized
+    """
+
+    includedUsers = User.objects.filter(hide_leaderboard=False, is_staff=False)
+
+    # ordered list of points, index denoting leaderboard position (rank)
+    # distinct values means that everyone with the same points has the same rank
+    rankings = []
+    for item in includedUsers.values("points").distinct().order_by("-points"):
+        rankings.append(item["points"])
+
+    includedUsers = includedUsers.order_by("-points")
+
+    paginationData = []
+    for user in includedUsers:
+        # rank is the index of the users points +1 (converting from 0-indexing)
+        data = {'user': user, 'rank': rankings.index(user.points) + 1}
+        paginationData.append(data)
+
+    return JsonResponse(
+        json_paginator(request, paginationData, lb_serializer),
+        status=200,
+    )
