@@ -55,6 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )  # When the user applies for a teacher account.
     is_teacher = models.BooleanField(default=False)
     hide_leaderboard = models.BooleanField(default=False)
+    description = models.TextField(null=True, blank=True)  # Bio
 
     # Permission fields
     is_staff = models.BooleanField(default=False)
@@ -68,7 +69,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return ("TEACHER REQUEST: " if self.teacher_request else "") + self.email
+        return (
+            "TEACHER REQUEST: " if self.teacher_request else ""
+        ) + self.email
 
     def serialize_simple(self):
         return {
@@ -84,6 +87,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "username": self.username,
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "description": self.description,
             "points": self.points,
             "is_teacher": self.is_teacher,
             "hide_leaderboard": self.hide_leaderboard,
@@ -108,20 +112,24 @@ class Community(models.Model):
 
     user = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True
-    )  # Creator of the Community
-    name = models.CharField(
-        max_length=255, unique=True
-    )  # Set the Name of the Community
+    )  # Creator
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField(max_length=255)  # Community Description
-    created_at = models.DateTimeField(
-        default=timezone.now
-    )  # Time of Community Being Created
+    colour = models.CharField(
+        max_length=255, null=True, blank=True
+    )  # Colour theme of community
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
 
     def serialize_simple(self):
-        return {"id": self.id, "name": self.name, "description": self.description}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "colour": self.colour,
+        }
 
     def serialize(self):
         return {
@@ -129,6 +137,7 @@ class Community(models.Model):
             "creator": self.user.serialize_simple(),
             "name": self.name,
             "description": self.description,
+            "colour": self.colour,
             "created_at": self.created_at,
         }
 
@@ -139,7 +148,9 @@ class CommunityMember(models.Model):
     """
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    community = models.ForeignKey(Community, on_delete=models.SET_NULL, null=True)
+    community = models.ForeignKey(
+        Community, on_delete=models.SET_NULL, null=True
+    )
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -177,7 +188,9 @@ class Post(models.Model):
         return {
             "id": self.id,
             "user": self.user.serialize_simple(),
-            "is_community_owner": Community.objects.filter(user=self.user).exists(),
+            "is_community_owner": Community.objects.filter(
+                user=self.user
+            ).exists(),
             "community": self.community.serialize_simple(),
             "title": self.title,
             "description": self.description,
@@ -185,7 +198,9 @@ class Post(models.Model):
             "created_at": self.created_at,
             "likes_num": PostLike.objects.filter(post=self).count(),
             "comments_num": PostComment.objects.filter(post=self).count(),
-            "is_liked": PostLike.objects.filter(user=request.user, post=self).exists()
+            "is_liked": PostLike.objects.filter(
+                user=request.user, post=self
+            ).exists()
             if request
             else False,
         }
@@ -204,13 +219,6 @@ class PostLike(models.Model):
 
     def __str__(self):
         return self.post.title
-
-    def serialize(self):
-        return {
-            "user": self.user,
-            "post": self.post,
-            "created_at": self.created_at,
-        }
 
 
 # PostComment Class
@@ -234,7 +242,9 @@ class PostComment(models.Model):
             "id": self.id,
             "user": self.user.serialize_simple(),
             "comment": self.comment,
-            "comment_likes": PostCommentLike.objects.filter(post_comment=self).count(),
+            "comment_likes": PostCommentLike.objects.filter(
+                post_comment=self
+            ).count(),
             "user_liked": PostCommentLike.objects.filter(
                 user=request.user, post_comment=self
             ).exists()
@@ -259,13 +269,6 @@ class PostCommentLike(models.Model):
     def __str__(self):
         return self.post_comment.__str__()
 
-    def serialize(self):
-        return {
-            "user": self.user,
-            "post_comment": self.post_comment,
-            "created_at": self.created_at,
-        }
-
 
 class PointsGained(models.Model):
     """
@@ -277,7 +280,9 @@ class PointsGained(models.Model):
     community = models.ForeignKey(
         Community, on_delete=models.SET_NULL, null=True, blank=True
     )
-    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True)
+    post = models.ForeignKey(
+        Post, on_delete=models.SET_NULL, null=True, blank=True
+    )
     comment = models.ForeignKey(
         PostComment, on_delete=models.SET_NULL, null=True, blank=True
     )

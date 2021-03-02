@@ -46,9 +46,13 @@ def create_post(request, community_id):
             post_type=request.DATA["post_type"],
             community=comm_instance,
         )
-        return JsonResponse("Ok - Post has been created.", status=201, safe=False)
+        return JsonResponse(
+            "Ok - Post has been created.", status=201, safe=False
+        )
     return JsonResponse(
-        "Bad Request - Please provide the required body.", status=400, safe=False
+        "Bad Request - Please provide the required body.",
+        status=400,
+        safe=False,
     )
 
 
@@ -129,7 +133,9 @@ def like_post(request, community_id, post_id):
         community = Community.objects.get(id=community_id)
         post = Post.objects.get(id=post_id, community=community)
     except:
-        return JsonResponse("Not Found - Post does not exist.", status=404, safe=False)
+        return JsonResponse(
+            "Not Found - Post does not exist.", status=404, safe=False
+        )
 
     user = request.user
     if CommunityMember.objects.filter(user=user, community=community).exists():
@@ -145,7 +151,9 @@ def like_post(request, community_id, post_id):
             )
             return JsonResponse("OK - Post liked.", status=200, safe=False)
 
-        return JsonResponse("Conflict - Post is already liked.", status=409, safe=False)
+        return JsonResponse(
+            "Conflict - Post is already liked.", status=409, safe=False
+        )
     return JsonResponse(
         "Unauthorized - User is not part of community.", status=401, safe=False
     )
@@ -167,7 +175,9 @@ def unlike_post(request, community_id, post_id):
         community = Community.objects.get(id=community_id)
         post = Post.objects.get(id=post_id, community=community)
     except:
-        return JsonResponse("Not Found - Post does not exist.", status=404, safe=False)
+        return JsonResponse(
+            "Not Found - Post does not exist.", status=404, safe=False
+        )
 
     # Try to find like and delete it and subtract points from the post creator.
     user = request.user
@@ -181,4 +191,6 @@ def unlike_post(request, community_id, post_id):
         )
         return JsonResponse("OK - Post unliked.", status=200, safe=False)
     except:
-        return JsonResponse("Not Found - Like does not exist.", status=404, safe=False)
+        return JsonResponse(
+            "Not Found - Like does not exist.", status=404, safe=False
+        )
