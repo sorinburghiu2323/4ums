@@ -152,9 +152,13 @@ def list_communities(request):
     if list_type == "created":
         communities = Community.objects.filter(user=user).order_by("name")
     elif list_type == "other":
-        communities = Community.objects.exclude(communitymember__user=user).order_by("name")
+        communities = Community.objects.exclude(
+            communitymember__user=user
+        ).order_by("name")
     elif list_type == "memberof":
-        communities = Community.objects.filter(communitymember__user=user).order_by("name")
+        communities = Community.objects.filter(
+            communitymember__user=user
+        ).order_by("name")
 
     return JsonResponse(
         json_paginator(request, communities, lambda d: d.serialize_simple()),
