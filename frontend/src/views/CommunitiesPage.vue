@@ -65,8 +65,8 @@ export default {
         if (newVal === true) {
           this.loadedCommunities = false;
           this.myCommunities = [];
-          this.createdCommunities = [],
-              this.getAllCommunities();
+          this.createdCommunities = [];
+          this.getAllCommunities();
         }
         if (newVal === false) {
           this.loadedCommunities = false;
@@ -146,7 +146,7 @@ export default {
         })
       },
       getAllCommunities() {
-        axios.get('api/communities?type=all', {params: {page: this.currentPage}})
+        axios.get('api/communities?type=other', {params: {page: this.currentPage}})
             .then((response) => {
               this.loadedCommunities = false;
               for (var i = 0; i < response.data.data.length; i++) {

@@ -66,6 +66,19 @@
         <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
       </div>
     </div>
+    <div class="comment-btn" @click.stop="showCommentInput">
+      <p>Add a comment...</p>
+      <div class="comment-icon">
+        <font-awesome-icon :icon="['fas', 'comment-dots']"></font-awesome-icon>
+      </div>
+    </div>
+    <div v-if="showInput" class="comment-input">
+      <md-field style="background:linear-gradient(to right, #272B39, #1E212B)">
+        <label style="color:white">Add a comment...</label>
+        <md-textarea v-model="addComment" md-autogrow
+                     style="background:linear-gradient(to right, #272B39, #1E212B); height: 200px;color:white"></md-textarea>
+      </md-field>
+    </div>
     <div v-if="loadedPost" class="comments-list">
       <Comment v-for="(comment, index) in allComments" :key="index"
                :comment="comment"/>
@@ -79,6 +92,7 @@ import axios from "axios";
 import Comment from "@/components/posts/Comment";
 import moment from "moment";
 import LoginPage from "@/views/LoginPage";
+import 'vue-material/dist/vue-material.min.css'
 
 export default {
   name: "PostPage",
@@ -109,14 +123,20 @@ export default {
       date_time: '10/20/30',
       isAnswered: false,
       userLiked: false,
+      addComment: null,
+      showInput: false
     }
   },
   mounted() {
     this.getPost();
     this.scroll();
-    window.scrollTo(0, 0)
   },
   methods: {
+    showCommentInput() {
+      console.log(this.showInput);
+      this.addComment = null;
+      this.showInput = !this.showInput;
+    },
     scroll() {
       window.onscroll = () => {
         let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
@@ -142,9 +162,7 @@ export default {
             this.loadMore = response.data.comments["next_page"] !== null;
             this.isAnswered = this.post["has_approved"];
             this.loadedPost = true;
-            console.log(response);
             this.userLiked = this.post["is_liked"];
-            console.log(this.userLiked);
           }).catch((error) => {
             console.error(error);
             if (error.response.status === 401) {
@@ -190,6 +208,58 @@ export default {
 </script>
 
 <style scoped>
+.goat {
+  color: white;
+}
+
+.comment-input {
+  background: linear-gradient(to right, #272B39, #1E212B) !important;
+  z-index: 2;
+  width: 100%;
+  min-height: 120px;
+  bottom: 10px;
+  line-height: 30px;
+  position: absolute;
+  color: white;
+  box-shadow: 0 0 20px black;
+}
+
+.comment-btn {
+  position: relative;
+  background: linear-gradient(to right, #272B39, #1E212B);
+  margin: auto;
+  width: auto;
+  height: auto;
+  outline: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 10px;
+}
+
+.comment-btn .comment-icon {
+  position: relative;
+  bottom: 10px;
+  width: auto;
+  left: -81px;
+}
+
+.comment-btn p {
+  position: relative;
+  margin: auto;
+  color: white;
+  top: 7px;
+}
+
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+}
+
 .containers {
   z-index: 0;
   cursor: pointer;
