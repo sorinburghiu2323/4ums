@@ -134,6 +134,7 @@ export default {
             this.isAnswered = response.data.comments["data"]["is_approved"];
             this.loadedPost = true;
             this.userLiked = this.post["is_liked"];
+            this.isAnswered = this.post["is_answered"]
           }).catch((error) => {
             console.error(error);
             if (error.response.status === 401) {
@@ -143,7 +144,7 @@ export default {
           })
     },
     loadMoreComments() {
-      this.currentPage += 1;
+      this.currentPage++;
       this.getPost();
     },
     navigateToUser() {
@@ -216,7 +217,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
   text-align: left;
 }
@@ -231,7 +231,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines to show */
   -webkit-box-orient: vertical;
   text-align: left;
 }
