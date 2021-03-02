@@ -108,6 +108,7 @@ export default {
 .header {
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 30px;
 }
 
 .header h1 {
