@@ -86,7 +86,7 @@ export default {
   },
   mounted() {
     axios
-      .get("api/communities?type=memberof", {
+      .get("/api/communities?type=memberof", {
         type: "memberof",
       })
       .then((response) => {
