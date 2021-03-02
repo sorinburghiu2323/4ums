@@ -149,7 +149,7 @@ class Command(BaseCommand):
                 for t in team_3:
                     if t.username == "milo":
                         PostComment.objects.create(
-                            users=t,
+                            user=t,
                             post=post_2,
                             comment="This is a correct answer.",
                             is_approved=True,

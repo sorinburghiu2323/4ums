@@ -18,23 +18,25 @@
       </div>
       <div class="communities-list">
           <div class="filter">
-                <button id="your-communities-btn" 
-                @click="showAllCommunities = false;">
-                Your communities</button>
-                <button id="all-communities-btn"
-                @click="showAllCommunities = true;">
-                All communities</button>
+            <button id="your-communities-btn"
+                    @click="showOtherCommunities = false;">
+              Your communities
+            </button>
+            <button id="all-communities-btn"
+                    @click="showOtherCommunities = true;">
+              Other communities
+            </button>
           </div>
 
-          <!--Communities user is a member of -->
-          <CommunitiesList v-if="loadedCommunities && !showAllCommunities"
-          :communities="myCommunities" :myCommunities="true"/>
+        <!--Communities user is a member of -->
+        <CommunitiesList v-if="loadedCommunities && !showOtherCommunities"
+                         :communities="myCommunities" :myCommunities="true"/>
 
-          <!-- all Communities -->
-          <CommunitiesList v-if="loadedCommunities && showAllCommunities"
-          :communities="allCommunities" :myCommunities="false"/>
+        <!-- all Communities -->
+        <CommunitiesList v-if="loadedCommunities && showOtherCommunities"
+                         :communities="otherCommunities" :myCommunities="false"/>
 
-          <button v-if="loadMore" class="load-more-btn" @click="loadMoreCommunities">Load more</button>
+        <button v-if="loadMore" class="load-more-btn" @click="loadMoreCommunities">Load more</button>
       </div>
   </div>
 </template>
@@ -49,30 +51,30 @@ export default {
         CommunitiesList,
     },
     watch: {
-        showAllCommunities(newVal) {
-            this.currentPage = 1;
-            if(newVal === true) {
-                this.loadedCommunities = false;
-                this.myCommunities = [];
-                this.getAllCommunities();
-            }
-            if(newVal === false) {
-                this.loadedCommunities = false;
-                this.allCommunities = [];
-                this.getMyCommunities();
-            }
-        },
+      showOtherCommunities(newVal) {
+        this.currentPage = 1;
+        if (newVal === true) {
+          this.loadedCommunities = false;
+          this.myCommunities = [];
+          this.getOtherCommunities();
+        }
+        if (newVal === false) {
+          this.loadedCommunities = false;
+          this.otherCommunities = [];
+          this.getMyCommunities();
+        }
+      },
     },
     data() {
         return {
-            loadedCommunities: false, 
-            myCommunities: [],
-            allCommunities: [],
-            currentPage: 1,
-            bottomOfPageReached: false,
-            errorLoadingCommunities: false,
-            showAllCommunities: false,
-            loadMore: false,
+          loadedCommunities: false,
+          myCommunities: [],
+          otherCommunities: [],
+          currentPage: 1,
+          bottomOfPageReached: false,
+          errorLoadingCommunities: false,
+          showOtherCommunities: false,
+          loadMore: false,
         }
     },
     mounted() {
@@ -93,27 +95,27 @@ export default {
                 this.loadedCommunities = false;
               })
         },
-        getAllCommunities() {
-          axios.get('/api/communities?type=all', {params: {page: this.currentPage}})
+      getOtherCommunities() {
+        axios.get('/api/communities?type=other', {params: {page: this.currentPage}})
             .then((response) => {
-                this.loadedCommunities = false;
+              this.loadedCommunities = false;
               for (let i = 0; i < response.data.data.length; i++) {
-                this.allCommunities.push(response.data.data[i]);
+                this.otherCommunities.push(response.data.data[i]);
               }
               this.loadMore = response.data["next_page"] != null;
               this.loadedCommunities = true;
             }).catch((error) => {
-                console.error(error);
-                this.loadedCommunities = false;
-            })
+          console.error(error);
+          this.loadedCommunities = false;
+        })
         },
         loadMoreCommunities() {
           this.currentPage++;
-            if(this.showAllCommunities) {
-                this.getAllCommunities();
-            } else {
-                this.getMyCommunities();
-            }
+          if (this.showOtherCommunities) {
+            this.getOtherCommunities();
+          } else {
+            this.getMyCommunities();
+          }
         }
     },
 
