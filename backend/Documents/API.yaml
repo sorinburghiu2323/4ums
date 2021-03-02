@@ -242,9 +242,9 @@ paths:
         - schema:
             type: string
             enum:
-              - all
               - created
               - memberof
+              - other
           in: query
           name: type
           description: type of list to generate
