@@ -263,7 +263,7 @@ class PostComment(models.Model):
             "comment_likes": PostCommentLike.objects.filter(
                 post_comment=self
             ).count(),
-            "user_liked": PostCommentLike.objects.filter(
+            "is_liked": PostCommentLike.objects.filter(
                 user=request.user, post_comment=self
             ).exists()
             if request

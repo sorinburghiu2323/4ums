@@ -14,27 +14,34 @@
           <div class="search-icon">
               <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
           </div>
-          
       </div>
       <div class="communities-list">
           <div class="filter">
                 <button id="your-communities-btn" 
+                :class="{'active': !showAllCommunities}"
                 @click="showAllCommunities = false;">
                 Your communities</button>
                 <button id="all-communities-btn"
+                :class="{'active': showAllCommunities}"
                 @click="showAllCommunities = true;">
-                All communities</button>
+                Other communities</button>
           </div>
 
-          <!--Communities user is a member of -->
+          <!--Communities user created-->
+          <p v-if="!showAllCommunities">Created by you: </p>
           <CommunitiesList v-if="loadedCommunities && !showAllCommunities"
-          :communities="myCommunities" :myCommunities="true"/>
+          :communities="createdCommunities" communityType="created"/>
+
+          <!--Communities user is a member of -->
+          <p v-if="!showAllCommunities">Communities you have joined: </p>
+          <CommunitiesList v-if="loadedCommunities && !showAllCommunities"
+          :communities="myCommunities" communityType="memberof"/>
 
           <!-- all Communities -->
           <CommunitiesList v-if="loadedCommunities && showAllCommunities"
-          :communities="allCommunities" :myCommunities="false"/>
+          :communities="allCommunities" communityType="all"/>
 
-          <button v-if="loadMore" class="load-more-btn" @click="loadMoreCommunities">Load more</button>
+          <ManageCommunitiesButton v-if="showManageButton && !showAllCommunities" />
       </div>
   </div>
 </template>
@@ -42,10 +49,12 @@
 <script>
 import axios from 'axios'
 import CommunitiesList from '@/components/communities/CommunitiesList.vue'
+import ManageCommunitiesButton from '@/components/communities/ManageCommunitiesButton.vue'
 export default {
     name: 'CommunitiesPage',
     components: {
         CommunitiesList,
+        ManageCommunitiesButton,
     },
     watch: {
         showAllCommunities(newVal) {
@@ -53,12 +62,15 @@ export default {
             if(newVal === true) {
                 this.loadedCommunities = false;
                 this.myCommunities = [];
+                this.createdCommunities = [],
                 this.getAllCommunities();
             }
             if(newVal === false) {
                 this.loadedCommunities = false;
                 this.allCommunities = [];
                 this.getMyCommunities();
+                this.getCreatedCommunities();
+                this.loadMore = false;
             }
         },
     },
@@ -67,28 +79,62 @@ export default {
             loadedCommunities: false, 
             myCommunities: [],
             allCommunities: [],
+            createdCommunities: [],
             currentPage: 1,
             bottomOfPageReached: false,
             errorLoadingCommunities: false,
             showAllCommunities: false,
             loadMore: false,
+            showManageButton: true,
         }
     },
     mounted() {
         this.getMyCommunities();
+        this.getCreatedCommunities();
+        this.$root.$on('updateCommunities', () => {
+            this.myCommunities = [];
+            this.allCommunities = [];
+            this.getMyCommunities();
+            this.getCreatedCommunities();
+        });
+        
+        this.scroll();
     },
     methods: {
-        async getMyCommunities() {
-            await axios.get('api/communities?type=memberof' , {params: {page: this.currentPage}})
+        scroll() {
+            window.onscroll = () => {
+                let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
+                    document.body.scrollTop) + window.innerHeight;
+                if (bottomOfWindow >= document.documentElement.offsetHeight - 80) {
+                    if (this.loadMore) {
+                        this.loadMoreCommunities();
+                        this.loadMore = false;
+                    }
+                    this.showManageButton = false;
+                } else {
+                    this.showManageButton = true;
+                }
+            }
+        },
+        getMyCommunities() {
+            axios.get('api/communities?type=memberof' , {params: {page: 'all'}})
             .then((response) => {
                 this.loadedCommunities = false;
                 for(var i = 0; i < response.data.data.length; i++) {
                     this.myCommunities.push(response.data.data[i]);
                 }
-                if(response.data.next_page != null) {
-                    this.loadMore = true;
-                } else {
-                    this.loadMore = false;
+                this.loadedCommunities = true;
+            }).catch((error) => {
+                console.error(error);
+                this.loadedCommunities = false;
+            })
+        },
+        getCreatedCommunities() {
+            axios.get('api/communities?type=created' , {params: {page: 'all'}})
+            .then((response) => {
+                this.loadedCommunities = false;
+                for(var i = 0; i < response.data.data.length; i++) {
+                    this.createdCommunities.push(response.data.data[i]);
                 }
                 this.loadedCommunities = true;
             }).catch((error) => {
@@ -116,11 +162,7 @@ export default {
         },
         loadMoreCommunities() {
             this.currentPage += 1;
-            if(this.showAllCommunities) {
-                this.getAllCommunities();
-            } else {
-                this.getMyCommunities();
-            }
+            this.getAllCommunities();
         }
     },
 
@@ -138,6 +180,7 @@ h1 {
 .header {
     display: flex;
     justify-content: flex-start;
+    margin-bottom: 30px;
 }
 
 .header h1 {
@@ -225,19 +268,7 @@ h1 {
     box-shadow: 0px 5px 40px #C35456;
 }
 
-.load-more-btn {
-    padding: 8px;
-    margin: 5px;
-    border-radius: 25px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 150px;
-    margin: auto;
-    margin-bottom: 10px;
-    font-weight: 600;
-    background: rgb(254,155,47);
-    background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
-    box-shadow: 0px 5px 40px #C35456;
+.active {
+    border: 3px solid white !important;
 }
 </style>

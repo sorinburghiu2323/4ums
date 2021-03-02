@@ -102,12 +102,12 @@ def show_post(request, community_id, post_id):
     post_instance = check_valid_post(comm_instance, post_id)
     if post_instance is None:
         return JsonResponse("Post does not exist", status=404, safe=False)
-    final_instance = {"post": post_instance.serialize()}
+    final_instance = {"post": post_instance.serialize(request)}
     post_comments = PostComment.objects.filter(post=post_instance).order_by(
         "-is_approved", "-created_at"
     )
     final_instance["comments"] = json_paginator(
-        request, post_comments, lambda d: d.serialize()
+        request, post_comments, lambda d: d.serialize(request)
     )
     return JsonResponse(
         final_instance,

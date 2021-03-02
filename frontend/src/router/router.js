@@ -7,6 +7,7 @@ import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import Community from "../views/Community.vue"
+import ManageCommunities from "../views/ManageCommunities.vue"
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Feed from '../views/Feed.vue'
@@ -71,6 +72,11 @@ const routes = [
         path: '/communities/:id',
         name: 'Community',
         component: Community,
+    },
+    {
+        path: '/manage',
+        name: 'Manage',
+        component: ManageCommunities,
     },
     {
         path: '*',

@@ -161,7 +161,6 @@ export default {
   margin-left: -10px;
   border-radius: 20vw 20vw 20vw 20vw;
   background: linear-gradient(to right, #FE6811, #FE982D);
-  box-shadow: 0 0 30px #FE6710;
 }
 
 .discussion .oval {
@@ -176,7 +175,6 @@ export default {
   margin-left: -10px;
   border-radius: 20vw 20vw 20vw 20vw;
   background: linear-gradient(to right, #E276F4, #D225B1);
-  box-shadow: 0 0 30px #DA4ED3;
 }
 
 .answer .oval {
