@@ -27,6 +27,14 @@ def logout(request):
 
 
 @csrf_exempt
+def users(request):
+    return handle_methods(
+        request,
+        POST=user_controller.user_register,
+    )
+
+
+@csrf_exempt
 def posts(request, community_id):
     return handle_methods(
         request,
@@ -42,14 +50,6 @@ def post(request, community_id, post_id):
         request,
         GET=post_handler.show_post,
         args=[community_id, post_id],
-    )
-
-
-@csrf_exempt
-def users(request):
-    return handle_methods(
-        request,
-        POST=user_controller.user_register,
     )
 
 
@@ -147,7 +147,7 @@ def users_me(request):
 
 @user_login_required("Unauthorized - Login required.")
 @csrf_exempt
-def users(request, user_id):
+def users_individual(request, user_id):
     return handle_methods(
         request,
         GET=user_controller.get_user,
