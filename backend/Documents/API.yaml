@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
                 description:
                   type: string
               required:
@@ -206,7 +206,7 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
     get:
       summary: ''
@@ -580,7 +580,7 @@ components:
           type: string
         post_type:
           type: string
-          description: 'Either "discussion" or "questions".'
+          description: Either "discussion" or "questions".
         created_at:
           type: string
         likes_num:
@@ -595,6 +595,9 @@ components:
         is_liked:
           type: boolean
           description: True if the logged in user had liked this post.
+        has_approved:
+          type: boolean
+          description: 'True if the post has a reply marked as approved, false otherwise.'
       required:
         - id
         - community
@@ -607,6 +610,7 @@ components:
         - comments_num
         - is_community_owner
         - is_liked
+        - has_approved
     CommunitySimple:
       title: CommunitySimple
       type: object
