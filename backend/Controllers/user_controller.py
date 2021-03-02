@@ -223,6 +223,7 @@ def get_leaderboard(request):
     Get the leaderboard; a (paginated) list of all users ordered by ranking
     :param requet: session request.
     :return: 200 OK
+             401 Unauthorized
     """
 
     leaderboardData = get_leaderboard_info()

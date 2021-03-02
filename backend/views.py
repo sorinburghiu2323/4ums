@@ -154,7 +154,7 @@ def users(request, user_id):
         args=[user_id],
     )
 
-
+@user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def leaderboard(request):
     return handle_methods(request, GET=user_controller.get_leaderboard)
