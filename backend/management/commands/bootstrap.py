@@ -147,24 +147,23 @@ class Command(BaseCommand):
                     post_type="question",
                 )
                 for t in team_3:
+                    if t.username == "milo":
+                        PostComment.objects.create(
+                            users=t,
+                            post=post_2,
+                            comment="This is a correct answer.",
+                            is_approved=True,
+                        )
                     PostLike.objects.create(
                         user=t,
                         post=post,
                     )
-                    for i in range(10):
-                        if i == 0:
-                            comment = PostComment.objects.create(
-                                user=t,
-                                post=post_2,
-                                comment="This is a correct answer.",
-                                is_approved=True,
-                            )
-                        else:
-                            comment = PostComment.objects.create(
-                                user=t,
-                                post=post,
-                                comment="Lorem ipsum dolor sit amet",
-                            )
+                    for i in range(9):
+                        comment = PostComment.objects.create(
+                            user=t,
+                            post=post,
+                            comment="Lorem ipsum dolor sit amet",
+                        )
                         for t2 in team_2:
                             PostCommentLike.objects.create(
                                 user=t2,

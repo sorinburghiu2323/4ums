@@ -129,7 +129,7 @@ def list_communities(request):
     Get a paginated list of communities.
 
     Must include 'type' in request body, which should be one of three values:
-        - "all"     : all communities
+        - "other"     : all other communities
         - "memberof": communities the user is a member of
         - "created" : communities the user created
 
@@ -140,25 +140,23 @@ def list_communities(request):
     """
     user = request.user
     list_type = request.GET.get("type")
-    if list_type not in ["all", "created", "memberof"]:
+    if list_type not in ["other", "created", "memberof"]:
         return JsonResponse(
-            "Bad request - Type must be one of: 'all', 'created', 'memberof'",
+            "Bad request - Type must be one of: 'other', 'created', 'memberof'",
             status=400,
             safe=False,
         )
 
-    if list_type == "all":
-        comms = list(Community.objects.all().order_by("name"))
-    elif list_type == "created":
-        comms = Community.objects.filter(user=user).order_by("name")
+    communities = []
+    if list_type == "created":
+        communities = Community.objects.filter(user=user).order_by("name")
+    elif list_type == "other":
+        communities = Community.objects.exclude(communitymember__user=user).order_by("name")
     elif list_type == "memberof":
-        comm_mems = CommunityMember.objects.filter(user=user).order_by(
-            "community__name"
-        )
-        comms = [comm_mem.community for comm_mem in comm_mems]
+        communities = Community.objects.filter(communitymember__user=user).order_by("name")
 
     return JsonResponse(
-        json_paginator(request, comms, lambda d: d.serialize_simple()),
+        json_paginator(request, communities, lambda d: d.serialize_simple()),
         status=200,
     )
 
