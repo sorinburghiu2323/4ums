@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadedPost" id="infinite" class="container">
+  <div v-if="loadedPost" class="container">
     <router-link class="nav-link" to="..">
       <p id="back">
         <font-awesome-icon :icon="['fas', 'arrow-left']"/>
@@ -48,13 +48,21 @@
           </div>
         </div>
       </div>
-      <div class="likes" @click.stop="likePost">
-        <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+      <div class="likes" @click.stop='likePost'>
+        <div v-if="this.userLiked" style="color:white">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ post["likes_num"] }}</div>
         </div>
-        <div class="like-count">{{ post["likes_num"] }}</div>
+        <div v-else style="color:grey">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ post["likes_num"] }}</div>
+        </div>
       </div>
-      <div class="author">
+      <div class="author" @click.stop="navigateToUser">
         <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
       </div>
     </div>
@@ -133,7 +141,9 @@ export default {
             this.loadMore = response.data.comments["next_page"] !== null;
             this.isAnswered = response.data.comments["data"]["is_approved"];
             this.loadedPost = true;
+            console.log(response);
             this.userLiked = this.post["is_liked"];
+            console.log(this.userLiked);
             this.isAnswered = this.post["is_answered"]
           }).catch((error) => {
             console.error(error);
@@ -156,7 +166,6 @@ export default {
       })
     },
     likePost() {
-      console.log("CLIECKED")
       if (!this.userLiked) {
         axios.post('/api/communities/' + this.id + '/posts/' + this.postId + '/likes')
             .then(() => {
@@ -182,7 +191,7 @@ export default {
 
 <style scoped>
 .containers {
-  z-index: -1;
+  z-index: 0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -346,6 +355,8 @@ export default {
 }
 
 .likes {
+  position: relative;
+  width: 60px;
   z-index: 1;
   display: flex;
   margin-left: 25px;

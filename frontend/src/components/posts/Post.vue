@@ -37,15 +37,18 @@
       </div>
     </div>
     <div class="likes" @click.stop='likePost'>
-      <div class="like-icon">
-        <div v-if="this.userLiked" style="color:white">
+      <div v-if="this.userLiked" style="color:white">
+        <div class="like-icon">
           <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
         </div>
-        <div v-else style="color:grey">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
-        </div>
+        <div class="like-count">{{ post["likes_num"] }}</div>
       </div>
-      <div class="like-count">{{ post["likes_num"] }}</div>
+      <div v-else style="color:grey">
+        <div class="like-icon">
+          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+        </div>
+        <div class="like-count">{{ post["likes_num"] }}</div>
+      </div>
     </div>
     <div class="author" @click.stop='navigateToUser'>
       <p>Authored by <span class="author-name">{{ post["user"]["username"] }}</span></p>

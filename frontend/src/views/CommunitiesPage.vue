@@ -156,7 +156,6 @@ h1 {
 
 .search-section input {
     width: 100%;
-    border: 1px solid black;
     height: 46px;
     font-size: 15px;
     padding-left: 10px;
@@ -208,29 +207,27 @@ h1 {
 }
 
 #your-communities-btn {
-    background: linear-gradient(270deg, rgba(52,235,233,1) 0%, rgba(101,255,167,1) 35%);
-    box-shadow: 0px 5px 40px #268079;
+  background: linear-gradient(270deg, rgba(52, 235, 233, 1) 0%, rgba(101, 255, 167, 1) 35%);
+  box-shadow: 0 5px 40px #268079;
 }
 
 #all-communities-btn {
-    background: rgb(254,155,47);
-    background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
-    box-shadow: 0px 5px 40px #C35456;
+  background: rgb(254, 155, 47);
+  background: linear-gradient(90deg, rgba(254, 155, 47, 1) 0%, rgba(254, 101, 15, 1) 35%);
+  box-shadow: 0 5px 40px #C35456;
 }
 
 .load-more-btn {
-    padding: 8px;
-    margin: 5px;
-    border-radius: 25px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 150px;
-    margin: auto;
-    margin-bottom: 10px;
-    font-weight: 600;
-    background: rgb(254,155,47);
-    background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
-    box-shadow: 0px 5px 40px #C35456;
+  padding: 8px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 150px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  background: rgb(254, 155, 47);
+  background: linear-gradient(90deg, rgba(254, 155, 47, 1) 0%, rgba(254, 101, 15, 1) 35%);
+  box-shadow: 0 5px 40px #C35456;
 }
 </style>
