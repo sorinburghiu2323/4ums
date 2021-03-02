@@ -9,7 +9,6 @@ from backend.Utils.user_validation import (
     validate_password,
     verify_user_login,
 )
-from backend.Utils.leaderboard_processing import get_leaderboard_info
 from backend.models import User, Post
 
 
@@ -226,9 +225,23 @@ def get_leaderboard(request):
              401 Unauthorized
     """
 
-    leaderboardData = get_leaderboard_info()
+    includedUsers = User.objects.filter(hide_leaderboard=False, is_staff=False)
+
+    # ordered list of points, index denoting leaderboard position (rank)
+    # distinct values means that everyone with the same points has the same rank
+    rankings = []
+    for item in includedUsers.values("points").distinct().order_by("-points"):
+        rankings.append(item["points"])
+
+    includedUsers = includedUsers.order_by("-points")
+
+    paginationData = []
+    for user in includedUsers:
+        # rank is the index of the users points +1 (converting from 0-indexing)
+        data = {'user': user, 'rank': rankings.index(user.points) + 1}
+        paginationData.append(data)
 
     return JsonResponse(
-        json_paginator(request, leaderboardData, lb_serializer),
+        json_paginator(request, paginationData, lb_serializer),
         status=200,
     )
