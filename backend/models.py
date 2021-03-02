@@ -203,6 +203,9 @@ class Post(models.Model):
             ).exists()
             if request
             else False,
+            "has_approved": PostComment.objects.filter(
+                post=self, is_approved=True
+            ).exists(),
         }
 
 
