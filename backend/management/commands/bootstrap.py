@@ -154,7 +154,7 @@ class Command(BaseCommand):
                     for i in range(10):
                         if i == 0:
                             comment = PostComment.objects.create(
-                                users=t,
+                                user=t,
                                 post=post_2,
                                 comment="This is a correct answer.",
                                 is_approved=True,
