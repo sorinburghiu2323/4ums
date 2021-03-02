@@ -1,9 +1,9 @@
-from django.http import JsonResponse
 from django.db.utils import IntegrityError
+from django.http import JsonResponse
 
 from SoftwareDev import settings
-from backend.Utils.points_handler import adjust_points
 from backend.Utils.paginators import json_paginator
+from backend.Utils.points_handler import adjust_points
 from backend.models import Community, CommunityMember
 
 
@@ -140,7 +140,6 @@ def list_communities(request):
     """
     user = request.user
     list_type = request.GET.get("type")
-    print(list_type)
     if list_type not in ["all", "created", "memberof"]:
         return JsonResponse(
             "Bad request - Type must be one of: 'all', 'created', 'memberof'",

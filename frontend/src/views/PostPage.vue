@@ -48,11 +48,11 @@
           </div>
         </div>
       </div>
-      <div class="likes">
+      <div class="likes" @click.stop="likePost">
         <div class="like-icon">
           <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
         </div>
-        <div class="like-count">{{ post.likes_num }}</div>
+        <div class="like-count">{{ post["likes_num"] }}</div>
       </div>
       <div class="author">
         <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
@@ -99,7 +99,8 @@ export default {
       post: Object,
       post_type: "discussion",
       date_time: '10/20/30',
-      isAnswered: false
+      isAnswered: false,
+      userLiked: false,
     }
   },
   mounted() {
@@ -132,6 +133,7 @@ export default {
             this.loadMore = response.data.comments["next_page"] !== null;
             this.isAnswered = response.data.comments["data"]["is_approved"];
             this.loadedPost = true;
+            this.userLiked = this.post["is_liked"];
           }).catch((error) => {
             console.error(error);
             if (error.response.status === 401) {
@@ -143,6 +145,35 @@ export default {
     loadMoreComments() {
       this.currentPage += 1;
       this.getPost();
+    },
+    navigateToUser() {
+      this.$router.push({
+        name: 'User',
+        params: {
+          id: this.post["user"]["id"]
+        }
+      })
+    },
+    likePost() {
+      console.log("CLIECKED")
+      if (!this.userLiked) {
+        axios.post('/api/communities/' + this.id + '/posts/' + this.postId + '/likes')
+            .then(() => {
+              this.post["likes_num"]++;
+              this.userLiked = true;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+      } else {
+        axios.delete('/api/communities/' + this.id + '/posts/' + this.postId + '/likes')
+            .then(() => {
+              this.post["likes_num"]--;
+              this.userLiked = false;
+            }).catch((error) => {
+          console.log(error);
+        })
+      }
     }
   }
 }
@@ -316,6 +347,7 @@ export default {
 }
 
 .likes {
+  z-index: 1;
   display: flex;
   margin-left: 25px;
 }
@@ -325,9 +357,7 @@ export default {
 }
 
 .like-count {
-  margin-left: 10px;
   font-size: 20px;
-  margin: auto;
   margin-left: 10px;
 }
 

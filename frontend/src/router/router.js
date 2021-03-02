@@ -13,6 +13,7 @@ import Feed from '../views/Feed.vue'
 import axios from 'axios'
 import PostPage from "@/views/PostPage";
 import NotFound from "@/views/NotFound";
+import User from "@/views/User";
 
 Vue.use(VueRouter);
 
@@ -71,6 +72,11 @@ const routes = [
         path: '/communities/:id',
         name: 'Community',
         component: Community,
+    },
+    {
+        path: '/users/:id',
+        name: 'User',
+        component: User,
     },
     {
         path: '*',

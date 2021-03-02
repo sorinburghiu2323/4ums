@@ -1,46 +1,46 @@
 <template>
     <div class="container">
         <div class="register-form">
-            <div class="header">
-                <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
-            </div>
-            <div class="pass-requirements" v-if="showRequirements">
-                <p>Password requirements: </p>
-                <ul>
-                    <li :class="{'fulfilled': lowercase}">Atleast 1 lower case</li>
-                    <li :class="{'fulfilled': uppercase}">Atleast 1 upper case</li>
-                    <li :class="{'fulfilled': containsNumber}">A number</li>
-                    <li :class="{'fulfilled': noSpaces}">No spaces</li>
-                    <li :class="{'fulfilled': nineChars}">At least 9 characters long</li>
-                </ul>
-            </div>
-            <div class="input">
-                <div class="color-bar" style="background: #FFED00"></div>
-                <input type="text" placeholder="First name" v-model="firstName"/>
-            </div>
-            <div class="input">
-                <div class="color-bar" style="background: #FFED00"></div>
-                <input type="text" placeholder="Last name" v-model="lastName"/>
-            </div>
-            <div class="input">
+          <div class="header">
+            <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
+          </div>
+          <div v-if="showRequirements" class="pass-requirements">
+            <p>Password requirements: </p>
+            <ul>
+              <li :class="{'fulfilled': lowercase}">Atleast 1 lower case</li>
+              <li :class="{'fulfilled': uppercase}">Atleast 1 upper case</li>
+              <li :class="{'fulfilled': containsNumber}">A number</li>
+              <li :class="{'fulfilled': noSpaces}">No spaces</li>
+              <li :class="{'fulfilled': nineChars}">At least 9 characters long</li>
+            </ul>
+          </div>
+          <div class="input">
+            <div class="color-bar" style="background: #FFED00"></div>
+            <input v-model="firstName" placeholder="First name" type="text"/>
+          </div>
+          <div class="input">
+            <div class="color-bar" style="background: #FFED00"></div>
+            <input v-model="lastName" placeholder="Last name" type="text"/>
+          </div>
+          <div class="input">
                 <div class="color-bar" style="background: #B437FF"></div>
-                <input type="text" placeholder="Username" v-model="username"/>
+            <input v-model="username" placeholder="Username" type="text"/>
             </div>
             <div class="input">
                 <div class="color-bar" style="background: #FB6D13"></div>
-                <input type="email" placeholder="University Email" v-model="email" />
+              <input v-model="email" placeholder="University Email" type="email"/>
             </div>
             <div class="input">
                 <div class="color-bar" style="background: #D223AF"></div>
-                <input type="password" placeholder="Password" v-model="password" >
+              <input v-model="password" placeholder="Password" type="password">
             </div>
             <div class="input">
                 <div class="color-bar" style="background: #D223AF"></div>
-                <input type="password" placeholder="Confirm password" v-model="passwordConfirmation">
+              <input v-model="passwordConfirmation" placeholder="Confirm password" type="password">
                 <p style="color: red; font-size: 12px;">{{errMessage}}</p>
             </div>
             <div class="terms">
-                <div><input type="checkbox" v-model="isTermsAgreed"> <span>I agree to all terms</span></div>
+              <div><input v-model="isTermsAgreed" type="checkbox"> <span>I agree to all terms</span></div>
                 <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
             </div>
             <div>
@@ -55,15 +55,17 @@
 
 <script>
 import axios from 'axios'
+import Feed from "@/views/Feed";
+
 export default {
-    name: 'RegisterPage',
-    data() {
-        return {
-            firstName: '',
-            lastName: '',
-            username: '',
-            password: '',
-            passwordConfirmation: '',
+  name: 'RegisterPage',
+  data() {
+    return {
+      firstName: '',
+      lastName: '',
+      username: '',
+      password: '',
+      passwordConfirmation: '',
             email: '',
             isTermsAgreed: false,
 
@@ -85,51 +87,31 @@ export default {
         * and their password confirmation do not match.
         **/
         password: function() {
-            // Check 9 character password
-            if(this.password.length >= 9) {
-                this.nineChars = true;
-            } else {
-                this.nineChars = false;
-            }
-            // Check for white space
-            if(/\s/g.test(this.password)) {
-                this.noSpaces = false;
-            } else {
-                this.noSpaces = true;
-            }
-            if(/[a-z]/.test(this.password)){
-                this.lowercase = true;
-            } else {
-                this.lowercase = false;
-            }
-            if(/[A-Z]/.test(this.password)) {
-                this.uppercase = true;
-            } else {
-                this.uppercase = false;
-            }
-            if(/[0-9]/.test(this.password)) {
-                this.containsNumber = true;
-            } else {
-                this.containsNumber = false;
-            }
+          // Check 9 character password
+          this.nineChars = this.password.length >= 9;
+          // Check for white space
+          this.noSpaces = !/\s/g.test(this.password);
+          this.lowercase = /[a-z]/.test(this.password);
+          this.uppercase = /[A-Z]/.test(this.password);
+          this.containsNumber = /[0-9]/.test(this.password);
         },
         passwordConfirmation: function() {
-            if(this.passwordConfirmation != '' 
-            && this.passwordConfirmation !== this.password) {
-                this.errMessage = 'Passwords do not match';
-            } else {
-                this.errMessage = '';
-            }
-            
+          if (this.passwordConfirmation !== ''
+              && this.passwordConfirmation !== this.password) {
+            this.errMessage = 'Passwords do not match';
+          } else {
+            this.errMessage = '';
+          }
+
         },
         /**
          * Clear any error messages related to the agreed terms checkbox
          * if the user agrees with the terms
          */
         isTermsAgreed: function() {
-            if(this.termErrMessage != '' && this.isTermsAgreed) {
-                this.termErrMessage = '';
-            }
+          if (this.termErrMessage !== '' && this.isTermsAgreed) {
+            this.termErrMessage = '';
+          }
         }
     },
     methods: {
@@ -137,39 +119,39 @@ export default {
             this.$router.push(path);
         },
         registerUser() {
-            if(this.validateFields() === false) {
-                this.errMessage = 'Please fill in missing fields';
-                return false;
-            }
+          if (this.validateFields() === false) {
+            this.errMessage = 'Please fill in missing fields';
+            return false;
+          }
 
-            if(this.validatePassword() === false) {
-                this.showRequirements = true;
-                return false;
-            }
+          if (this.validatePassword() === false) {
+            this.showRequirements = true;
+            return false;
+          }
 
-            if(!this.isTermsAgreed) {
-                this.termErrMessage = 'You must agree to the terms to register.';
-                return false;
-            }
+          if (!this.isTermsAgreed) {
+            this.termErrMessage = 'You must agree to the terms to register.';
+            return false;
+          }
 
-            axios.post('api/users', {
-                email: this.email,
-                username: this.username, 
-                password: this.password, 
-                first_name: this.firstName,
-                last_name: this.lastName,
-                is_teacher: 'false',
-                password_repeat: this.passwordConfirmation,
-            })
-            .then(() => {
+          axios.post('/api/users', {
+            email: this.email,
+            username: this.username,
+            password: this.password,
+            first_name: this.firstName,
+            last_name: this.lastName,
+            is_teacher: 'false',
+            password_repeat: this.passwordConfirmation,
+          })
+              .then(() => {
                 this.errMessage = '';
                 this.termErrMessage = '';
-                this.$router.push('feed');
-            })
-            .catch((error) =>{
+                this.$router.push(Feed);
+              })
+              .catch((error) => {
                 console.error(error);
                 this.errMessage = error.response.data;
-            })
+              })
         },
         validatePassword() {
             if(this.password.length >= 9) {
@@ -205,15 +187,10 @@ export default {
             }
         },
         validateFields() {
-            if
-            (
-                this.firstName && this.lastName && 
-                this.password && this.passwordConfirmation &&
-                this.email
-            ) {
-                return true;
-            }
-            return false;
+          return !!(this.firstName && this.lastName &&
+              this.password && this.passwordConfirmation &&
+              this.email);
+
         },
     }
 }

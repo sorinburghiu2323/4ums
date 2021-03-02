@@ -25,7 +25,6 @@ import {
   faUsers,
   faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
-
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 // Add icons here after import

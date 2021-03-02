@@ -1,57 +1,60 @@
 <template>
-  <div @click='navigateToPost'>
-    <div class="containers">
-      <div class="details">
-        <div class="title">
-          <p>{{ post.title }}</p>
-        </div>
-        <div class="description">
-          <p>{{ post.description }}</p>
-        </div>
-        <div class="date">
-          <p>{{ date_time }}</p>
-        </div>
+  <div class="containers" @click='navigateToPost'>
+    <div class="details">
+      <div class="title">
+        <p>{{ post.title }}</p>
+      </div>
+      <div class="description">
+        <p>{{ post.description }}</p>
+      </div>
+      <div class="date">
+        <p>{{ date_time }}</p>
+      </div>
 
-        <div v-if="post_type === 'question' && !is_answered">
-          <div class="open">
-            <div class="oval">
-            </div>
-            <font-awesome-icon :icon="['fa', 'question-circle']"></font-awesome-icon>
-            <p>Open</p>
+      <div v-if="post_type === 'question'">
+        <div class="open">
+          <div class="oval">
           </div>
-        </div>
-        <div v-else-if="post_type === 'discussion'">
-          <div class="discussion">
-            <div class="oval">
-            </div>
-            <font-awesome-icon :icon="['fa', 'comment-dots']"></font-awesome-icon>
-            <p>Discussion</p>
-          </div>
-        </div>
-        <div v-else>
-          <div class="answer">
-            <div class="oval">
-            </div>
-            <font-awesome-icon :icon="['fa', 'check-circle']"></font-awesome-icon>
-            <p>Answered</p>
-          </div>
+          <font-awesome-icon :icon="['fa', 'question-circle']"></font-awesome-icon>
+          <p>Open</p>
         </div>
       </div>
-      <div class="likes">
-        <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+      <div v-else-if="post_type === 'discussion'">
+        <div class="discussion">
+          <div class="oval">
+          </div>
+          <font-awesome-icon :icon="['fa', 'comment-dots']"></font-awesome-icon>
+          <p>Discussion</p>
         </div>
-        <div class="like-count">{{ post.likes_num }}</div>
       </div>
-      <div class="author">
-        <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
+      <div v-else>
+        <div class="answer">
+          <div class="oval">
+          </div>
+          <font-awesome-icon :icon="['fa', 'check-circle']"></font-awesome-icon>
+          <p>Answered</p>
+        </div>
       </div>
     </div>
-
+    <div class="likes" @click.stop='likePost'>
+      <div class="like-icon">
+        <div v-if="this.userLiked" style="color:white">
+          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+        </div>
+        <div v-else style="color:grey">
+          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+        </div>
+      </div>
+      <div class="like-count">{{ post["likes_num"] }}</div>
+    </div>
+    <div class="author" @click.stop='navigateToUser'>
+      <p>Authored by <span class="author-name">{{ post["user"]["username"] }}</span></p>
+    </div>
   </div>
 </template>
 <script>
 import moment from 'moment'
+import axios from "axios";
 
 
 export default {
@@ -59,12 +62,11 @@ export default {
   props: {
     post: Object,
   },
-
   data() {
     return {
       info: 3,
       post_type: this.post.post_type,
-      is_answered: this.post["is_liked"],
+      userLiked: this.post["is_liked"],
       date_time: moment((this.post["create_at"])).format('DD/MM/YY'),
     }
   },
@@ -77,16 +79,42 @@ export default {
           postId: this.post.id
         }
       })
-    }
-
+    },
+    navigateToUser() {
+      this.$router.push({
+        name: 'User',
+        params: {
+          id: this.post.user.id
+        }
+      })
+    },
+    likePost() {
+      if (!this.userLiked) {
+        axios.post('/api/communities/' + this.post.community.id + '/posts/' + this.post.id + '/likes')
+            .then(() => {
+              this.post["likes_num"]++;
+              this.userLiked = true;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+      } else {
+        axios.delete('/api/communities/' + this.post.community.id + '/posts/' + this.post.id + '/likes')
+            .then(() => {
+              this.post["likes_num"]--;
+              this.userLiked = false;
+            }).catch((error) => {
+          console.log(error);
+        })
+      }
+    },
   }
-
 }
 </script>
 
 <style scoped>
 .containers {
-  z-index: -1;
+  z-index: 0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -249,6 +277,9 @@ export default {
 }
 
 .likes {
+  position: relative;
+  z-index: 0;
+  width: 60px;
   display: flex;
   margin-left: 25px;
 }
@@ -260,19 +291,18 @@ export default {
 .like-count {
   margin-left: 10px;
   font-size: 20px;
-  margin: auto;
-  margin-left: 10px;
 }
 .author {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    color: #7e7e7e;
-    font-style: italic;
-    margin-right: 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: 0;
+  color: #7e7e7e;
+  font-style: italic;
+  margin-right: 10px;
 }
 
 .author-name {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 </style>

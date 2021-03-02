@@ -1,26 +1,21 @@
 <template>
   <div id="nav">
-    <router-link class="nav-link" to="/" v-on:click="goTo('feed')"
-    >
+    <router-link class="nav-link" to="/" v-on:click="goTo('feed')">
       <div id="feed" style="color: gray" v-on:click="goTo('feed')">
         <font-awesome-icon :icon="['fas', 'home']"/>
         <p class="icon">Feed</p>
       </div>
-    </router-link
-    >
+    </router-link>
     <router-link
         class="nav-link"
         to="/communities"
-        v-on:click="goTo('communities')"
-    >
+        v-on:click="goTo('communities')">
       <div id="communities" style="color: gray" v-on:click="goTo('communities')">
         <font-awesome-icon :icon="['fas', 'users']"/>
         <p class="icon">Communities</p>
       </div>
-    </router-link
-    >
-    <router-link class="nav-link" to="/profile" v-on:click="goTo('profile')"
-    >
+    </router-link>
+    <router-link class="nav-link" to="/profile" v-on:click="goTo('profile')">
       <div id="profile" style="color: gray" v-on:click="goTo('profile')">
         <font-awesome-icon :icon="['fas', 'user']"/>
         <p class="icon">Profile</p>

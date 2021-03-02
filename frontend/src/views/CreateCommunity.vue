@@ -1,27 +1,27 @@
 <template>
   <div>
-    <router-link class="nav-link" to="../communities" v-if="createVisible">
+    <router-link v-if="createVisible" class="nav-link" to="../communities">
       <p id="back">
         <font-awesome-icon :icon="['fas', 'arrow-left']" /> Communities
       </p>
     </router-link>
-    <p id="back" v-if="!createVisible" v-on:click="goToEdit()">
+    <p v-if="!createVisible" id="back" v-on:click="goToEdit()">
       <font-awesome-icon :icon="['fas', 'arrow-left']" /> Edit Community
     </p>
     <p id="pageTitle">Create a<br />Community</p>
     <br />
     <div v-if="createVisible">
       <input
-        class="inputBox"
         v-model="name"
-        placeholder="Write a community title (max 25 characters)..."
+        class="inputBox"
         maxlength="25"
+        placeholder="Write a community title (max 25 characters)..."
       /><br />
       <br />
       <textarea
-        class="inputBox"
         id="descriptionBox"
         v-model="description"
+        class="inputBox"
         placeholder="Write a community description..."
       ></textarea>
       <p id="label">Choose a colour</p>
@@ -62,7 +62,7 @@ export default {
       this.createVisible = true;
     },
     setColour: function(colour) {
-      for (var i = 0; i < 3; i++) {
+      for (let i = 0; i < 3; i++) {
         document.getElementById(this.colours[i] + "Button").style = "";
       }
       document.getElementById(colour + "Button").style =

@@ -101,8 +101,8 @@ export default {
               })
         },
         loadMorePosts() {
-            this.currentPage += 1;
-            this.getPosts();
+          this.currentPage++;
+          this.getPosts();
         },
         joinCommunity() {
           const community_id = this.$route.params.id;
@@ -187,7 +187,6 @@ export default {
 
 .search-section input {
     width: 100%;
-    border: 1px solid black;
     height: 46px;
     font-size: 15px;
     padding-left: 10px;
@@ -219,14 +218,12 @@ export default {
 
 .load-more-btn {
     padding: 8px;
-    margin: 5px;
     border-radius: 25px;
     border: none;
     outline: none;
     cursor: pointer;
     width: 150px;
     margin: auto;
-    margin-bottom: 10px;
     font-weight: 600;
     background: rgb(254,155,47);
     background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);

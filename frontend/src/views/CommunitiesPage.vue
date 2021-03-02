@@ -1,16 +1,16 @@
 <template>
-  <div class="container" id="infinite">
-      <div class="navigation-display">
-          Communities
+  <div id="infinite" class="container">
+    <div class="navigation-display">
+      Communities
+    </div>
+    <div class="header">
+      <h1>Communities</h1>
+      <div class="settings-icon">
+        <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
-      <div class="header">
-          <h1>Communities</h1>
-          <div class="settings-icon">
-              <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
-        </div>  
-      </div>
-      <div class="search-section">
-          <input type="text" placeholder="Search for a community..."/>
+    </div>
+    <div class="search-section">
+      <input placeholder="Search for a community..." type="text"/>
           <div class="search-icon">
               <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
           </div>
@@ -42,6 +42,7 @@
 <script>
 import axios from 'axios'
 import CommunitiesList from '@/components/communities/CommunitiesList.vue'
+
 export default {
     name: 'CommunitiesPage',
     components: {
@@ -79,43 +80,35 @@ export default {
     },
     methods: {
         async getMyCommunities() {
-            await axios.get('api/communities?type=memberof' , {params: {page: this.currentPage}})
-            .then((response) => {
+          await axios.get('/api/communities?type=memberof', {params: {page: this.currentPage}})
+              .then((response) => {
                 this.loadedCommunities = false;
-                for(var i = 0; i < response.data.data.length; i++) {
-                    this.myCommunities.push(response.data.data[i]);
+                for (let i = 0; i < response.data.data.length; i++) {
+                  this.myCommunities.push(response.data.data[i]);
                 }
-                if(response.data.next_page != null) {
-                    this.loadMore = true;
-                } else {
-                    this.loadMore = false;
-                }
+                this.loadMore = response.data["next_page"] != null;
                 this.loadedCommunities = true;
-            }).catch((error) => {
+              }).catch((error) => {
                 console.error(error);
                 this.loadedCommunities = false;
-            })
+              })
         },
         getAllCommunities() {
-            axios.get('api/communities?type=all', {params: {page: this.currentPage}})
+          axios.get('/api/communities?type=all', {params: {page: this.currentPage}})
             .then((response) => {
                 this.loadedCommunities = false;
-                for(var i = 0; i < response.data.data.length; i++) {
-                    this.allCommunities.push(response.data.data[i]);
-                }
-                if(response.data.next_page != null) {
-                    this.loadMore = true;
-                } else {
-                    this.loadMore = false;
-                }
-                this.loadedCommunities = true;
+              for (let i = 0; i < response.data.data.length; i++) {
+                this.allCommunities.push(response.data.data[i]);
+              }
+              this.loadMore = response.data["next_page"] != null;
+              this.loadedCommunities = true;
             }).catch((error) => {
                 console.error(error);
                 this.loadedCommunities = false;
             })
         },
         loadMoreCommunities() {
-            this.currentPage += 1;
+          this.currentPage++;
             if(this.showAllCommunities) {
                 this.getAllCommunities();
             } else {
