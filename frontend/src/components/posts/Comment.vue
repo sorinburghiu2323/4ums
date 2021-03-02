@@ -16,21 +16,21 @@
         </div>
       </div>
     </div>
-    <div class="likes" @click.stop='this.likeComment'>
+    <div class="likes" @click.stop="likeComment">
       <div v-if="this.userLiked" style="color:white">
         <div class="like-icon">
           <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
         </div>
-        <div class="like-count">{{ comment_data["likes_num"] }}</div>
+        <div class="like-count">{{ this.numLikes }}</div>
       </div>
       <div v-else style="color:grey">
         <div class="like-icon">
           <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
         </div>
-        <div class="like-count">{{ comment_data["likes_num"] }}</div>
+        <div class="like-count">{{ this.numLikes }}</div>
       </div>
     </div>
-    <div class="author" @click.stop="this.navigateToUser">
+    <div class="author" @click.stop="navigateToUser">
       <p>Authored by <span class="author-name">{{ comment.user.username }}</span></p>
     </div>
   </div>
@@ -51,33 +51,38 @@ export default {
       comment_data: this.comment.comment,
       is_approved: this.comment.is_approved,
       date_time: moment((this.comment["created_at"])).format('DD/MM/YY'),
-      is_liked: this.comment.is_liked,
-      commentId: this.comment.id
+      userLiked: this.comment["is_liked"],
+      commentId: this.comment.id,
+      numLikes: this.comment["comment_likes"],
+      postId: this.$route.params.postId,
+      communityId: this.$route.params.id,
     }
   },
-  method: {
+  methods: {
     navigateToUser() {
       this.$router.push({
         name: 'User',
         params: {
-          id: this.post["user"]["id"]
+          id: this.comment["user"]["id"]
         }
       })
     },
     likeComment() {
       if (!this.userLiked) {
-        axios.post('/api/communities/' + this.id + '/posts/' + this.postId + '/comments/' + this.commentId, +'/likes')
+        axios.post('/api/communities/' + this.communityId + '/posts/' + this.postId + '/comments/' + this.commentId +
+            '/likes')
             .then(() => {
-              this.post["likes_num"]++;
+              this.numLikes++;
               this.userLiked = true;
             })
             .catch((error) => {
               console.log(error);
             })
       } else {
-        axios.delete('/api/communities/' + this.id + '/posts/' + this.postId + '/likes')
+        axios.delete('/api/communities/' + this.communityId + '/posts/' + this.postId + '/comments/' + this.commentId +
+            '/likes')
             .then(() => {
-              this.post["likes_num"]--;
+              this.numLikes--;
               this.userLiked = false;
             }).catch((error) => {
           console.log(error);

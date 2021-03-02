@@ -23,7 +23,7 @@
           <p>{{ date_time }}</p>
         </div>
 
-        <div v-if="post_type === 'question' && !isAnswered">
+        <div v-if="post_type === 'question' && !this.isAnswered">
           <div class="open">
             <div class="oval">
             </div>
@@ -114,6 +114,7 @@ export default {
   mounted() {
     this.getPost();
     this.scroll();
+    window.scrollTo(0, 0)
   },
   methods: {
     scroll() {
@@ -139,12 +140,11 @@ export default {
             this.date_time = moment((this.post["created_at"])).format('DD/MM/YY');
             this.post_type = this.post["post_type"];
             this.loadMore = response.data.comments["next_page"] !== null;
-            this.isAnswered = response.data.comments["data"]["is_approved"];
+            this.isAnswered = this.post["has_approved"];
             this.loadedPost = true;
             console.log(response);
             this.userLiked = this.post["is_liked"];
             console.log(this.userLiked);
-            this.isAnswered = this.post["is_answered"]
           }).catch((error) => {
             console.error(error);
             if (error.response.status === 401) {

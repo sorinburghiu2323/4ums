@@ -11,7 +11,7 @@
         <p>{{ date_time }}</p>
       </div>
 
-      <div v-if="post_type === 'question'">
+      <div v-if="post_type === 'question'&& !this.approvedAnswer">
         <div class="open">
           <div class="oval">
           </div>
@@ -70,6 +70,7 @@ export default {
       info: 3,
       post_type: this.post.post_type,
       userLiked: this.post["is_liked"],
+      approvedAnswer: this.post["has_approved"],
       date_time: moment((this.post["create_at"])).format('DD/MM/YY'),
     }
   },

@@ -57,6 +57,7 @@ export default {
   mounted() {
     this.getPosts();
     this.scroll();
+    window.scrollTo(0, -100000)
   },
   methods: {
     scroll() {
