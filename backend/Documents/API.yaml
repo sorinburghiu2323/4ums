@@ -619,6 +619,9 @@ components:
         is_liked:
           type: boolean
           description: True if the logged in user had liked this post.
+        has_approved:
+          type: boolean
+          description: 'True if the post has a reply marked as approved, false otherwise.'
       required:
         - id
         - community
@@ -631,6 +634,7 @@ components:
         - comments_num
         - is_community_owner
         - is_liked
+        - has_approved
     CommunitySimple:
       title: CommunitySimple
       type: object
