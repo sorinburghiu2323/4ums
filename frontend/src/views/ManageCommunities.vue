@@ -61,9 +61,13 @@ export default {
     methods: {
         scroll() {
             window.onscroll = () => {
-                let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
-                    document.body.scrollTop) + window.innerHeight;
-                this.showCreateButton = bottomOfWindow < document.documentElement.offsetHeight - 90;
+                let bottomOfWindow = document.documentElement.scrollTop +
+                    window.innerHeight > document.body.scrollHeight;
+                if (bottomOfWindow) {
+                    this.showCreateButton = false;
+                } else {
+                    this.showCreateButton = true;
+                }
             }
         },
         getMyCommunities() {
@@ -98,7 +102,6 @@ export default {
 
 <style scoped>
 .container {
-  margin: 10px;
   height: 100%;
 }
 h1 {

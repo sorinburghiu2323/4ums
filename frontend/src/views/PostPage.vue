@@ -73,14 +73,11 @@
       </div>
     </div>
     <div v-if="showInput" class="comment-input">
-      <md-field style="background:linear-gradient(to right, #272B39, #1E212B);">
         <label style="color:white">Add a comment...</label>
-        <md-textarea v-model="addComment" md-autogrow
-                     style="background:linear-gradient(to right, #272B39, #1E212B); height: 60px;color:white;"></md-textarea>
+        <textarea v-model="addComment"></textarea>
         <div class="send-icon" @click.stop="sendComment">
           <font-awesome-icon :icon="['fas', 'paper-plane']"></font-awesome-icon>
         </div>
-      </md-field>
     </div>
     <div v-if="loadedPost" class="comments-list">
       <Comment v-for="(comment, index) in allComments" :key="index"
@@ -225,27 +222,43 @@ export default {
 
 .send-icon {
   position: absolute;
-  top: -10px;
-  right: 0;
+  top: 10px;
+  right: 10px;
   color: dodgerblue;
   font-size: 25px;
 }
 
-.comment-input {
-  background: linear-gradient(to right, #272B39, #1E212B) !important;
-  z-index: 2;
-  min-width: 94vw;
-  min-height: 100px;
-  height: auto;
-  bottom: 10px;
-  line-height: 20px;
-  margin-left: 10px;
-  position: fixed;
-  padding: 10px;
-  color: white;
-  box-shadow: 0 0 30px black;
+.header {
+  margin-bottom: 50px;
 }
 
+.comment-input {
+    background: linear-gradient(to right, #272B39, #1E212B) !important;
+    position: fixed;
+    bottom: 0;
+    z-index: 2;
+    height: 150px;
+    width: inherit;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    right: 0;
+    padding-top: 30px;
+    border-radius: 20px;
+}
+
+.comment-input textarea {
+  border: 1px solid black;
+  overflow-y: auto;
+  background:linear-gradient(to right, #272B39, #1E212B); 
+  height: 110px;
+  color:white;
+  width: 90%;
+  margin: auto;
+  margin-top: 5px;
+  outline: none;
+}
 .comment-btn {
   position: relative;
   background: linear-gradient(to right, #272B39, #1E212B);
@@ -283,6 +296,11 @@ export default {
   border: none;
   background: linear-gradient(to right, #272B39, #1E212B);
   position: relative;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
 }
 
 .details {
@@ -463,5 +481,17 @@ export default {
 
 .author-name {
   text-decoration: underline;
+}
+
+#back {
+  text-align: left;
+}
+
+.settings-icon {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    font-size: 35px;
+    color: #7e7e7e;
 }
 </style>

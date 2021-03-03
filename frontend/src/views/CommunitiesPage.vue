@@ -106,17 +106,17 @@ export default {
     methods: {
       scroll() {
         window.onscroll = () => {
-          let bottomOfWindow = document.documentElement.scrollTop +
-              window.innerHeight > document.body.scrollHeight - 200;
-          if (bottomOfWindow) {
-            if (this.loadMore) {
-              this.loadMoreCommunities();
-              this.loadMore = false;
+            let bottomOfWindow = document.documentElement.scrollTop +
+                window.innerHeight > document.body.scrollHeight;
+            if (bottomOfWindow) {
+              if (this.loadMore) {
+                this.loadMoreCommunities();
+                this.loadMore = false;
+              }
+              this.showManageButton = false;
+            } else {
+              this.showManageButton = true;
             }
-            this.showManageButton = false;
-          } else {
-            this.showManageButton = true;
-          }
         }
       },
       getMyCommunities() {
