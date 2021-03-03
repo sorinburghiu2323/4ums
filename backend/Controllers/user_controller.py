@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
 from django.http import JsonResponse
 
 from backend.Utils.paginators import json_paginator
@@ -121,6 +122,16 @@ def get_feed(request):
     feed = Post.objects.filter(community__communitymember__user=user).order_by(
         "-created_at"
     )
+
+    # Check for filter phrase.
+    phrase = request.GET.get("phrase")
+    if phrase is not None:
+        if phrase != "" and not phrase.isspace():
+            for term in phrase.split():
+                feed = feed.filter(Q(title__icontains=term))
+        else:
+            feed = feed.none()
+
     return JsonResponse(
         json_paginator(request, feed, lambda d: d.serialize(request)),
         status=200,
