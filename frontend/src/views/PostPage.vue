@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadedPost" id="infinite" class="container">
+  <div v-if="loadedPost" class="container">
     <router-link class="nav-link" to="..">
       <p id="back">
         <font-awesome-icon :icon="['fas', 'arrow-left']"/>
@@ -23,7 +23,7 @@
           <p>{{ date_time }}</p>
         </div>
 
-        <div v-if="post_type === 'question' && !isAnswered">
+        <div v-if="post_type === 'question' && !this.isAnswered">
           <div class="open">
             <div class="oval">
             </div>
@@ -48,15 +48,39 @@
           </div>
         </div>
       </div>
-      <div class="likes">
-        <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+      <div class="likes" @click.stop='likePost'>
+        <div v-if="this.userLiked" style="color:white">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ post["likes_num"] }}</div>
         </div>
-        <div class="like-count">{{ post.likes_num }}</div>
+        <div v-else style="color:grey">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ post["likes_num"] }}</div>
+        </div>
       </div>
-      <div class="author">
+      <div class="author" @click.stop="navigateToUser">
         <p>Authored by <span class="author-name">{{ post.user.username }}</span></p>
       </div>
+    </div>
+    <div class="comment-btn" @click.stop="showCommentInput">
+      <p>Add a comment...</p>
+      <div class="comment-icon">
+        <font-awesome-icon :icon="['fas', 'comment-dots']"></font-awesome-icon>
+      </div>
+    </div>
+    <div v-if="showInput" class="comment-input">
+      <md-field style="background:linear-gradient(to right, #272B39, #1E212B);">
+        <label style="color:white">Add a comment...</label>
+        <md-textarea v-model="addComment" md-autogrow
+                     style="background:linear-gradient(to right, #272B39, #1E212B); height: 60px;color:white;"></md-textarea>
+        <div class="send-icon" @click.stop="sendComment">
+          <font-awesome-icon :icon="['fas', 'paper-plane']"></font-awesome-icon>
+        </div>
+      </md-field>
     </div>
     <div v-if="loadedPost" class="comments-list">
       <Comment v-for="(comment, index) in allComments" :key="index"
@@ -71,6 +95,7 @@ import axios from "axios";
 import Comment from "@/components/posts/Comment";
 import moment from "moment";
 import LoginPage from "@/views/LoginPage";
+
 
 export default {
   name: "PostPage",
@@ -99,7 +124,10 @@ export default {
       post: Object,
       post_type: "discussion",
       date_time: '10/20/30',
-      isAnswered: false
+      isAnswered: false,
+      userLiked: false,
+      addComment: null,
+      showInput: false
     }
   },
   mounted() {
@@ -107,6 +135,22 @@ export default {
     this.scroll();
   },
   methods: {
+    sendComment() {
+      axios.post('/api/communities/' + this.id + '/posts/' + this.postId + '/comments', {"comment": this.addComment})
+          .then(() => {
+            console.log("added comment")
+            this.showInput = false;
+            this.$router.go(0);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+    },
+    showCommentInput() {
+      console.log(this.showInput);
+      this.addComment = null;
+      this.showInput = !this.showInput;
+    },
     scroll() {
       window.onscroll = () => {
         let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
@@ -130,8 +174,9 @@ export default {
             this.date_time = moment((this.post["created_at"])).format('DD/MM/YY');
             this.post_type = this.post["post_type"];
             this.loadMore = response.data.comments["next_page"] !== null;
-            this.isAnswered = response.data.comments["data"]["is_approved"];
+            this.isAnswered = this.post["has_approved"];
             this.loadedPost = true;
+            this.userLiked = this.post["is_liked"];
           }).catch((error) => {
             console.error(error);
             if (error.response.status === 401) {
@@ -141,21 +186,98 @@ export default {
           })
     },
     loadMoreComments() {
-      this.currentPage += 1;
+      this.currentPage++;
       this.getPost();
+    },
+    navigateToUser() {
+      this.$router.push({
+        name: 'User',
+        params: {
+          id: this.post["user"]["id"]
+        }
+      })
+    },
+    likePost() {
+      if (!this.userLiked) {
+        axios.post('/api/communities/' + this.id + '/posts/' + this.postId + '/likes')
+            .then(() => {
+              this.post["likes_num"]++;
+              this.userLiked = true;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+      } else {
+        axios.delete('/api/communities/' + this.id + '/posts/' + this.postId + '/likes')
+            .then(() => {
+              this.post["likes_num"]--;
+              this.userLiked = false;
+            }).catch((error) => {
+          console.log(error);
+        })
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+@import 'style-sheet.css';
+.send-icon {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  color: dodgerblue;
+  font-size: 25px;
+}
+
+.comment-input {
+  background: linear-gradient(to right, #272B39, #1E212B) !important;
+  z-index: 2;
+  min-width: 94vw;
+  min-height: 100px;
+  height: auto;
+  bottom: 10px;
+  line-height: 20px;
+  margin-left: 10px;
+  position: fixed;
+  padding: 10px;
+  color: white;
+  box-shadow: 0 0 30px black;
+}
+
+.comment-btn {
+  position: relative;
+  background: linear-gradient(to right, #272B39, #1E212B);
+  width: auto;
+  height: auto;
+  outline: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 10px;
+  margin: 10px 10px 0;
+}
+
+.comment-btn .comment-icon {
+  position: relative;
+  bottom: 10px;
+  width: auto;
+  left: -81px;
+}
+
+.comment-btn p {
+  position: relative;
+  margin: auto;
+  color: white;
+  top: 7px;
+}
+
 .containers {
-  z-index: -1;
+  z-index: 0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px;
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
@@ -168,7 +290,7 @@ export default {
 }
 
 .comments-list {
-  margin-top: 20px;
+  padding-bottom: 85px;
 }
 
 .details p {
@@ -185,7 +307,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
   text-align: left;
 }
@@ -200,7 +321,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines to show */
   -webkit-box-orient: vertical;
   text-align: left;
 }
@@ -316,6 +436,9 @@ export default {
 }
 
 .likes {
+  position: relative;
+  width: 60px;
+  z-index: 1;
   display: flex;
   margin-left: 25px;
 }
@@ -325,9 +448,7 @@ export default {
 }
 
 .like-count {
-  margin-left: 10px;
   font-size: 20px;
-  margin: auto;
   margin-left: 10px;
 }
 

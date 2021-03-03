@@ -13,7 +13,7 @@
             </div> 
         </div> 
         <div class="search-section">
-            <input type="text" placeholder="Search for a community..."/>
+            <input placeholder="Search for a community..." type="text"/>
             <div class="search-icon">
                 <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
             </div>
@@ -38,6 +38,7 @@
 import axios from 'axios'
 import CommunitiesList from '@/components/communities/CommunitiesList.vue'
 import CreateCommunityButton from '@/components/communities/CreateCommunityButton.vue'
+
 export default {
     name: 'ManageCommunities',
     components: {
@@ -62,11 +63,7 @@ export default {
             window.onscroll = () => {
                 let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
                     document.body.scrollTop) + window.innerHeight;
-                if (bottomOfWindow >= document.documentElement.offsetHeight - 90) {
-                    this.showCreateButton = false;
-                } else {
-                    this.showCreateButton = true;
-                }
+                this.showCreateButton = bottomOfWindow < document.documentElement.offsetHeight - 90;
             }
         },
         getMyCommunities() {
@@ -101,17 +98,19 @@ export default {
 
 <style scoped>
 .container {
-    height: 100%;
+  margin: 10px;
+  height: 100%;
 }
 h1 {
     font-size: 20px;
 }
 
 .header {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 30px;
-    width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+  line-height: 30px;
+  width: 50%;
 }
 
 .header h1 {
@@ -150,21 +149,22 @@ h1 {
     background: linear-gradient(90deg, rgba(40,44,58,1) 0%, rgba(27,30,40,1) 35%, rgba(8,9,11,1) 100%);
 }
 
-.search-section > .search-icon {
-    font-size: 28px;
-    margin-left: 10px;
-    height: 28px;
-    padding: 10px;
-    border-radius: 15px;
-    color: black;
-    display: flex;
-    cursor: pointer;
-    background: rgb(138,59,254);
-    background: linear-gradient(225deg, rgba(138,59,254,1) 11%, rgba(180,55,255,1) 49%);
+search-section > .search-icon {
+  font-size: 28px;
+  height: 29px;
+  padding: 10px;
+  border-radius: 15px;
+  position: relative;
+  color: black;
+  margin: 10px;
+  display: flex;
+  cursor: pointer;
+  background: rgb(138, 59, 254);
+  background: linear-gradient(225deg, rgba(138, 59, 254, 1) 11%, rgba(180, 55, 255, 1) 49%);
 }
 
 .search-icon svg {
-    margin: auto;
+  margin-top: -9px;
 }
 .communities-list {
     display: flex;

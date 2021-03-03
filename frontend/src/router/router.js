@@ -14,6 +14,7 @@ import Feed from '../views/Feed.vue'
 import axios from 'axios'
 import PostPage from "@/views/PostPage";
 import NotFound from "@/views/NotFound";
+import User from "@/views/User";
 
 Vue.use(VueRouter);
 
@@ -74,6 +75,11 @@ const routes = [
         component: Community,
     },
     {
+        path: '/users/:id',
+        name: 'User',
+        component: User,
+    },
+    {
         path: '/manage',
         name: 'Manage',
         component: ManageCommunities,
@@ -93,7 +99,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.name !== from.name) {
         // Direct user to login if they are not authenticated
-        axios.get('api/communities?type=all')
+        axios.get('/api/communities?type=other')
             .catch((err) => {
                 console.error(err);
                 if (to.path !== '/login' && to.path !== '/register') {

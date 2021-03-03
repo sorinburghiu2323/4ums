@@ -7,17 +7,17 @@
     >
       Create Post
     </button>
-    <div id="iconContainer" v-if="this.selectVisible">
+    <div v-if="this.selectVisible" id="iconContainer">
       <p id="title">Post to 4um</p>
       <button class="icon2" v-on:click="createPost('question')">
-        <font-awesome-icon :icon="['fas', 'question']" />
+        <font-awesome-icon :icon="['fas', 'question']"/>
       </button>
       <button class="icon2" v-on:click="createPost('discussion')">
-        <font-awesome-icon :icon="['fas', 'comment-dots']" />
+        <font-awesome-icon :icon="['fas', 'comment-dots']"/>
       </button>
-      <br />
+      <br/>
       <button class="icon3" v-on:click="close()">
-        <font-awesome-icon :icon="['fas', 'times-circle']" />
+        <font-awesome-icon :icon="['fas', 'times-circle']"/>
       </button>
     </div>
   </div>
@@ -57,7 +57,7 @@ export default {
 
 #circleButton {
   border-radius: 50%;
-  background-image: linear-gradient(to bottom right, #7632be, #7632be);
+  background: linear-gradient(to bottom right, #B437FF, #9C39FF);
   height: 15vh;
   width: 15vh;
   position: fixed;
@@ -75,7 +75,7 @@ export default {
 }
 
 #iconContainer {
-  background-color: #8a3bfe;
+  background: linear-gradient(to bottom right, #B437FF, #9C39FF);
   width: 100%;
   border-radius: 20% 20% 0 0;
   height: 21vh;

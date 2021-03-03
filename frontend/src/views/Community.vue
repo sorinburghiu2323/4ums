@@ -101,8 +101,8 @@ export default {
               })
         },
         loadMorePosts() {
-            this.currentPage += 1;
-            this.getPosts();
+          this.currentPage++;
+          this.getPosts();
         },
         joinCommunity() {
           const community_id = this.$route.params.id;
@@ -122,7 +122,8 @@ export default {
 
 <style scoped>
 .container {
-    height: 100%;
+  margin: 10px;
+  height: 100%;
 }
 .community-content {
     display: flex;
@@ -135,13 +136,13 @@ export default {
   color: #777779;
 }
 .header {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 .header h1 {
-    font-size: 30px;
-    text-align: left;
-    margin-bottom: 0;
+  font-size: 30px;
+  text-align: left;
+  margin-bottom: 0;
 }
 .header > .settings-icon {
     position: absolute;
@@ -187,7 +188,6 @@ export default {
 
 .search-section input {
     width: 100%;
-    border: 1px solid black;
     height: 46px;
     font-size: 15px;
     padding-left: 10px;
@@ -201,32 +201,31 @@ export default {
 }
 
 .search-section > .search-icon {
-    font-size: 28px;
-    margin-left: 10px;
-    height: 28px;
-    padding: 10px;
-    border-radius: 15px;
-    color: black;
-    display: flex;
-    cursor: pointer;
-    background: rgb(138,59,254);
-    background: linear-gradient(225deg, rgba(138,59,254,1) 11%, rgba(180,55,255,1) 49%);
+  font-size: 28px;
+  height: 29px;
+  padding: 10px;
+  border-radius: 15px;
+  position: relative;
+  color: black;
+  margin: 10px;
+  display: flex;
+  cursor: pointer;
+  background: rgb(138, 59, 254);
+  background: linear-gradient(225deg, rgba(138, 59, 254, 1) 11%, rgba(180, 55, 255, 1) 49%);
 }
 
 .search-icon svg {
-    margin: auto;
+  margin-top: -9px;
 }
 
 .load-more-btn {
     padding: 8px;
-    margin: 5px;
     border-radius: 25px;
     border: none;
     outline: none;
     cursor: pointer;
     width: 150px;
     margin: auto;
-    margin-bottom: 10px;
     font-weight: 600;
     background: rgb(254,155,47);
     background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);

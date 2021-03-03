@@ -23,6 +23,9 @@
         There are no posts left for you to view, maybe join more communities?
       </h3>
     </div>
+    <div>
+      <br><br><br><br>
+    </div>
   </div>
 </template>
 <script>
@@ -61,9 +64,9 @@ export default {
   methods: {
     scroll() {
       window.onscroll = () => {
-        let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
-            document.body.scrollTop) + window.innerHeight;
-        if (bottomOfWindow >= document.documentElement.offsetHeight - 200) {
+        let bottomOfWindow = document.documentElement.scrollTop +
+            window.innerHeight > document.body.scrollHeight - 200;
+        if (bottomOfWindow) {
           if (this.loadMore) {
             this.loadMorePosts();
             this.loadMore = false;
@@ -97,7 +100,7 @@ export default {
 </script>
 <style>
 .container {
-  height: 100%;
+  height: 100vh;
 }
 
 .post-content {
@@ -155,11 +158,12 @@ export default {
 
 .search-section > .search-icon {
   font-size: 28px;
-  margin-left: 10px;
-  height: 28px;
+  height: 29px;
   padding: 10px;
   border-radius: 15px;
+  position: relative;
   color: black;
+  margin: 10px;
   display: flex;
   cursor: pointer;
   background: rgb(138, 59, 254);
@@ -167,7 +171,7 @@ export default {
 }
 
 .search-icon svg {
-  margin: auto;
+  margin-top: -9px;
 }
 
 </style>

@@ -1,10 +1,9 @@
-from django.db.models import Q
-from django.http import JsonResponse
 from django.db.utils import IntegrityError
+from django.http import JsonResponse
 
 from SoftwareDev import settings
-from backend.Utils.points_handler import adjust_points
 from backend.Utils.paginators import json_paginator
+from backend.Utils.points_handler import adjust_points
 from backend.models import Community, CommunityMember
 
 

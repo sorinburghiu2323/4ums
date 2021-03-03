@@ -8,6 +8,7 @@
 
 <script>
 import CommunityDisplay from '@/components/communities/CommunityDisplay.vue'
+
 export default {
     name: 'CommunitiesList',
     components: {
@@ -19,11 +20,7 @@ export default {
     },
     computed: {
         editMode() {
-            if(this.$route.name === 'Manage') {
-                return true;
-            } else {
-                return false;
-            }
+          return this.$route.name === 'Manage';
         }
     }
 
