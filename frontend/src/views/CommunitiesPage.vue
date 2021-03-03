@@ -106,9 +106,9 @@ export default {
     methods: {
       scroll() {
         window.onscroll = () => {
-          let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
-              document.body.scrollTop) + window.innerHeight;
-          if (bottomOfWindow >= document.documentElement.offsetHeight - 80) {
+          let bottomOfWindow = document.documentElement.scrollTop +
+              window.innerHeight > document.body.scrollHeight - 200;
+          if (bottomOfWindow) {
             if (this.loadMore) {
               this.loadMoreCommunities();
               this.loadMore = false;
