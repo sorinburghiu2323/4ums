@@ -1,7 +1,7 @@
 <template>
   <div class="containers">
     <div class="details">
-      <div class="title">
+      <div class="description">
         <p>{{ this.comment.comment }}</p>
       </div>
       <div class="date">
@@ -98,8 +98,7 @@ export default {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 0 10px 10px;
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
@@ -140,8 +139,9 @@ export default {
 .description p {
   overflow: hidden;
   text-overflow: ellipsis;
+  position: relative;
+  top: 10px;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines to show */
   -webkit-box-orient: vertical;
   text-align: left;
 }

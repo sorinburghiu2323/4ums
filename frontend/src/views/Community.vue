@@ -135,13 +135,14 @@ export default {
   color: #777779;
 }
 .header {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 .header h1 {
-    font-size: 30px;
-    text-align: left;
-    margin-bottom: 0;
+
+  font-size: 30px;
+  text-align: left;
+  margin-bottom: 0;
 }
 .header > .settings-icon {
     position: absolute;
@@ -200,20 +201,21 @@ export default {
 }
 
 .search-section > .search-icon {
-    font-size: 28px;
-    margin-left: 10px;
-    height: 28px;
-    padding: 10px;
-    border-radius: 15px;
-    color: black;
-    display: flex;
-    cursor: pointer;
-    background: rgb(138,59,254);
-    background: linear-gradient(225deg, rgba(138,59,254,1) 11%, rgba(180,55,255,1) 49%);
+  font-size: 28px;
+  height: 29px;
+  padding: 10px;
+  border-radius: 15px;
+  position: relative;
+  color: black;
+  margin: 10px;
+  display: flex;
+  cursor: pointer;
+  background: rgb(138, 59, 254);
+  background: linear-gradient(225deg, rgba(138, 59, 254, 1) 11%, rgba(180, 55, 255, 1) 49%);
 }
 
 .search-icon svg {
-    margin: auto;
+  margin-top: -9px;
 }
 
 .load-more-btn {

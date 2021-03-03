@@ -73,10 +73,13 @@
       </div>
     </div>
     <div v-if="showInput" class="comment-input">
-      <md-field style="background:linear-gradient(to right, #272B39, #1E212B)">
+      <md-field style="background:linear-gradient(to right, #272B39, #1E212B);">
         <label style="color:white">Add a comment...</label>
         <md-textarea v-model="addComment" md-autogrow
-                     style="background:linear-gradient(to right, #272B39, #1E212B); height: 200px;color:white"></md-textarea>
+                     style="background:linear-gradient(to right, #272B39, #1E212B); height: 60px;color:white;"></md-textarea>
+        <div class="send-icon" @click.stop="sendComment">
+          <font-awesome-icon :icon="['fas', 'paper-plane']"></font-awesome-icon>
+        </div>
       </md-field>
     </div>
     <div v-if="loadedPost" class="comments-list">
@@ -132,6 +135,17 @@ export default {
     this.scroll();
   },
   methods: {
+    sendComment() {
+      axios.post('/api/communities/' + this.id + '/posts/' + this.postId + '/comments', {"comment": this.addComment})
+          .then(() => {
+            console.log("added comment")
+            this.showInput = false;
+            this.$router.go(0);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+    },
     showCommentInput() {
       console.log(this.showInput);
       this.addComment = null;
@@ -208,32 +222,39 @@ export default {
 </script>
 
 <style scoped>
-.goat {
-  color: white;
+.send-icon {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  color: dodgerblue;
+  font-size: 25px;
 }
 
 .comment-input {
   background: linear-gradient(to right, #272B39, #1E212B) !important;
   z-index: 2;
-  width: 100%;
-  min-height: 120px;
+  min-width: 94vw;
+  min-height: 100px;
+  height: auto;
   bottom: 10px;
-  line-height: 30px;
-  position: absolute;
+  line-height: 20px;
+  margin-left: 10px;
+  position: fixed;
+  padding: 10px;
   color: white;
-  box-shadow: 0 0 20px black;
+  box-shadow: 0 0 30px black;
 }
 
 .comment-btn {
   position: relative;
   background: linear-gradient(to right, #272B39, #1E212B);
-  margin: auto;
   width: auto;
   height: auto;
   outline: none;
   cursor: pointer;
   font-weight: 600;
   padding: 10px;
+  margin: 10px 10px 0;
 }
 
 .comment-btn .comment-icon {
@@ -250,23 +271,12 @@ export default {
   top: 7px;
 }
 
-.link {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.error-message {
-  color: red;
-  font-size: 14px;
-}
-
 .containers {
   z-index: 0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px;
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
@@ -279,7 +289,7 @@ export default {
 }
 
 .comments-list {
-  margin-top: 20px;
+  padding-bottom: 85px;
 }
 
 .details p {

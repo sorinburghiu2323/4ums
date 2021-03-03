@@ -14,6 +14,7 @@ import {
   faCog,
   faCommentDots,
   faHome,
+  faPaperPlane,
   faQuestion,
   faQuestionCircle,
   faSearch,
@@ -47,6 +48,7 @@ library.add(
     faThumbsUp,
     faQuestionCircle,
     faCheckCircle,
+    faPaperPlane
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
