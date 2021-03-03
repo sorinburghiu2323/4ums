@@ -222,7 +222,7 @@ export default {
 </script>
 
 <style scoped>
-@import 'style-sheet.css';
+
 .send-icon {
   position: absolute;
   top: -10px;

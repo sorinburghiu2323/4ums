@@ -98,9 +98,9 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .container {
-  height: 100vh;
+  height: 100%;
 }
 
 .post-content {
@@ -129,17 +129,16 @@ export default {
 }
 
 .search-section {
-  display: flex;
-  width: 100%;
+    display: flex;
+    width: 100%;
 }
 
 ::placeholder {
-  color: white;
+    color: white;
 }
 
 .search-section input {
   width: 100%;
-  border: 1px solid black;
   height: 46px;
   font-size: 15px;
   padding-left: 10px;
@@ -147,13 +146,10 @@ export default {
   outline: none;
   font-weight: 600;
   border-radius: 25px;
+  border: none;
   background: rgb(40, 44, 58);
-  background: linear-gradient(to right, #282C3A, #212230);
-}
-
-.description p {
-  display: flex;
-  overflow-wrap: anywhere;
+  background: linear-gradient(90deg, rgba(40, 44, 58, 1) 0%, rgba(27, 30, 40, 1) 35%, rgba(8, 9, 11, 1) 100%);
+  margin: auto;
 }
 
 .search-section > .search-icon {
@@ -171,7 +167,7 @@ export default {
 }
 
 .search-icon svg {
-  margin-top: -9px;
+  margin: auto;
 }
 
 </style>
