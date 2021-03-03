@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: Bool to whether the user is applied for a teacher's account.
+                  description: "Bool to whether the user is applied for a teacher's account."
                 description:
                   type: string
               required:
@@ -117,6 +117,7 @@ paths:
                   type: string
                 post_type:
                   type: string
+                  description: 'Either "question" or "discussion"'
               required:
                 - title
                 - description
@@ -133,13 +134,27 @@ paths:
       responses:
         '200':
           description: OK
-      description: ''
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+                required:
+                  - total_pages
+                  - previous_page
+                  - next_page
+                  - data
+      description: Get posts of a community.
   /users/feed:
     get:
       summary: Your GET endpoint
@@ -203,10 +218,13 @@ paths:
                   type: string
                 description:
                   type: string
+                colour:
+                  type: string
+                  description: Colour theme of community.
               required:
                 - name
                 - description
-        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
+        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
     parameters: []
     get:
       summary: ''
@@ -587,6 +605,47 @@ paths:
           description: Unauthorized - Login required.
       operationId: get-users-leaderboard
       description: 'Get a (paginated) list of users, sorted by points (descending).'
+  '/communities/{id}/posts/{id}/comments/{id}/approve':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communities-id-posts-id-comments-id-approve
+      responses:
+        '200':
+          description: OK - Comment approved.
+        '401':
+          description: Unauthorized - Permission denied.
+        '404':
+          description: Not Found - Comment does not exist.
+        '409':
+          description: Conflict - Comment is already approved.
+      description: 'Approve a comment, given the user trying to is the creator of the post.'
+    delete:
+      summary: ''
+      operationId: delete-communities-id-posts-id-comments-id-approve
+      responses:
+        '200':
+          description: OK - Comment dissaproved.
+        '401':
+          description: Unauthorized - Permission denied.
+        '404':
+          description: Not Found - Comment not found.
+      description: Disapprove a comment.
 components:
   schemas:
     Post:
@@ -606,7 +665,7 @@ components:
           type: string
         post_type:
           type: string
-          description: Either "discussion" or "questions".
+          description: 'Either "discussion" or "questions".'
         created_at:
           type: string
         likes_num:

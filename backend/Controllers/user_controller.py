@@ -1,13 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
-from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
 from backend.Utils.paginators import json_paginator
-from backend.Utils.points_handler import graph_recent, get_graphs
+from backend.Utils.points_handler import get_graphs
 from backend.Utils.user_validation import (
     validate_user_data,
     validate_password,
-    verify_user_login,
 )
 from backend.models import User, Post
 
@@ -117,12 +115,7 @@ def get_feed(request):
     :return: 200 - list of paginated Posts.
              401 - login required.
     """
-    try:
-        user = verify_user_login(request)
-    except PermissionDenied:
-        return JsonResponse(
-            "Unauthorized - Login required.", status=401, safe=False
-        )
+    user = request.user
 
     # Get feed data and paginate it.
     feed = Post.objects.filter(community__communitymember__user=user).order_by(
@@ -213,9 +206,10 @@ def get_user(request, user_id):
 
 
 def lb_serializer(data):
-    user = data['user']
-    rank = data['rank']
+    user = data["user"]
+    rank = data["rank"]
     return user.serialize_leaderboard(rank)
+
 
 def get_leaderboard(request):
     """
@@ -238,7 +232,7 @@ def get_leaderboard(request):
     paginationData = []
     for user in includedUsers:
         # rank is the index of the users points +1 (converting from 0-indexing)
-        data = {'user': user, 'rank': rankings.index(user.points) + 1}
+        data = {"user": user, "rank": rankings.index(user.points) + 1}
         paginationData.append(data)
 
     return JsonResponse(
