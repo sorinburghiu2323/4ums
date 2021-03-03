@@ -136,7 +136,7 @@ export default {
         axios.get('api/communities?type=created', {params: {page: 'all'}})
             .then((response) => {
               this.loadedCommunities = false;
-              for (var i = 0; i < response.data.data.length; i++) {
+              for (let i = 0; i < response.data.data.length; i++) {
                 this.createdCommunities.push(response.data.data[i]);
               }
               this.loadedCommunities = true;
@@ -149,14 +149,10 @@ export default {
         axios.get('api/communities?type=other', {params: {page: this.currentPage}})
             .then((response) => {
               this.loadedCommunities = false;
-              for (var i = 0; i < response.data.data.length; i++) {
+              for (let i = 0; i < response.data.data.length; i++) {
                 this.allCommunities.push(response.data.data[i]);
               }
-              if (response.data.next_page != null) {
-                this.loadMore = true;
-              } else {
-                this.loadMore = false;
-              }
+              this.loadMore = response.data["next_page"] != null;
               this.loadedCommunities = true;
             }).catch((error) => {
           console.error(error);
@@ -174,7 +170,8 @@ export default {
 
 <style scoped>
 .container {
-    height: 100%;
+  margin: 10px;
+  height: 100%;
 }
 h1 {
     font-size: 20px;

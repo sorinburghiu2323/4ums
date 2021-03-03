@@ -63,11 +63,7 @@ export default {
             window.onscroll = () => {
                 let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
                     document.body.scrollTop) + window.innerHeight;
-                if (bottomOfWindow >= document.documentElement.offsetHeight - 90) {
-                    this.showCreateButton = false;
-                } else {
-                    this.showCreateButton = true;
-                }
+                this.showCreateButton = bottomOfWindow < document.documentElement.offsetHeight - 90;
             }
         },
         getMyCommunities() {
@@ -102,17 +98,19 @@ export default {
 
 <style scoped>
 .container {
-    height: 100%;
+  margin: 10px;
+  height: 100%;
 }
 h1 {
     font-size: 20px;
 }
 
 .header {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 30px;
-    width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+  line-height: 30px;
+  width: 50%;
 }
 
 .header h1 {

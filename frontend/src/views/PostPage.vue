@@ -95,7 +95,7 @@ import axios from "axios";
 import Comment from "@/components/posts/Comment";
 import moment from "moment";
 import LoginPage from "@/views/LoginPage";
-import 'vue-material/dist/vue-material.min.css'
+
 
 export default {
   name: "PostPage",
@@ -222,6 +222,7 @@ export default {
 </script>
 
 <style scoped>
+@import 'style-sheet.css';
 .send-icon {
   position: absolute;
   top: -10px;

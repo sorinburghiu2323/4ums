@@ -122,7 +122,8 @@ export default {
 
 <style scoped>
 .container {
-    height: 100%;
+  margin: 10px;
+  height: 100%;
 }
 .community-content {
     display: flex;
@@ -139,7 +140,6 @@ export default {
   justify-content: flex-start;
 }
 .header h1 {
-
   font-size: 30px;
   text-align: left;
   margin-bottom: 0;
