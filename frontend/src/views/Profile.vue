@@ -1,25 +1,36 @@
 <template>
     <div>
-        <p class="info" style="text-align: right" v-on:click="editPage()"><font-awesome-icon :icon="['fas', 'edit']"/></p>
-        <p id="title">Profile</p>
-        <div id="profilePicture" v-if="!this.editing">
+        <div id="top-buttons">
+            <div class="settings-icon">
+                <font-awesome-icon :icon="['fas', 'share-square']"></font-awesome-icon>
+            </div>
+            <div class="settings-icon">
+                <font-awesome-icon v-on:click="editPage()" :icon="['fas', 'edit']"/>
+            </div>
+            <div class="settings-icon">
+                <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
+            </div>
+        </div>
+        <div id="profilePicture" v-if="!this.editing" style="margin-bottom: 0px;">
             <p>{{ this.initials }}</p>
         </div>
         <div v-if="!this.editing" id="mainProfileInfo">
+            <p class="info" style="font-size: 32px; margin-bottom: 0px;">{{ this.username }}</p>
             <p class="info">{{ this.firstName+" "+this.secondName }}</p>
-            <p class="info">{{ this.username }}</p>
-            <p class="info"><font-awesome-icon :icon="['fas', 'trophy']"/> Leaderboard position: {{ this.leaderboardPosition }}th</p>
-            <p class="info"><font-awesome-icon :icon="['fas', 'star']"/> Points: {{ this.points }}</p>
+            <p class="info"><font-awesome-icon :icon="['fas', 'star']"/> Points: {{ this.points }} <font-awesome-icon :icon="['fas', 'trophy']"/> Position: {{ this.leaderboardPosition }}</p>
         </div>
+        <p style="width: 100%; text-align: left;"><u>Bio:</u></p>
+        <p style="position: absolute; margin: auto; margin-top: 10vh;" v-if="this.bio === ''">{{ this.bio }}</p>
+        <p v-else>You haven't filled out a bio yet</p>
         <div v-if="this.editing">
             <input class="edit" v-model=newFirstName placeholder="Enter first name"><br>
             <input class="edit" v-model=newSecondName placeholder="Enter second name"><br>
             <input class="edit" v-model=newUserName placeholder="Enter username"><br>   
             <button id="doneEditing" v-on:click="confirmEdit(newFirstName, newSecondName, newUserName)">Done</button>
         </div>
-        <p><u>Top Communities:</u></p>
-        <CommunitiesList :communities="this.communities" :myCommunities="true" />
-        <p>Leaderboard Position Over Time:</p>
+        <p style="width: 100%; text-align: left;"><u>Top Communities:</u></p>
+        <CommunitiesList :communities="communities" :myCommunities="false" />
+        <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
         <div style="padding-top: 5vh;">
         <div style="position: absolute; left: 50%;">
             <div style="position: relative; left: -50%;">
@@ -69,7 +80,6 @@ export default {
         getUserDetails() {
             axios.get("/api/users/1")
             .then((response) => {
-                console.log(response.data)
                 this.firstName = response.data.first_name;
                 this.secondName = response.data.last_name;
                 this.username = response.data.username;
@@ -78,10 +88,12 @@ export default {
                 this.points = response.data.points;
                 var recents = response.data.graphs.recent;
                 this.leaderboardInfo = [recents[0].points, recents[1].points, recents[2].points, recents[3].points];
-                console.log(recents[0].points)
-                this.communities = [{name: "comm1", id: 0}, {name: "comm2", id: 1}]//response.data.graphs.top_communities;
+                for (var i = 0; i < response.data.graphs.top_communities.length; i++) {
+                    this.communities.push(response.data.graphs.top_communities[i].community);
+                }
                 this.initials = this.firstName.substring(0,1)+this.secondName.substring(0,1);
                 this.generateLabels(this.leaderboardInfo);
+                this.bio = response.data.descrtiption;
             }).catch((error) => {
                 console.log(error)
             });
@@ -112,8 +124,6 @@ export default {
             } catch {
                 console.log("No user name");
             }
-
-            // add API request to update
         }
     },
     data() {
@@ -127,6 +137,8 @@ export default {
             editing: false,
             leaderboardPosition: 0,
             leaderboardInfo: [],
+            communities: [],
+            bio: ""
         }
     },
 }
@@ -172,7 +184,7 @@ export default {
     height: 100px;
     position: relative;
     border-radius: 50%;
-    background-color: green;
+    background: linear-gradient(to bottom, #8939fc, #ab35f3);
     display: flex;
     text-align: center;
     margin: auto;
@@ -190,6 +202,16 @@ export default {
     margin-top: 0;
 }
 
+.settings-icon {
+    font-size: 35px;
+    color: #7e7e7e;
+}
 
-
+#top-buttons {
+    position: absolute;
+    right: 2%;
+    width: 10%;
+    display: flex;
+    justify-content: space-around;
+}
 </style>
