@@ -24,7 +24,8 @@ import {
   faTrophy,
   faUser,
   faUsers,
-  faUserSecret
+  faUserSecret,
+  faMedal,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
@@ -47,7 +48,8 @@ library.add(
     faThumbsUp,
     faQuestionCircle,
     faCheckCircle,
-    faPaperPlane
+    faPaperPlane,
+    faMedal,
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
