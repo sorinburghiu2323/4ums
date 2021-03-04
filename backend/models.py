@@ -100,6 +100,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return {
             "id": self.id,
             "username": self.username,
+            "firstname": self.first_name,
+            "lastname": self.last_name,
             "points": self.points,
             "leaderboard_position": rank,
         }

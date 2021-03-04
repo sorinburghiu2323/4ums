@@ -13,62 +13,167 @@
                 <p>Your Position: </p>
             </div>
         </div>
-        <div class="top-three">
+        <div class="top-three" v-if="loaded">
             <div class="top">
-                <div class="first circle" /> 
+                <p class="title">1st</p>
+                <div class="first circle">
+                    <div class="crown">
+                        <font-awesome-icon :icon="['fa', 'crown']"></font-awesome-icon>
+                    </div>
+                    <p class="initials">
+                        {{leaderboardUsers[0] | initials}}
+                    </p>
+                </div> 
                 <div class="info">
-                    <p class="username">Username</p>
-                    <p class="points">Points: 103</p>
+                    <p class="username">{{leaderboardUsers[0].username}}</p>
+                    <p class="points">Points: {{leaderboardUsers[1].points}}</p>
                 </div>    
             </div>
             
             <div class="top-two">
                 <div class="second-place">
+                    <p class="title">2nd</p>
                     <div class="second circle">
-                    <div class="medal">
-                        <font-awesome-icon :icon="['fa', 'medal']"></font-awesome-icon>
-                    </div>
+                        <div class="medal">
+                            <font-awesome-icon :icon="['fa', 'medal']"></font-awesome-icon>
+                        </div>
+                        <p class="initials">
+                            {{leaderboardUsers[1] | initials}}
+                        </p>
                     </div>
                     <div class="info">
-                        <p class="username">Username</p>
-                        <p class="points">Points: 103</p>
+                        <p class="username">{{leaderboardUsers[1].username}}</p>
+                        <p class="points">Points: {{leaderboardUsers[1].points}}</p>
                     </div>
                     
                 </div>
                 <div class="third-place">
+                    <p class="title">3rd</p>
                     <div class="third circle">
-                    <div class="medal">
-                        <font-awesome-icon :icon="['fa', 'medal']"></font-awesome-icon>
-                    </div>
+                        <div class="medal">
+                            <font-awesome-icon :icon="['fa', 'medal']"></font-awesome-icon>
+                        </div>
+                        <p class="initials">
+                            {{leaderboardUsers[2] | initials}}
+                        </p>
                     </div>
                     <div class="info">
-                        <p class="username">Username</p>
-                        <p class="points">Points: 103</p>
+                        <p class="username">{{leaderboardUsers[2].username}}</p>
+                        <p class="points">Points: {{leaderboardUsers[2].points}}</p>
                     </div>
                     
                 </div>
             </div>
         </div>
+        <div class="leaderboard-table-container" v-if="loaded">
+            <table class="table">
+                <tr v-for="(user,index) in leaderboardUsers.slice(3)" :key="index">
+                    <td>{{user.leaderboard_position | ordinal_suffix}}</td>
+                    <td>{{user.username}}</td>
+                    <td class="points">Points: {{user.points}}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-    name: 'Leaderboard'
+    name: 'Leaderboard',
+    filters: {
+        ordinal_suffix(i) {
+            var j = i % 10,
+                k = i % 100;
+            if (j == 1 && k != 11) {
+                return i + "st";
+            }
+            if (j == 2 && k != 12) {
+                return i + "nd";
+            }
+            if (j == 3 && k != 13) {
+                return i + "rd";
+            }
+            return i + "th";
+        },
+        initials(user) {
+            return user.firstname.charAt(0) + user.lastname.charAt(0);
+        }
+    },
+    data() {
+        return {
+            leaderboardUsers: [],
+            loaded: false,
+            currentPage: 1,
+            stopLoading: false,
+        }
+    },
+    mounted() {
+        this.scroll();
+    },
+    created() {
+        axios.get('/api/users/leaderboard', {params: {page: this.currentPage}})
+        .then(response => {
+            this.leaderboardUsers = response.data.data;
+            this.loaded = true;
+            if(response.data.next_page == null) {
+                this.stopLoading = true;
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    },
+    methods: {
+        scroll() {
+            window.onscroll = () => {
+                let bottomOfWindow = document.documentElement.scrollTop +
+                    window.innerHeight > document.body.scrollHeight;
+                if (bottomOfWindow) {
+                    if (!this.stopLoading) {
+                        this.currentPage += 1;
+                        this.loadMoreUsers();
+                    }
+                }
+            }
+        },
+        loadMoreUsers() {
+            axios.get('/api/users/leaderboard', {params: {page: this.currentPage}})
+            .then(response => {
+                var i;
+                for(i=0; i < response.data.data.length; i++) {
+                    this.leaderboardUsers.push(response.data.data[i]);
+                }
+                if(response.data.next_page == null) {
+                    this.stopLoading = true;
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        }
+    }
 
 }
 </script>
 
 <style scoped>
+.header > .settings-icon {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    font-size: 35px;
+    color: #7e7e7e;
+}
 
 .circle {
     height: 140px;
     width: 140px;
     border-radius: 100%;
     border: none;
-    background: green;
     margin: auto;
     position: relative;
+    display: flex;
 }
 
 .first {
@@ -76,9 +181,25 @@ export default {
     width: 150px;
 }
 
+.circle.first {
+    background: rgb(254,109,19);
+    background: linear-gradient(180deg, rgba(254,109,19,1) 0%, rgba(254,154,46,1) 66%); 
+}
+
+.circle.second {
+    background: rgb(140,59,254);
+    background: linear-gradient(180deg, rgba(140,59,254,1) 0%, rgba(177,55,255,1) 66%);
+}
+
+.circle.third {
+    background: rgb(211,38,177);
+    background: linear-gradient(180deg, rgba(211,38,177,1) 0%, rgba(226,117,242,1) 66%);
+}
+
 .top {
     width: 100%;
 }
+
 
 .top-two {
     display: flex;
@@ -87,6 +208,26 @@ export default {
 
 .top-two .circle {
     margin: 20px;
+    margin-top: 0px;
+}
+
+.top-two .title {
+    font-size: 20px;
+}
+
+.initials {
+    margin: auto;
+    font-size: 60px;
+    text-transform: uppercase;
+}
+
+.first .initials {
+    font-size: 70px;
+}
+
+.title {
+    margin: 0;
+    font-size: 25px;
 }
 
 .info {
@@ -101,7 +242,7 @@ export default {
     margin: 0;
 }
 
-.info .points {
+.points {
     font-size: 15px;
     color: #7e7e7e;
 }
@@ -113,4 +254,39 @@ export default {
     font-size: 35px;
 }
 
+.crown {
+    position: absolute;
+    top: -23px;
+    left: -10px;
+    font-size: 45px;
+    transform: rotate(320deg);
+    filter: drop-shadow(0px 0px 20px white);
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    text-align: left;
+    margin-top: 40px;
+    border-collapse: separate; 
+    border-spacing: 0px 5px;
+}
+
+.table td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border: none;
+    padding: 0px 10px 0px 10px;
+}
+
+.table tr {
+    height: 33px;
+    font-size: 20px;
+    background: #161626;
+}
+
+.table tr:hover {
+    background: linear-gradient(270deg, rgba(52, 235, 233, 1) 0%, rgba(101, 255, 167, 1) 35%);
+    color: #161626 !important;
+}
 </style>
