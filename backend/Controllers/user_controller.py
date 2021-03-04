@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import JsonResponse
 
@@ -7,6 +8,8 @@ from backend.Utils.points_handler import get_graphs
 from backend.Utils.user_validation import (
     validate_user_data,
     validate_password,
+    generate_share_code,
+    verify_user_login,
 )
 from backend.models import User, Post
 
@@ -205,12 +208,28 @@ def get_user(request, user_id):
              401 - login required.
              404 - user not found.
     """
+
     try:
         get_user = User.objects.get(id=user_id)
     except:
         return JsonResponse(
             "Not Found - User does not exist.", status=404, safe=False
         )
+
+    # Check for share code.
+    valid_sc = False
+    if get_user.share_code:
+        if request.GET.get("sharecode") == get_user.share_code:
+            valid_sc = True
+
+    if not valid_sc:
+        try:
+            verify_user_login(request)
+        except PermissionDenied:
+            return JsonResponse(
+                "Unauthorized - Login required.", status=401, safe=False
+            )
+
     response = get_user.serialize()
     response["graphs"] = get_graphs(get_user)
     return JsonResponse(response, status=200)
@@ -225,7 +244,7 @@ def lb_serializer(data):
 def get_leaderboard(request):
     """
     Get the leaderboard; a (paginated) list of all users ordered by ranking
-    :param requet: session request.
+    :param request: session request.
     :return: 200 OK
              401 Unauthorized
     """
@@ -250,3 +269,23 @@ def get_leaderboard(request):
         json_paginator(request, paginationData, lb_serializer),
         status=200,
     )
+
+
+def get_share_code(request):
+    """
+    Get the logged in user code.
+    :param request: session request.
+    """
+    user = request.user
+    return JsonResponse({"code": user.share_code}, status=200)
+
+
+def update_share_code(request):
+    """
+    Update the share code and return it.
+    :param request: session request.
+    """
+    user = request.user
+    user.share_code = generate_share_code(6)
+    user.save()
+    return JsonResponse({"code": user.share_code}, status=200)

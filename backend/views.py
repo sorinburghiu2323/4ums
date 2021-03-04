@@ -68,13 +68,22 @@ def leaderboard(request):
     )
 
 
-@user_login_required("Unauthorized - Login required.")
 @csrf_exempt
 def users_individual(request, user_id):
     return handle_methods(
         request,
         GET=user_controller.get_user,
         args=[user_id],
+    )
+
+
+@user_login_required("Unauthorized - Login required.")
+@csrf_exempt
+def users_share_code(request):
+    return handle_methods(
+        request,
+        GET=user_controller.get_share_code,
+        POST=user_controller.update_share_code,
     )
 
 
