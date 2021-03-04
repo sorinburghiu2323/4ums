@@ -1,6 +1,6 @@
 <template>
   <div id="form">
-    <div id="communityBox">
+    <div id="communityBox" v-if="communities">
       <font-awesome-icon :icon="['fas', 'users']" style="color: #5ff9ab"/>
       Select a Community
       <select v-model="community">

@@ -2,10 +2,8 @@
   <div id="app">
     <router-view/>
     <!--Do not change -->
-    <div v-if="this.$route.name !== 'LoginPage'">
-      <div style="margin-bottom: 11vh;">
+    <div v-if="this.$route.name !== 'LoginPage'" style="margin-bottom: 11vh;">
         <Navbar/>
-      </div>
     </div>
   </div>
 </template>

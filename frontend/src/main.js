@@ -27,7 +27,6 @@ import {
   faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import VueMaterial from 'vue-material'
 
 // Add icons here after import
 library.add(
@@ -55,7 +54,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
-Vue.use(VueMaterial);
+
 // Cookie library
 var VueCookie = require('vue-cookie');
 Vue.use(VueCookie);

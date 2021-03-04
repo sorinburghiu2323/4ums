@@ -106,7 +106,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #submit {
   border-radius: 15px;
   width: 33%;

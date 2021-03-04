@@ -106,17 +106,17 @@ export default {
     methods: {
       scroll() {
         window.onscroll = () => {
-          let bottomOfWindow = document.documentElement.scrollTop +
-              window.innerHeight > document.body.scrollHeight - 200;
-          if (bottomOfWindow) {
-            if (this.loadMore) {
-              this.loadMoreCommunities();
-              this.loadMore = false;
+            let bottomOfWindow = document.documentElement.scrollTop +
+                window.innerHeight > document.body.scrollHeight;
+            if (bottomOfWindow) {
+              if (this.loadMore) {
+                this.loadMoreCommunities();
+                this.loadMore = false;
+              }
+              this.showManageButton = false;
+            } else {
+              this.showManageButton = true;
             }
-            this.showManageButton = false;
-          } else {
-            this.showManageButton = true;
-          }
         }
       },
       getMyCommunities() {
@@ -170,7 +170,6 @@ export default {
 
 <style scoped>
 .container {
-  margin: 10px;
   height: 100%;
 }
 h1 {
@@ -217,6 +216,7 @@ h1 {
   border: none;
   background: rgb(40, 44, 58);
   background: linear-gradient(90deg, rgba(40, 44, 58, 1) 0%, rgba(27, 30, 40, 1) 35%, rgba(8, 9, 11, 1) 100%);
+  margin: auto;
 }
 
 .search-section > .search-icon {
@@ -234,7 +234,7 @@ h1 {
 }
 
 .search-icon svg {
-  margin-top: -9px;
+  margin: auto;
 }
 .communities-list {
     display: flex;

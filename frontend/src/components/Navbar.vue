@@ -3,7 +3,7 @@
     <router-link class="nav-link" to="/" v-on:click="goTo('feed')">
       <div id="feed" style="color: gray" v-on:click="goTo('feed')">
         <font-awesome-icon :icon="['fas', 'home']"/>
-        <p class="icon">Feed</p>
+        <p class="nav-icon">Feed</p>
       </div>
     </router-link>
     <router-link
@@ -12,13 +12,13 @@
         v-on:click="goTo('communities')">
       <div id="communities" style="color: gray" v-on:click="goTo('communities')">
         <font-awesome-icon :icon="['fas', 'users']"/>
-        <p class="icon">Communities</p>
+        <p class="nav-icon">Communities</p>
       </div>
     </router-link>
     <router-link class="nav-link" to="/profile" v-on:click="goTo('profile')">
       <div id="profile" style="color: gray" v-on:click="goTo('profile')">
         <font-awesome-icon :icon="['fas', 'user']"/>
-        <p class="icon">Profile</p>
+        <p class="nav-icon">Profile</p>
       </div>
     </router-link
     >
@@ -29,7 +29,7 @@
     >
       <div id="leaderboard" style="color: gray" v-on:click="goTo('leaderboard')">
         <font-awesome-icon :icon="['fas', 'trophy']"/>
-        <p class="icon">Leaderboard</p>
+        <p class="nav-icon">Leaderboard</p>
       </div>
     </router-link
     >
@@ -95,7 +95,7 @@ export default {
     text-align: center;
 }
 
-.icon {
+.nav-icon {
     font-size: 2vh;
     margin-top: 1vh;
     margin-bottom: 1vh;

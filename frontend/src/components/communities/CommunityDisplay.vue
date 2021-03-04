@@ -69,7 +69,7 @@ export default {
   background: linear-gradient(90deg, rgba(40, 44, 58, 1) 0%, rgba(27, 30, 40, 1) 35%, rgba(8, 9, 11, 1) 100%);
 }
 .color-box {
-  height: 100px;
+  height: 108px;
   width: 20px;
   border-radius: 25px 0 0 25px;
   position: absolute;

@@ -61,9 +61,13 @@ export default {
     methods: {
         scroll() {
             window.onscroll = () => {
-                let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
-                    document.body.scrollTop) + window.innerHeight;
-                this.showCreateButton = bottomOfWindow < document.documentElement.offsetHeight - 90;
+                let bottomOfWindow = document.documentElement.scrollTop +
+                    window.innerHeight > document.body.scrollHeight;
+                if (bottomOfWindow) {
+                    this.showCreateButton = false;
+                } else {
+                    this.showCreateButton = true;
+                }
             }
         },
         getMyCommunities() {
@@ -98,7 +102,6 @@ export default {
 
 <style scoped>
 .container {
-  margin: 10px;
   height: 100%;
 }
 h1 {
@@ -111,6 +114,7 @@ h1 {
   margin-bottom: 30px;
   line-height: 30px;
   width: 50%;
+  text-align: left;
 }
 
 .header h1 {
@@ -135,21 +139,21 @@ h1 {
 }
 
 .search-section input {
-    width: 100%;
-    border: 1px solid black;
-    height: 46px;
-    font-size: 15px;
-    padding-left: 10px;
-    color: white;
-    outline: none;
-    font-weight: 600;
-    border-radius: 25px;
-    border: none;
-    background: rgb(40,44,58);
-    background: linear-gradient(90deg, rgba(40,44,58,1) 0%, rgba(27,30,40,1) 35%, rgba(8,9,11,1) 100%);
+  width: 100%;
+  height: 46px;
+  font-size: 15px;
+  padding-left: 10px;
+  color: white;
+  outline: none;
+  font-weight: 600;
+  border-radius: 25px;
+  border: none;
+  background: rgb(40, 44, 58);
+  background: linear-gradient(90deg, rgba(40, 44, 58, 1) 0%, rgba(27, 30, 40, 1) 35%, rgba(8, 9, 11, 1) 100%);
+  margin: auto;
 }
 
-search-section > .search-icon {
+.search-section > .search-icon {
   font-size: 28px;
   height: 29px;
   padding: 10px;
@@ -164,7 +168,7 @@ search-section > .search-icon {
 }
 
 .search-icon svg {
-  margin-top: -9px;
+  margin: auto;
 }
 .communities-list {
     display: flex;
@@ -172,5 +176,8 @@ search-section > .search-icon {
     text-align: left;
 }
 
+#back {
+    text-align: left;
+}
 </style>
 
