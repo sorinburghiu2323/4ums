@@ -32,6 +32,9 @@
         <CommunitiesList :communities="communities" :myCommunities="false" />
         <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
         <div style="padding-top: 5vh;">
+        <div v-if="!displayGraph">No data yet!</div>
+        <div v-else>
+            {{ this.leaderboardInfo }}
         <div style="position: absolute; left: 50%;">
             <div style="position: relative; left: -50%;">
                 <div id="graph">
@@ -54,6 +57,7 @@
             <div>3 Weeks Ago</div>
         </div>
         </div>
+    </div>
     </div>
 </template>
 
@@ -88,6 +92,9 @@ export default {
                 this.points = response.data.points;
                 var recents = response.data.graphs.recent;
                 this.leaderboardInfo = [recents[0].points, recents[1].points, recents[2].points, recents[3].points];
+                if (JSON.stringify(this.leaderboardInfo) == JSON.stringify([0,0,0,0])) {
+                    this.displayGraph = false;
+                }
                 for (var i = 0; i < response.data.graphs.top_communities.length; i++) {
                     this.communities.push(response.data.graphs.top_communities[i].community);
                 }
@@ -138,7 +145,8 @@ export default {
             leaderboardPosition: 0,
             leaderboardInfo: [],
             communities: [],
-            bio: ""
+            bio: "",
+            displayGraph: true
         }
     },
 }
