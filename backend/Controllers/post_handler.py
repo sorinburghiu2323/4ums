@@ -1,3 +1,4 @@
+from django.db.models import Q, Count
 from django.http import JsonResponse
 
 from SoftwareDev import settings
@@ -73,10 +74,21 @@ def show_posts(request, community_id):
         )
     except ValueError:
         return check_if_valid(request, community_id)
-    # Return pagination data
-    store = Post.objects.filter(community=comm_instance).order_by("-created_at")
+
+    # Filter posts data.
+    posts = Post.objects.filter(community=comm_instance).order_by("-created_at")
+
+    # Check for filter phrase.
+    phrase = request.GET.get("phrase")
+    if phrase is not None:
+        if phrase != "" and not phrase.isspace():
+            for term in phrase.split():
+                posts = posts.filter(Q(title__icontains=term))
+        else:
+            posts = posts.none()
+
     return JsonResponse(
-        json_paginator(request, store, lambda d: d.serialize(request)),
+        json_paginator(request, posts, lambda d: d.serialize(request)),
         status=200,
         safe=False,
     )
@@ -98,7 +110,8 @@ def show_post(request, community_id, post_id):
         user_instance, comm_instance, _ = check_if_valid(request, community_id)
     except ValueError:
         return check_if_valid(request, community_id)
-    # Return pagination data
+
+    # Check if post exists and get data for it.
     post_instance = check_valid_post(comm_instance, post_id)
     if post_instance is None:
         return JsonResponse("Post does not exist", status=404, safe=False)
@@ -106,6 +119,14 @@ def show_post(request, community_id, post_id):
     post_comments = PostComment.objects.filter(post=post_instance).order_by(
         "-is_approved", "-created_at"
     )
+
+    # Check for filter phrase.
+    order_by = request.GET.get("order_by")
+    if order_by == "likes":
+        post_comments = post_comments.annotate(
+            like_count=Count("postcommentlike")
+        ).order_by("-like_count")
+
     final_instance["comments"] = json_paginator(
         request, post_comments, lambda d: d.serialize(request)
     )

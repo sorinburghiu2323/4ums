@@ -147,6 +147,7 @@ def list_communities(request):
             safe=False,
         )
 
+    # Community queryset based on search type attribute.
     communities = []
     if list_type == "created":
         communities = Community.objects.filter(user=user).order_by("name")
@@ -158,6 +159,15 @@ def list_communities(request):
         communities = Community.objects.filter(
             communitymember__user=user
         ).order_by("name")
+
+    # Check for filter phrase.
+    phrase = request.GET.get("phrase")
+    if phrase is not None:
+        if phrase != "" and not phrase.isspace():
+            for term in phrase.split():
+                communities = communities.filter(Q(name__icontains=term))
+        else:
+            communities = communities.none()
 
     return JsonResponse(
         json_paginator(request, communities, lambda d: d.serialize_simple()),

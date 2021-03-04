@@ -155,6 +155,17 @@ paths:
                   - next_page
                   - data
       description: Get posts of a community.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: phrase
+          description: Filter by a phrase
+        - schema:
+            type: string
+          in: query
+          name: page
+          description: 'Page number, default 1.'
   /users/feed:
     get:
       summary: Your GET endpoint
@@ -193,6 +204,11 @@ paths:
           in: query
           name: page
           description: page number to get
+        - schema:
+            type: string
+          in: query
+          name: phrase
+          description: Phrase to search by
   /communities:
     post:
       summary: ''
@@ -265,13 +281,20 @@ paths:
               - other
           in: query
           name: type
-          description: type of list to generate
+          description: |-
+            type of list to generate
+            Can be either: "other", "memberof" or "created"
           required: true
         - schema:
             type: integer
           in: query
           name: page
           description: number of the page to retrieve (defaults to 1)
+        - schema:
+            type: string
+          in: query
+          name: phrase
+          description: Filter by a phrase
   '/communities/{id}':
     parameters:
       - schema:
@@ -460,6 +483,11 @@ paths:
           in: query
           name: page
           description: Page number to get.
+        - schema:
+            type: string
+          in: query
+          name: order_by
+          description: 'Set as "likes" to order by likes num. Anything else, it order by date.'
   '/communities/{cid}/posts/{pid}/comments':
     parameters:
       - schema:
