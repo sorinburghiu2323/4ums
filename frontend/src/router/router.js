@@ -15,6 +15,7 @@ import axios from 'axios'
 import PostPage from "@/views/PostPage";
 import NotFound from "@/views/NotFound";
 import User from "@/views/User";
+import ForgotPassword from "@/views/ForgotPassword";
 
 Vue.use(VueRouter);
 
@@ -83,6 +84,11 @@ const routes = [
         path: '/manage',
         name: 'Manage',
         component: ManageCommunities,
+    },
+    {
+        path: '/login/forgot',
+        name: 'ForgotPassword',
+        component: ForgotPassword,
     },
     {
         path: '*',

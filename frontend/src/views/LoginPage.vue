@@ -1,31 +1,31 @@
 <template>
     <div class="container">
         <div class="login-form">
-            <div class="header">
-                <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
-            </div>
-            <div>
-                <p v-if="failedLogin" class="error-message">Incorrect password or email</p>
-            </div>
+          <div class="header">
+            <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
+          </div>
+          <div>
+            <p v-if="failedLogin" class="error-message">Incorrect password or email</p>
+          </div>
 
-            <div class="input">
-                <div class="color-bar" style="background: #FB6D13"></div>
-                <input v-model="email" placeholder="Email address" type="text"/>
-            </div>
-            <div class="input">
-                <div class="color-bar" style="background: #8A3BFE"></div>
-                <input v-model="password" placeholder="Password" type="password"
-                @keyup.enter="loginUser()">
-            </div>
-            <div>
-                <button class="login-btn" @click="loginUser()">Sign in</button>
-            </div>
-            <div class="text">
-                <p class="link">Forgot your password?</p>
-            </div>
-            <div class="text" style="margin-top: 40px;">
-                <p>Don't have an account? <a class="link" @click="navigate('register')">Sign up</a></p>
-            </div>
+          <div class="input">
+            <div class="color-bar" style="background: #FB6D13"></div>
+            <input v-model="email" placeholder="Email address" type="text"/>
+          </div>
+          <div class="input">
+            <div class="color-bar" style="background: #8A3BFE"></div>
+            <input v-model="password" placeholder="Password" type="password"
+                   @keyup.enter="loginUser()">
+          </div>
+          <div>
+            <button class="login-btn" @click="loginUser()">Sign in</button>
+          </div>
+          <div class="text" @click.stop="navigate('login/forgot')">
+            <p class="link">Forgot your password?</p>
+          </div>
+          <div class="text" style="margin-top: 40px;">
+            <p>Don't have an account? <a class="link" @click="navigate('register')">Sign up</a></p>
+          </div>
         </div>
     </div>
 </template>
