@@ -1,20 +1,20 @@
 <template>
-  <div>
+  <div class="container">
     <div id="top-buttons">
       <div class="settings-icon">
         <font-awesome-icon :icon="['fas', 'share-square']"></font-awesome-icon>
       </div>
       <div class="settings-icon">
-        <font-awesome-icon v-on:click="editPage()" :icon="['fas', 'edit']" />
+        <font-awesome-icon :icon="['fas', 'edit']" />
       </div>
       <div class="settings-icon">
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>
-    <div id="profilePicture" v-if="!this.editing" style="margin-bottom: 0px;">
+    <div id="profilePicture" style="margin-bottom: 0px;">
       <p>{{ this.initials }}</p>
     </div>
-    <div v-if="!this.editing" id="mainProfileInfo">
+    <div id="mainProfileInfo">
       <p class="info" style="font-size: 32px; margin-bottom: 0px;">
         {{ this.username }}
       </p>
@@ -34,38 +34,35 @@
     </p>
     <p v-else>
       You haven't filled out a bio yet. Click the
-      <font-awesome-icon v-on:click="editPage()" :icon="['fas', 'edit']" />
+      <font-awesome-icon :icon="['fas', 'edit']" />
       button to make one!
     </p>
     <p style="width: 100%; text-align: left;"><u>Top Communities:</u></p>
-    <CommunitiesList :communities="communities" :myCommunities="false" />
+    <div class="communities-list">
+      <CommunitiesList :communities="communities" :myCommunities="false" />
+    </div>
     <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
     <div style="padding-top: 5vh;">
       <div v-if="!displayGraph">No data yet!</div>
       <div v-else>
-        {{ this.leaderboardInfo }}
-        <div style="position: absolute; left: 50%;">
-          <div style="position: relative; left: -50%;">
-            <div id="graph">
-              <VueBarGraph
-                :points="this.leaderboardInfo"
-                :width="250"
-                :height="100"
-              />
-            </div>
-          </div>
-        </div>
-        <div id="labels">
-          <div id="week1"></div>
-          <div id="week2"></div>
-          <div id="week3"></div>
-          <div id="week4"></div>
-        </div>
-        <div id="x-axis">
-          <div>This Week</div>
-          <div>Last Week</div>
-          <div>2 Weeks Ago</div>
-          <div>3 Weeks Ago</div>
+        <div id="graph">
+          <VueBarGraph
+            :points="this.leaderboardInfo"
+            :height="200"
+            :barColor="'#3aeddf'"
+            :use-custom-labels="true"
+            :customLabels="[
+              'This week',
+              'Last week',
+              '2 Weeks Ago',
+              '3 Weeks Ago',
+            ]"
+            :showYAxis="true"
+            :textColor="'white'"
+            :textAltColor="'white'"
+            :showXAxis="true"
+            :showValues="true"
+          />
         </div>
       </div>
     </div>
@@ -86,11 +83,16 @@ export default {
     this.getUserDetails();
   },
   methods: {
-    generateLabels(info) {
-      for (var i = 0; i < 4; i++) {
-        var divName = "week" + (i + 1);
-        document.getElementById(divName).innerHTML = info[i];
-      }
+    getWidth() {
+      return (
+        Math.max(
+          document.body.scrollWidth,
+          document.documentElement.scrollWidth,
+          document.body.offsetWidth,
+          document.documentElement.offsetWidth,
+          document.documentElement.clientWidth
+        ) / 1.5
+      );
     },
     getUserDetails() {
       axios
@@ -125,40 +127,11 @@ export default {
           }
           this.initials =
             this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
-          this.generateLabels(this.leaderboardInfo);
           this.bio = response.data.descrtiption;
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
         });
-    },
-    editPage() {
-      this.editing = true;
-    },
-    confirmEdit(newFirstName, newSecondName, newUserName) {
-      this.editing = false;
-      try {
-        if (newFirstName.length > 0) {
-          this.firstName = newFirstName;
-        }
-      } catch {
-        console.log("No first name");
-      }
-      try {
-        if (newSecondName.length > 0) {
-          this.secondName = newSecondName;
-        }
-      } catch {
-        console.log("No second name");
-      }
-      try {
-        if (newUserName.length > 0) {
-          this.username = newUserName;
-        }
-      } catch {
-        console.log("No user name");
-      }
     },
   },
   data() {
@@ -169,21 +142,28 @@ export default {
       secondName: "",
       isTeacher: false,
       points: 0,
-      editing: false,
+      initials: "",
       leaderboardPosition: 0,
       leaderboardInfo: [],
       communities: [],
       bio: "",
       displayGraph: true,
+      labels: ["This week", "Last week", "2 Weeks Ago", "3 Weeks Ago"],
     };
   },
 };
 </script>
 
 <style scoped>
+.communities-list {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
 #labels {
   display: flex;
-  width: 250px;
+  width: 200px;
   margin: auto;
   position: relative;
   margin-top: -20px;
@@ -195,10 +175,10 @@ export default {
 
 #x-axis {
   display: flex;
-  width: 250px;
+  width: 200px;
   margin: auto;
   position: relative;
-  margin-top: 120px;
+  margin-top: 100px;
 }
 
 #x-axis div {
@@ -213,6 +193,10 @@ export default {
   width: 100%;
   height: 15vh;
   text-align: center;
+}
+
+.container {
+  z-index: -1;
 }
 
 #profilePicture {
@@ -234,8 +218,11 @@ export default {
 }
 
 #graph {
-  z-index: 0;
   margin-top: 0;
+}
+
+.color-box {
+  z-index: 2;
 }
 
 .settings-icon {
