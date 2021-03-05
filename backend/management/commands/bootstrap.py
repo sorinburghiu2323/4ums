@@ -121,7 +121,7 @@ class Command(BaseCommand):
         print("Completed:  5 %")
         count = 1
         for member in team:
-            for _ in range(10):
+            for _ in range(5):
                 post = Post.objects.create(
                     user=member,
                     community=ecm2434,
@@ -134,23 +134,41 @@ class Command(BaseCommand):
                     "mollit anim id est laborum. ",
                     post_type="discussion",
                 )
+                post_2 = Post.objects.create(
+                    user=member,
+                    community=ecm2434,
+                    title="Lorem ipsum dolor sit amet",
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "
+                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "
+                    "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure "
+                    "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
+                    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt "
+                    "mollit anim id est laborum. ",
+                    post_type="question",
+                )
                 for t in team_3:
+                    if t.username == "milo":
+                        PostComment.objects.create(
+                            user=t,
+                            post=post_2,
+                            comment="This is a correct answer.",
+                            is_approved=True,
+                        )
                     PostLike.objects.create(
                         user=t,
                         post=post,
                     )
-                    for i in range(10):
+                    for i in range(9):
                         comment = PostComment.objects.create(
                             user=t,
                             post=post,
                             comment="Lorem ipsum dolor sit amet",
                         )
-
-                    for t2 in team_2:
-                        PostCommentLike.objects.create(
-                            user=t2,
-                            post_comment=comment,
-                        )
+                        for t2 in team_2:
+                            PostCommentLike.objects.create(
+                                user=t2,
+                                post_comment=comment,
+                            )
             if count < 7:
                 print("Completed: ", count * 15 + 5, "%")
                 count += 1

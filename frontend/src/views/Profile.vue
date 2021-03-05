@@ -180,7 +180,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #labels {
   display: flex;
   width: 250px;

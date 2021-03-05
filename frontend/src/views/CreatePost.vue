@@ -1,10 +1,14 @@
 <template>
   <div id="form">
-    <div id="communityBox">
-      <font-awesome-icon style="color: #5ff9ab" :icon="['fas', 'users']" />
+    <div id="communityBox" v-if="communities">
+      <font-awesome-icon :icon="['fas', 'users']" style="color: #5ff9ab" />
       Select a Community
       <select v-model="community">
-        <option v-for="(comm,index) in this.communities" :key="index" :value="comm">
+        <option
+          v-for="(comm, index) in this.communities"
+          :key="index"
+          :value="comm"
+        >
           {{ comm.name }}
         </option>
       </select>
@@ -19,8 +23,8 @@
     />
     <br />
     <textarea
-      class="inputBox"
       v-model="description"
+      class="inputBox"
       placeholder="Post text (optional)..."
     ></textarea>
     <br />
@@ -97,7 +101,6 @@ export default {
 </script>
 
 <style scoped>
-
 #communityBox {
   width: 99%;
   background-color: #222531;

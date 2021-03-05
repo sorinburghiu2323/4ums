@@ -117,6 +117,7 @@ paths:
                   type: string
                 post_type:
                   type: string
+                  description: 'Either "question" or "discussion"'
               required:
                 - title
                 - description
@@ -133,13 +134,38 @@ paths:
       responses:
         '200':
           description: OK
-      description: ''
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+                required:
+                  - total_pages
+                  - previous_page
+                  - next_page
+                  - data
+      description: Get posts of a community.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: phrase
+          description: Filter by a phrase
+        - schema:
+            type: string
+          in: query
+          name: page
+          description: 'Page number, default 1.'
   /users/feed:
     get:
       summary: Your GET endpoint
@@ -178,6 +204,11 @@ paths:
           in: query
           name: page
           description: page number to get
+        - schema:
+            type: string
+          in: query
+          name: phrase
+          description: Phrase to search by
   /communities:
     post:
       summary: ''
@@ -203,6 +234,9 @@ paths:
                   type: string
                 description:
                   type: string
+                colour:
+                  type: string
+                  description: Colour theme of community.
               required:
                 - name
                 - description
@@ -242,18 +276,25 @@ paths:
         - schema:
             type: string
             enum:
-              - all
               - created
               - memberof
+              - other
           in: query
           name: type
-          description: type of list to generate
+          description: |-
+            type of list to generate
+            Can be either: "other", "memberof" or "created"
           required: true
         - schema:
             type: integer
           in: query
           name: page
           description: number of the page to retrieve (defaults to 1)
+        - schema:
+            type: string
+          in: query
+          name: phrase
+          description: Filter by a phrase
   '/communities/{id}':
     parameters:
       - schema:
@@ -442,6 +483,11 @@ paths:
           in: query
           name: page
           description: Page number to get.
+        - schema:
+            type: string
+          in: query
+          name: order_by
+          description: 'Set as "likes" to order by likes num. Anything else, it order by date.'
   '/communities/{cid}/posts/{pid}/comments':
     parameters:
       - schema:
@@ -561,6 +607,73 @@ paths:
           description: Not Found - User does not exist.
       operationId: get-users-id
       description: Get individual user profile.
+  /users/leaderboard:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_pages:
+                    type: integer
+                  previous_page:
+                    type: integer
+                  next_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserLeaderboard'
+        '401':
+          description: Unauthorized - Login required.
+      operationId: get-users-leaderboard
+      description: 'Get a (paginated) list of users, sorted by points (descending).'
+  '/communities/{id}/posts/{id}/comments/{id}/approve':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-communities-id-posts-id-comments-id-approve
+      responses:
+        '200':
+          description: OK - Comment approved.
+        '401':
+          description: Unauthorized - Permission denied.
+        '404':
+          description: Not Found - Comment does not exist.
+        '409':
+          description: Conflict - Comment is already approved.
+      description: 'Approve a comment, given the user trying to is the creator of the post.'
+    delete:
+      summary: ''
+      operationId: delete-communities-id-posts-id-comments-id-approve
+      responses:
+        '200':
+          description: OK - Comment dissaproved.
+        '401':
+          description: Unauthorized - Permission denied.
+        '404':
+          description: Not Found - Comment not found.
+      description: Disapprove a comment.
 components:
   schemas:
     Post:
@@ -595,6 +708,9 @@ components:
         is_liked:
           type: boolean
           description: True if the logged in user had liked this post.
+        has_approved:
+          type: boolean
+          description: 'True if the post has a reply marked as approved, false otherwise.'
       required:
         - id
         - community
@@ -607,6 +723,7 @@ components:
         - comments_num
         - is_community_owner
         - is_liked
+        - has_approved
     CommunitySimple:
       title: CommunitySimple
       type: object
@@ -752,3 +869,21 @@ components:
         - last_name
         - points
         - is_teacher
+    UserLeaderboard:
+      title: UserLeaderboard
+      type: object
+      description: Basic user details needed for displaying on the leaderboard.
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        points:
+          type: integer
+        leaderboard_position:
+          type: integer
+      required:
+        - id
+        - username
+        - points
+        - leaderboard_position

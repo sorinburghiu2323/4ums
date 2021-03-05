@@ -1,11 +1,9 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
-from django.db.models import Count
 from django.utils import timezone
 
 
-# User Class
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
@@ -57,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     hide_leaderboard = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)  # Bio
 
-    # Permission fields
+    # Permission fields.
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -96,14 +94,35 @@ class User(AbstractBaseUser, PermissionsMixin):
             else None,
         }
 
+    def serialize_leaderboard(self, rank):
+        # don't use self.ranking(); rank is calculated more efficiently
+        # (using less DB queries) by the leaderboard endpoint.
+        return {
+            "id": self.id,
+            "username": self.username,
+            "points": self.points,
+            "leaderboard_position": rank,
+        }
+
     def ranking(self):
-        aggregate = User.objects.filter(points=self.points).aggregate(
-            ranking=Count("points")
+        """
+        Given that all users with equal points should be of equal ranking,
+        ranking should be calculated by "points class"
+        to do this, we use .distinct() to get each unique number of points
+        ie, each "points class". then, the ranking of each points class
+        can be evaluated by counting the number of classes with more points
+        plus 1, so that the top position is "1st" not "0th".
+        """
+        return (
+            User.objects.filter(hide_leaderboard=False, is_staff=False)
+            .values("points")
+            .distinct()
+            .filter(points__gt=self.points)
+            .count()
+            + 1
         )
-        return aggregate["ranking"] + 1
 
 
-# Community Class
 class Community(models.Model):
     """
     Community model where the name is a unique modifier
@@ -203,10 +222,12 @@ class Post(models.Model):
             ).exists()
             if request
             else False,
+            "has_approved": PostComment.objects.filter(
+                post=self, is_approved=True
+            ).exists(),
         }
 
 
-# PostLike Class
 class PostLike(models.Model):
     """
     Post like model where the title is a unique modifier
@@ -221,7 +242,6 @@ class PostLike(models.Model):
         return self.post.title
 
 
-# PostComment Class
 class PostComment(models.Model):
     """
     Post model where the title is a unique modifier
@@ -245,7 +265,7 @@ class PostComment(models.Model):
             "comment_likes": PostCommentLike.objects.filter(
                 post_comment=self
             ).count(),
-            "user_liked": PostCommentLike.objects.filter(
+            "is_liked": PostCommentLike.objects.filter(
                 user=request.user, post_comment=self
             ).exists()
             if request
@@ -255,7 +275,6 @@ class PostComment(models.Model):
         }
 
 
-# PostCommentLike Class
 class PostCommentLike(models.Model):
     """
     Post Comment Like model where the user and post_comment make up

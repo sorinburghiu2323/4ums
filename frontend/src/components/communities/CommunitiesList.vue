@@ -1,12 +1,14 @@
 <template>
   <div class="container">
       <CommunityDisplay v-for="(community,index) in communities" :key="index"
-      :community="community" :myCommunity="myCommunities"/>
+      :community="community" :communityType="communityType"
+      :editMode="editMode"/>
   </div>
 </template>
 
 <script>
 import CommunityDisplay from '@/components/communities/CommunityDisplay.vue'
+
 export default {
     name: 'CommunitiesList',
     components: {
@@ -14,9 +16,11 @@ export default {
     },
     props: {
         communities: Array,
-        myCommunities: {
-            default: true,
-            type: Boolean,
+        communityType: String,
+    },
+    computed: {
+        editMode() {
+          return this.$route.name === 'Manage';
         }
     }
 

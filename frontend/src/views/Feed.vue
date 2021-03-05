@@ -23,6 +23,9 @@
         There are no posts left for you to view, maybe join more communities?
       </h3>
     </div>
+    <div>
+      <br><br><br><br>
+    </div>
   </div>
 </template>
 <script>
@@ -61,9 +64,9 @@ export default {
   methods: {
     scroll() {
       window.onscroll = () => {
-        let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop,
-            document.body.scrollTop) + window.innerHeight;
-        if (bottomOfWindow >= document.documentElement.offsetHeight - 200) {
+        let bottomOfWindow = document.documentElement.scrollTop +
+            window.innerHeight > document.body.scrollHeight - 200;
+        if (bottomOfWindow) {
           if (this.loadMore) {
             this.loadMorePosts();
             this.loadMore = false;
@@ -95,7 +98,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .container {
   height: 100%;
 }
@@ -108,6 +111,7 @@ export default {
 .header {
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 30px;
 }
 
 .header h1 {
@@ -125,17 +129,16 @@ export default {
 }
 
 .search-section {
-  display: flex;
-  width: 100%;
+    display: flex;
+    width: 100%;
 }
 
 ::placeholder {
-  color: white;
+    color: white;
 }
 
 .search-section input {
   width: 100%;
-  border: 1px solid black;
   height: 46px;
   font-size: 15px;
   padding-left: 10px;
@@ -143,22 +146,20 @@ export default {
   outline: none;
   font-weight: 600;
   border-radius: 25px;
+  border: none;
   background: rgb(40, 44, 58);
-  background: linear-gradient(to right, #282C3A, #212230);
-}
-
-.description p {
-  display: flex;
-  overflow-wrap: anywhere;
+  background: linear-gradient(90deg, rgba(40, 44, 58, 1) 0%, rgba(27, 30, 40, 1) 35%, rgba(8, 9, 11, 1) 100%);
+  margin: auto;
 }
 
 .search-section > .search-icon {
   font-size: 28px;
-  margin-left: 10px;
-  height: 28px;
+  height: 29px;
   padding: 10px;
   border-radius: 15px;
+  position: relative;
   color: black;
+  margin: 10px;
   display: flex;
   cursor: pointer;
   background: rgb(138, 59, 254);

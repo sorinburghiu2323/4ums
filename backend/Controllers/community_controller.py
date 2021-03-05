@@ -1,9 +1,9 @@
-from django.http import JsonResponse
 from django.db.utils import IntegrityError
+from django.http import JsonResponse
 
 from SoftwareDev import settings
-from backend.Utils.points_handler import adjust_points
 from backend.Utils.paginators import json_paginator
+from backend.Utils.points_handler import adjust_points
 from backend.models import Community, CommunityMember
 
 
@@ -129,7 +129,7 @@ def list_communities(request):
     Get a paginated list of communities.
 
     Must include 'type' in request body, which should be one of three values:
-        - "all"     : all communities
+        - "other"     : all other communities
         - "memberof": communities the user is a member of
         - "created" : communities the user created
 
@@ -140,26 +140,37 @@ def list_communities(request):
     """
     user = request.user
     list_type = request.GET.get("type")
-    print(list_type)
-    if list_type not in ["all", "created", "memberof"]:
+    if list_type not in ["other", "created", "memberof"]:
         return JsonResponse(
-            "Bad request - Type must be one of: 'all', 'created', 'memberof'",
+            "Bad request - Type must be one of: 'other', 'created', 'memberof'",
             status=400,
             safe=False,
         )
 
-    if list_type == "all":
-        comms = list(Community.objects.all().order_by("name"))
-    elif list_type == "created":
-        comms = Community.objects.filter(user=user).order_by("name")
+    # Community queryset based on search type attribute.
+    communities = []
+    if list_type == "created":
+        communities = Community.objects.filter(user=user).order_by("name")
+    elif list_type == "other":
+        communities = Community.objects.exclude(
+            communitymember__user=user
+        ).order_by("name")
     elif list_type == "memberof":
-        comm_mems = CommunityMember.objects.filter(user=user).order_by(
-            "community__name"
-        )
-        comms = [comm_mem.community for comm_mem in comm_mems]
+        communities = Community.objects.filter(
+            communitymember__user=user
+        ).order_by("name")
+
+    # Check for filter phrase.
+    phrase = request.GET.get("phrase")
+    if phrase is not None:
+        if phrase != "" and not phrase.isspace():
+            for term in phrase.split():
+                communities = communities.filter(Q(name__icontains=term))
+        else:
+            communities = communities.none()
 
     return JsonResponse(
-        json_paginator(request, comms, lambda d: d.serialize_simple()),
+        json_paginator(request, communities, lambda d: d.serialize_simple()),
         status=200,
     )
 

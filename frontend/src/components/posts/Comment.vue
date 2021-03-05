@@ -1,7 +1,7 @@
 <template>
   <div class="containers">
     <div class="details">
-      <div class="title">
+      <div class="description">
         <p>{{ this.comment.comment }}</p>
       </div>
       <div class="date">
@@ -16,13 +16,21 @@
         </div>
       </div>
     </div>
-    <div class="likes">
-      <div class="like-icon">
-        <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+    <div class="likes" @click.stop="likeComment">
+      <div v-if="this.userLiked" style="color:white">
+        <div class="like-icon">
+          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+        </div>
+        <div class="like-count">{{ this.numLikes }}</div>
       </div>
-      <div class="like-count">{{ comment.comment_likes }}</div>
+      <div v-else style="color:grey">
+        <div class="like-icon">
+          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+        </div>
+        <div class="like-count">{{ this.numLikes }}</div>
+      </div>
     </div>
-    <div class="author">
+    <div class="author" @click.stop="navigateToUser">
       <p>Authored by <span class="author-name">{{ comment.user.username }}</span></p>
     </div>
   </div>
@@ -30,6 +38,7 @@
 
 <script>
 import moment from 'moment'
+import axios from "axios";
 
 export default {
   name: 'Comment',
@@ -41,9 +50,46 @@ export default {
       info: 3,
       comment_data: this.comment.comment,
       is_approved: this.comment.is_approved,
-      date_time: moment((this.comment.created_at)).format('DD/MM/YY'),
+      date_time: moment((this.comment["created_at"])).format('DD/MM/YY'),
+      userLiked: this.comment["is_liked"],
+      commentId: this.comment.id,
+      numLikes: this.comment["comment_likes"],
+      postId: this.$route.params.postId,
+      communityId: this.$route.params.id,
     }
   },
+  methods: {
+    navigateToUser() {
+      this.$router.push({
+        name: 'User',
+        params: {
+          id: this.comment["user"]["id"]
+        }
+      })
+    },
+    likeComment() {
+      if (!this.userLiked) {
+        axios.post('/api/communities/' + this.communityId + '/posts/' + this.postId + '/comments/' + this.commentId +
+            '/likes')
+            .then(() => {
+              this.numLikes++;
+              this.userLiked = true;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+      } else {
+        axios.delete('/api/communities/' + this.communityId + '/posts/' + this.postId + '/comments/' + this.commentId +
+            '/likes')
+            .then(() => {
+              this.numLikes--;
+              this.userLiked = false;
+            }).catch((error) => {
+          console.log(error);
+        })
+      }
+    }
+  }
 }
 </script>
 
@@ -52,8 +98,7 @@ export default {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 0 10px 10px;
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
@@ -94,8 +139,9 @@ export default {
 .description p {
   overflow: hidden;
   text-overflow: ellipsis;
+  position: relative;
+  top: 10px;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines to show */
   -webkit-box-orient: vertical;
   text-align: left;
 }
