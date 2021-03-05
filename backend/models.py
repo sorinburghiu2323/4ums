@@ -54,6 +54,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_teacher = models.BooleanField(default=False)
     hide_leaderboard = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)  # Bio
+    share_code = models.CharField(
+        max_length=6, null=True, blank=True
+    )  # Number for generating the unique sharable link
 
     # Permission fields.
     is_staff = models.BooleanField(default=False)

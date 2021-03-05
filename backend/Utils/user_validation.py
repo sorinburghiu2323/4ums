@@ -1,4 +1,6 @@
+import random
 import re
+import string
 from functools import wraps
 
 from django.core.exceptions import PermissionDenied
@@ -114,3 +116,16 @@ def validate_password(password, password_repeat=None):
             "and be at least 9 characters."
         )
     return False
+
+
+def generate_share_code(length: int):
+    """
+    Generate a share_code of random letters and numbers given a length.
+    :param length: int - length.
+    :return: str - share code.
+    """
+    letters_and_digits = string.ascii_letters + string.digits
+    result_str = "".join(
+        (random.choice(letters_and_digits) for _ in range(length))
+    )
+    return result_str
