@@ -39,7 +39,11 @@
     </p>
     <p style="width: 100%; text-align: left;"><u>Top Communities:</u></p>
     <div class="communities-list">
-      <CommunitiesList :communities="communities" :myCommunities="false" />
+      <CommunitiesList
+        :communities="communities"
+        :myCommunities="false"
+        :communityType="'memberof'"
+      />
     </div>
     <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
     <div style="padding-top: 5vh;">
@@ -161,34 +165,6 @@ export default {
   text-align: left;
 }
 
-#labels {
-  display: flex;
-  width: 200px;
-  margin: auto;
-  position: relative;
-  margin-top: -20px;
-}
-
-#labels div {
-  width: 9vh;
-}
-
-#x-axis {
-  display: flex;
-  width: 200px;
-  margin: auto;
-  position: relative;
-  margin-top: 100px;
-}
-
-#x-axis div {
-  width: 9vh;
-}
-
-#title {
-  font-size: 3vh;
-}
-
 #mainProfileInfo {
   width: 100%;
   height: 15vh;
@@ -219,10 +195,6 @@ export default {
 
 #graph {
   margin-top: 0;
-}
-
-.color-box {
-  z-index: 2;
 }
 
 .settings-icon {
