@@ -10,7 +10,8 @@
 
             </div>
             <div class="position-text">
-                <p>Your Position: </p>
+                <font-awesome-icon :icon="['fa', 'user']"></font-awesome-icon>
+                <p>Your Position: {{leaderboardPosition | ordinal_suffix}} </p>
             </div>
         </div>
         <div class="top-three" v-if="loaded">
@@ -104,25 +105,15 @@ export default {
         return {
             leaderboardUsers: [],
             loaded: false,
-            currentPage: 1,
-            stopLoading: false,
+            currentPage: 0,
+            loadMore: false,
+            leaderboardPosition: null,
         }
     },
     mounted() {
+        this.getUserDetails();
+        this.loadMoreUsers();
         this.scroll();
-    },
-    created() {
-        axios.get('/api/users/leaderboard', {params: {page: this.currentPage}})
-        .then(response => {
-            this.leaderboardUsers = response.data.data;
-            this.loaded = true;
-            if(response.data.next_page == null) {
-                this.stopLoading = true;
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        })
     },
     methods: {
         scroll() {
@@ -130,25 +121,38 @@ export default {
                 let bottomOfWindow = document.documentElement.scrollTop +
                     window.innerHeight > document.body.scrollHeight;
                 if (bottomOfWindow) {
-                    if (!this.stopLoading) {
-                        this.currentPage += 1;
+                    if (this.loadMore) {
                         this.loadMoreUsers();
+                        this.loadMore = false;
                     }
                 }
             }
         },
         loadMoreUsers() {
+            this.currentPage += 1;
             axios.get('/api/users/leaderboard', {params: {page: this.currentPage}})
             .then(response => {
                 var i;
                 for(i=0; i < response.data.data.length; i++) {
                     this.leaderboardUsers.push(response.data.data[i]);
                 }
-                if(response.data.next_page == null) {
-                    this.stopLoading = true;
+                if(response.data.next_page === null) {
+                    this.loadMore = false;
+                } else {
+                    this.loadMore = true;
                 }
+                this.loaded = true;
             })
             .catch(error => {
+                console.error(error);
+            })
+        },
+        getUserDetails() {
+            axios.get('/api/users/me')
+            .then(response => {
+                console.log(response);
+                this.leaderboardPosition = response.data.leaderboard_position;
+            }).catch(error => {
                 console.error(error);
             })
         }
@@ -164,6 +168,19 @@ export default {
     right: 15px;
     font-size: 35px;
     color: #7e7e7e;
+}
+
+.position-text {
+    display: flex;
+    color: #7e7e7e;
+    font-size: 25px;
+    margin-bottom: 50px;
+}
+
+.position-text p {
+    font-size: 15px;
+    margin: auto;
+    margin-left: 20px;
 }
 
 .circle {
@@ -243,7 +260,7 @@ export default {
 }
 
 .points {
-    font-size: 15px;
+    font-size: 15px !important;
     color: #7e7e7e;
 }
 
