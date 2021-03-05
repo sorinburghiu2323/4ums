@@ -20,52 +20,61 @@
       </p>
       <p class="info">{{ this.firstName + " " + this.secondName }}</p>
       <p class="info">
-        <font-awesome-icon :icon="['fas', 'star']" /> Points: {{ this.points }}
-        <font-awesome-icon :icon="['fas', 'trophy']" /> Position:
+        <font-awesome-icon :icon="['fas', 'star']"/>
+        Points: {{ this.points }}
+        <font-awesome-icon :icon="['fas', 'trophy']"/>
+        Position:
         {{ this.leaderboardPosition }}
       </p>
     </div>
-    <p style="width: 100%; text-align: left;"><u>Bio:</u></p>
-    <p
-      style="position: absolute; margin: auto; margin-top: 10vh;"
-      v-if="this.bio === ''"
-    >
-      {{ this.bio }}
-    </p>
-    <p v-else>
-      You haven't filled out a bio yet. Click the
-      <font-awesome-icon :icon="['fas', 'edit']" />
-      button to make one!
-    </p>
-    <p style="width: 100%; text-align: left;"><u>Top Communities:</u></p>
+    <div class="bio">
+      <p style="width: 100%; text-align: left;">
+        Bio
+      <div class="lines"></div>
+      <p v-if="this.bio === ''"
+         style="position: absolute; margin: auto; margin-top: 10vh;">
+        {{ this.bio }}
+      </p>
+      <p v-else>
+        You haven't filled out a bio yet. Click the
+        <font-awesome-icon :icon="['fas', 'edit']"/>
+        button to make one!
+      </p>
+    </div>
+    <div class="comm">
+      <p style="width: 100%; text-align: left;">Top Communities</p>
+      <div class="lines"></div>
+    </div>
     <div class="communities-list">
       <CommunitiesList
-        :communities="communities"
-        :myCommunities="false"
-        :communityType="'memberof'"
+          :communities="communities"
+          :communityType="'memberof'"
+          :myCommunities="false"
       />
     </div>
-    <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
-    <div style="padding-top: 5vh;">
+    <div class="engage">
+      <p style="width: 100%; text-align: left;">Engagement Per Week:</p>
+      <div class="lines"></div>
+    </div>
+    <div>
       <div v-if="!displayGraph">No data yet!</div>
       <div v-else>
         <div id="graph">
-          <VueBarGraph
-            :points="this.leaderboardInfo"
-            :height="200"
-            :barColor="'#3aeddf'"
-            :use-custom-labels="true"
-            :customLabels="[
+          <VueBarGraph :barColor="'#3aeddf'" :customLabels="[
               'This week',
               'Last week',
               '2 Weeks Ago',
               '3 Weeks Ago',
             ]"
-            :showYAxis="true"
-            :textColor="'white'"
-            :textAltColor="'white'"
-            :showXAxis="true"
-            :showValues="true"
+                       :height="200"
+                       :points="this.leaderboardInfo"
+                       :showValues="true"
+                       :showXAxis="true"
+                       :showYAxis="true"
+                       :textAltColor="'white'"
+                       :textColor="'white'"
+                       :use-custom-labels="true"
+                       :width="widthCalc()"
           />
         </div>
       </div>
@@ -87,52 +96,44 @@ export default {
     this.getUserDetails();
   },
   methods: {
-    getWidth() {
-      return (
-        Math.max(
-          document.body.scrollWidth,
-          document.documentElement.scrollWidth,
-          document.body.offsetWidth,
-          document.documentElement.offsetWidth,
-          document.documentElement.clientWidth
-        ) / 1.5
-      );
+    widthCalc() {
+      return window.innerWidth - 100;
     },
     getUserDetails() {
       axios
-        .get("/api/users/me")
-        .then((response) => {
-          this.firstName = response.data.first_name;
-          this.secondName = response.data.last_name;
-          this.username = response.data.username;
-          this.isTeacher = response.data.is_teacher;
-          this.leaderboardPosition = response.data.leaderboard_position;
-          this.points = response.data.points;
-          var recents = response.data.graphs.recent;
-          this.leaderboardInfo = [
-            recents[0].points,
-            recents[1].points,
-            recents[2].points,
-            recents[3].points,
-          ];
-          if (
-            JSON.stringify(this.leaderboardInfo) == JSON.stringify([0, 0, 0, 0])
-          ) {
-            this.displayGraph = false;
-          }
-          for (
-            var i = 0;
-            i < response.data.graphs.top_communities.length;
-            i++
-          ) {
-            this.communities.push(
-              response.data.graphs.top_communities[i].community
-            );
-          }
-          this.initials =
-            this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
-          this.bio = response.data.descrtiption;
-        })
+          .get("/api/users/me")
+          .then((response) => {
+            this.firstName = response.data.first_name;
+            this.secondName = response.data.last_name;
+            this.username = response.data.username;
+            this.isTeacher = response.data.is_teacher;
+            this.leaderboardPosition = response.data.leaderboard_position;
+            this.points = response.data.points;
+            var recents = response.data.graphs.recent;
+            this.leaderboardInfo = [
+              recents[0].points,
+              recents[1].points,
+              recents[2].points,
+              recents[3].points,
+            ];
+            if (
+                JSON.stringify(this.leaderboardInfo) == JSON.stringify([0, 0, 0, 0])
+            ) {
+              this.displayGraph = false;
+            }
+            for (
+                var i = 0;
+                i < response.data.graphs.top_communities.length;
+                i++
+            ) {
+              this.communities.push(
+                  response.data.graphs.top_communities[i].community
+              );
+            }
+            this.initials =
+                this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
+            this.bio = response.data.descrtiption;
+          })
         .catch((error) => {
           console.log(error);
         });
@@ -173,6 +174,39 @@ export default {
 
 .container {
   z-index: -1;
+}
+
+.bio .lines {
+  border: 1px solid #4F4C55;
+  position: relative;
+  top: -25px;
+  left: 20px;
+  margin: 10px;
+  width: calc(100% - 30px);
+  height: 0;
+  color: black;
+}
+
+.comm .lines {
+  border: 1px solid #4F4C55;
+  position: relative;
+  top: -25px;
+  left: 120px;
+  margin: 10px;
+  width: calc(100% - 130px);
+  height: 0;
+  color: black;
+}
+
+.engage .lines {
+  border: 1px solid #4F4C55;
+  position: relative;
+  top: -25px;
+  left: 160px;
+  margin: 10px;
+  width: calc(100% - 170px);
+  height: 0;
+  color: black;
 }
 
 #profilePicture {
