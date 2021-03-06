@@ -25,6 +25,7 @@ import {
   faUser,
   faUsers,
   faUserSecret,
+  faTimes,
   faMedal,
   faCrown,
 } from "@fortawesome/free-solid-svg-icons";
@@ -50,6 +51,7 @@ library.add(
     faQuestionCircle,
     faCheckCircle,
     faPaperPlane,
+    faTimes,
     faMedal,
     faCrown,
 );
