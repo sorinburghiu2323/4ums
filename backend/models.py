@@ -271,7 +271,7 @@ class PostComment(models.Model):
             ).exists(),
             "is_post_author": Post.objects.filter(
                 user=self.user, id=self.post.id
-            ),
+            ).exists(),
             "comment": self.comment,
             "comment_likes": PostCommentLike.objects.filter(
                 post_comment=self
