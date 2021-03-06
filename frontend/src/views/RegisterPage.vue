@@ -40,7 +40,7 @@
                 <p style="color: red; font-size: 12px;">{{errMessage}}</p>
             </div>
             <div class="terms">
-              <div><input v-model="isTeacher" type="checkbox"><span>I am a teacher</span></div>
+              <div><input v-model="isTeacher" type="checkbox"><span>I am a teacher/lecturer</span></div>
             </div>
             <div class="terms">
               <div>
