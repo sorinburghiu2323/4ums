@@ -43,7 +43,10 @@
               <div><input v-model="isTeacher" type="checkbox"><span>I am a teacher</span></div>
             </div>
             <div class="terms">
-              <div><input v-model="isTermsAgreed" type="checkbox"> <span>I agree to all terms</span></div>
+              <div>
+                <input v-model="isTermsAgreed" type="checkbox"> 
+                <span class="tc-link" @click="showTC=true;">I agree to all terms</span>
+              </div>
                 <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
             </div>
             <div>
@@ -53,16 +56,28 @@
                 <p>Already have an account? <a class="link" @click="navigate('login')">Sign in</a></p>
             </div>
         </div>
+        <div class="TC-popup">
+          <div class="close-TC" v-if="showTC">
+            <font-awesome-icon :icon="['fa', 'times']" @click="showTC = false" />
+          </div>
+          <TermsAndConditionsPopup v-if="showTC" />
+        </div>
+        
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import TermsAndConditionsPopup from '@/components/TermsAndConditionsPopup.vue'
 
 export default {
   name: 'RegisterPage',
+  components: {
+    TermsAndConditionsPopup,
+  },
   data() {
     return {
+      showTC: false,
       firstName: '',
       lastName: '',
       username: '',
@@ -203,6 +218,7 @@ export default {
 .container {
     display: flex;
     width: 100%;
+    position: relative;
 }
 .register-form {
     display: flex;
@@ -289,5 +305,22 @@ input::placeholder {
     color: green;
 }
 
+.TC-popup {
+  position: absolute;
+}
+
+.tc-link {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.close-TC {
+  position: absolute;
+  z-index: 999;
+  left: 20px;
+  top: 10px;
+  font-size: 30px;
+  cursor: pointer;
+}
 
 </style>
