@@ -27,7 +27,7 @@
                 </div> 
                 <div class="info">
                     <p class="username">{{leaderboardUsers[0].username}}</p>
-                    <p class="points">Points: {{leaderboardUsers[1].points}}</p>
+                    <p class="points">Points: {{leaderboardUsers[0].points}}</p>
                 </div>    
             </div>
             
