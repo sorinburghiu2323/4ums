@@ -36,6 +36,11 @@ const routes = [
         component: LoginPage,
     },
     {
+        path: "/login/forgot",
+        name: "ForgotPassword",
+        component: ForgotPassword,
+    },
+    {
         path: "/register",
         name: "RegisterPage",
         component: RegisterPage,
@@ -84,11 +89,6 @@ const routes = [
         path: '/manage',
         name: 'Manage',
         component: ManageCommunities,
-    },
-    {
-        path: '/login/forgot',
-        name: 'ForgotPassword',
-        component: ForgotPassword,
     },
     {
         path: '*',

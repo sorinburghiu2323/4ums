@@ -2,7 +2,7 @@
     <div class="container">
         <div class="login-form">
           <div class="header">
-            <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
+            <div class="logo-container"><img  class="logo-container" src="@/assets/website-logo.png"></div>
           </div>
           <div>
             <p v-if="failedLogin" class="error-message">Incorrect password or email</p>
@@ -75,7 +75,6 @@ export default {
     flex-direction: column;
     justify-content: center;
     margin: auto;
-    margin-top: 10vh;
 }
 
 .input{
@@ -88,7 +87,8 @@ export default {
     font-weight: 500;
 }
 input {
-    width: 96%;
+    width: calc(100vw - 60px);
+    position: relative;
     height:46px;
     margin-left: 8px;
     margin-bottom: 15px;
@@ -102,7 +102,7 @@ input {
 }
 
 .input input {
-    padding-left: 15px;
+  width: calc(100vw - 140px);
 }
 
 .color-bar {
@@ -116,6 +116,7 @@ input {
     background: linear-gradient(270deg, rgba(101,255,167,1) 10%, rgba(52,235,233,1) 100%);
     width: 80px;
     height: 40px;
+    left: calc(50vw - 80px);
     border-radius: 25px;
     border: 1px solid black;
     outline: none;
@@ -131,5 +132,15 @@ input {
 .error-message {
     color: red;
     font-size: 14px;
+}
+
+.logo-container{
+    width: 300px;
+    margin-left: -10px;
+    margin-right:10px;
+    margin-top: -60px;
+    height:auto;
+    margin-bottom: 10px;
+    background:None;
 }
 </style>

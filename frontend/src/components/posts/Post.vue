@@ -122,12 +122,10 @@ export default {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px -10px;
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
-  border-radius: 25px;
   background: linear-gradient(to right, #272B39, #1D2029);
   position: relative;
 }

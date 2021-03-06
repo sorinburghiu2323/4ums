@@ -27,7 +27,6 @@ import {
   faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-
 // Add icons here after import
 library.add(
     faUserSecret,
@@ -58,6 +57,9 @@ Vue.config.productionTip = false;
 // Cookie library
 var VueCookie = require('vue-cookie');
 Vue.use(VueCookie);
+//Particles
+import Particles from "particles.vue";
+Vue.use(Particles);
 new Vue({
   router,
   render: (h) => h(App),

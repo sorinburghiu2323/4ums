@@ -2,7 +2,7 @@
     <div class="container">
         <div class="register-form">
           <div class="header">
-            <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
+            <div class="logo-container"><img class="logo-container" src="@/assets/website-logo.png"></div>
           </div>
           <div v-if="showRequirements" class="pass-requirements">
             <p>Password requirements: </p>
@@ -200,6 +200,14 @@ export default {
 .container {
     display: flex;
     width: 100%;
+}
+
+.logo-container{
+  width: 300px;
+  height:auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background:None;
 }
 .register-form {
     display: flex;
