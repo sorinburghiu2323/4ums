@@ -102,6 +102,9 @@ def user_register(request):
         if "description" in request.DATA:
             new_user.description = request.DATA["description"]
 
+        # Automatically login the user upon registering.
+        login(request, new_user)
+
         return JsonResponse("Created - User created.", status=201, safe=False)
 
     return JsonResponse(
