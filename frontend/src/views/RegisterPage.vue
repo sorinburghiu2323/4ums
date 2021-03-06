@@ -40,6 +40,9 @@
                 <p style="color: red; font-size: 12px;">{{errMessage}}</p>
             </div>
             <div class="terms">
+              <div><input v-model="isTeacher" type="checkbox"><span>I am a teacher</span></div>
+            </div>
+            <div class="terms">
               <div><input v-model="isTermsAgreed" type="checkbox"> <span>I agree to all terms</span></div>
                 <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
             </div>
@@ -55,7 +58,6 @@
 
 <script>
 import axios from 'axios'
-import Feed from "@/views/Feed";
 
 export default {
   name: 'RegisterPage',
@@ -65,6 +67,7 @@ export default {
       lastName: '',
       username: '',
       password: '',
+      isTeacher: false,
       passwordConfirmation: '',
             email: '',
             isTermsAgreed: false,
@@ -140,13 +143,13 @@ export default {
             password: this.password,
             first_name: this.firstName,
             last_name: this.lastName,
-            is_teacher: 'false',
+            is_teacher: this.isTeacher ? 'true' : 'false',
             password_repeat: this.passwordConfirmation,
           })
               .then(() => {
                 this.errMessage = '';
                 this.termErrMessage = '';
-                this.$router.push(Feed);
+                this.$router.push({name: 'Feed'});
               })
               .catch((error) => {
                 console.error(error);
