@@ -98,7 +98,7 @@ export default {
             return i + "th";
         },
         initials(user) {
-            return user.firstname.charAt(0) + user.lastname.charAt(0);
+            return user.first_name.charAt(0) + user.last_name.charAt(0);
         }
     },
     data() {
@@ -111,8 +111,11 @@ export default {
         }
     },
     mounted() {
+        // Fetch logged in user information
         this.getUserDetails();
+        // Load first page of leaderboard user details
         this.loadMoreUsers();
+        // Call scroll event function for infinite scrolling
         this.scroll();
     },
     methods: {
@@ -129,6 +132,7 @@ export default {
             }
         },
         loadMoreUsers() {
+            // On page scroll to bottom of page, display next page of users
             this.currentPage += 1;
             axios.get('/api/users/leaderboard', {params: {page: this.currentPage}})
             .then(response => {
@@ -150,7 +154,6 @@ export default {
         getUserDetails() {
             axios.get('/api/users/me')
             .then(response => {
-                console.log(response);
                 this.leaderboardPosition = response.data.leaderboard_position;
             }).catch(error => {
                 console.error(error);
@@ -306,4 +309,5 @@ export default {
     background: linear-gradient(270deg, rgba(52, 235, 233, 1) 0%, rgba(101, 255, 167, 1) 35%);
     color: #161626 !important;
 }
+
 </style>
