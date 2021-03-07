@@ -72,6 +72,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "SoftwareDev.wsgi.application"
 
+#Logging settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': os.getenv("LOG_FILE_PATH"),
+            'encoding': 'utf-8',
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': os.getenv("LOG_LEVEL"),
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

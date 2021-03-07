@@ -55,12 +55,8 @@ def send_message(service, user_id, message):
         message = (service.users().messages().send(
             userId=user_id, body=message
         ).execute())
-        logger = logging.getLogger(__name__)
-        logger.error(
-            "HTTP error occured when attempting to call the Gmail API"
-        )
     except HttpError as error:
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger("root")
         logger.error(
             "HTTP error occured when attempting to call the Gmail API"
         )
@@ -125,6 +121,8 @@ def send_reset_email(message):
     client = session.client(
         service_name="secretsmanager", region_name="us-west-2"
     )
+    #this isn't ROBUST enough
+    #add error catching (don't do anything though, just log the error)
     creds_secret = client.get_secret_value(SecretId="4ums/email-creds")
     creds_raw = creds_secret['SecretString']
 

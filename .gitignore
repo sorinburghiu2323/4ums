@@ -153,6 +153,7 @@ yarn-error.log*
 .elasticbeanstalk/
 .ebignore
 .ebextensions
+.platform
 
 #Milo's special deployment files
 deploy_script.bat
