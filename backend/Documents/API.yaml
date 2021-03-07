@@ -606,7 +606,18 @@ paths:
         '404':
           description: Not Found - User does not exist.
       operationId: get-users-id
-      description: Get individual user profile.
+      description: |-
+        Get individual user profile.
+
+        For the unique share link:
+        Format: {baseURL}/api/users/{id}?sharecode={sharecode}
+        Example URL: ../api/users/4?sharecode=2ELlvK
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: sharecode
+          description: 'Share code, passes 401 if its the correct one.'
   /users/leaderboard:
     get:
       summary: Your GET endpoint
@@ -674,6 +685,48 @@ paths:
         '404':
           description: Not Found - Comment not found.
       description: Disapprove a comment.
+  /users/sharecode:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 6 digit string.
+                required:
+                  - code
+        '401':
+          description: Unauthorized - Login required.
+      operationId: get-users-generate_link
+      description: Get the code needed for the sharable link.
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-users-share_code
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                required:
+                  - code
+        '401':
+          description: Unauthorized - Login required.
+      description: |-
+        Generate a new share code.
+        It disables the last one.
 components:
   schemas:
     Post:

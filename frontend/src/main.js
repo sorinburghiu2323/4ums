@@ -24,7 +24,10 @@ import {
   faTrophy,
   faUser,
   faUsers,
-  faUserSecret
+  faUserSecret,
+  faTimes,
+  faMedal,
+  faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 // Add icons here after import
@@ -46,7 +49,10 @@ library.add(
     faThumbsUp,
     faQuestionCircle,
     faCheckCircle,
-    faPaperPlane
+    faPaperPlane,
+    faTimes,
+    faMedal,
+    faCrown,
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
