@@ -1,10 +1,16 @@
 <template>
   <div class="container">
     <div id="top-buttons">
-      <div class="settings-icon">
+      <div
+        style="background: linear-gradient(to bottom, #0873ec, #0c6bef); color: black"
+        class="settings-icon"
+      >
         <font-awesome-icon :icon="['fas', 'share-square']"></font-awesome-icon>
       </div>
-      <div class="settings-icon">
+      <div
+        class="settings-icon"
+        style="background: linear-gradient(to bottom, #41e0c6, #5dfbb1); color: black"
+      >
         <font-awesome-icon :icon="['fas', 'edit']" />
       </div>
       <div class="settings-icon">
@@ -53,7 +59,7 @@
           <VueBarGraph
             :points="this.leaderboardInfo"
             :height="200"
-            :barColor="'#3aeddf'"
+            :barColor="'#5FF9AB'"
             :use-custom-labels="true"
             :customLabels="[
               'This week',
@@ -63,9 +69,10 @@
             ]"
             :showYAxis="true"
             :textColor="'white'"
-            :textAltColor="'white'"
+            :textAltColor="'black'"
             :showXAxis="true"
             :showValues="true"
+            :style="'font-family: Trebuchet MS'"
           />
         </div>
       </div>
@@ -201,6 +208,8 @@ export default {
   font-size: 35px;
   color: #7e7e7e;
   position: relative;
+  padding: 2px;
+  border-radius: 12px;
 }
 
 #top-buttons {

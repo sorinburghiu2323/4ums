@@ -9,15 +9,22 @@
     </button>
     <div v-if="this.selectVisible" id="iconContainer">
       <p id="title">Post to 4um</p>
-      <button class="icon2" v-on:click="createPost('question')">
-        <font-awesome-icon :icon="['fas', 'question']"/>
-      </button>
-      <button class="icon2" v-on:click="createPost('discussion')">
-        <font-awesome-icon :icon="['fas', 'comment-dots']"/>
-      </button>
-      <br/>
-      <button class="icon3" v-on:click="close()">
-        <font-awesome-icon :icon="['fas', 'times-circle']"/>
+      <div id="bottomFlex">
+        <div>
+          <button class="icon2" v-on:click="createPost('question')">
+            <font-awesome-icon :icon="['fas', 'question']" />
+          </button>
+          <p style="color: black; font-size: 10px">Question</p>
+        </div>
+        <div>
+          <button class="icon2" v-on:click="createPost('discussion')">
+            <font-awesome-icon :icon="['fas', 'comment-dots']" />
+          </button>
+          <p style="color: black; font-size: 10px">Discussion</p>
+        </div>
+      </div>
+      <button style="top: 0" class="icon3" v-on:click="close()">
+        <font-awesome-icon :icon="['fas', 'times-circle']" />
       </button>
     </div>
   </div>
@@ -54,10 +61,14 @@ export default {
 </script>
 
 <style scoped>
+#bottomFlex {
+  display: flex;
+  justify-content: space-around;
+}
 
 #circleButton {
   border-radius: 50%;
-  background: linear-gradient(to bottom right, #B437FF, #9C39FF);
+  background: linear-gradient(to bottom right, #b437ff, #9c39ff);
   height: 15vh;
   width: 15vh;
   position: fixed;
@@ -75,10 +86,10 @@ export default {
 }
 
 #iconContainer {
-  background: linear-gradient(to bottom right, #B437FF, #9C39FF);
+  background: linear-gradient(to bottom right, #b437ff, #9c39ff);
   width: 100%;
   border-radius: 20% 20% 0 0;
-  height: 21vh;
+  height: 23vh;
   position: fixed;
   bottom: 0;
   left: 0px;
