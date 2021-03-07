@@ -19,6 +19,7 @@
     "cross-env": "^7.0.3",
     "moment": "^2.29.1",
     "vue": "^2.6.11",
+    "vue-bar-graph": "^1.2.0",
     "vue-cookie": "^1.1.4",
     "vue-material": "latest",
     "vue-router": "^3.5.1",
