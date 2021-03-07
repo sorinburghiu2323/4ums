@@ -28,6 +28,8 @@ import {
   faMedal,
   faCrown,
   faTimes,
+  faPlus,
+  faPencilAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
@@ -54,6 +56,8 @@ library.add(
     faMedal,
     faCrown,
     faTimes,
+    faPlus,
+    faPencilAlt,
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

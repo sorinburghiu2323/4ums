@@ -3,15 +3,13 @@
     <router-link class="nav-link" :to="'/communities/' + community.id">
       <p id="back">
         <font-awesome-icon :icon="['fas', 'arrow-left']"/>
-        {{community.name}}
+        Back to threads
       </p>
     </router-link>
     <div id="communityBox" v-if="community">
-      <div class="community-icon">
-        <font-awesome-icon :icon="['fas', 'users']" style="color: #5ff9ab"/>
-      </div>
       <div class="community-name">
         <p>{{community.name}}</p>
+        <p style="font-size: 23px;">new Thread</p>
       </div>
 
     </div>
@@ -34,7 +32,10 @@
         ></textarea>
     </div>
 
-    <button id="submit" v-on:click="createPost()">Submit Post</button>
+    <button id="submit" v-on:click="createPost()">
+      <p>POST</p>
+      <font-awesome-icon :icon="['fa', 'comment-dots']"/>
+    </button>
   </div>
 </template>
 
@@ -46,6 +47,7 @@ export default {
   created() {
     this.type = this.$route.params.type;
     this.communityId = this.$route.params.id;
+    console.log(this.communityId);
     // Fetch and set the data of the community which the post is being created for
     const url = "/api/communities/" + this.communityId.toString();
     axios.get(url)
@@ -100,12 +102,11 @@ export default {
 <style scoped>
 
 #communityBox {
-  background-color: #222531;
   padding: 5px;
   color: white;
   font-family: "Trebuchet MS";
   border-radius: 0px;
-  font-size: 18px;
+  font-size: 27px;
   text-align: left;
   width: inherit;
   display: flex;
@@ -119,14 +120,9 @@ export default {
     overflow: hidden;
     display: block;
     text-overflow: ellipsis;
+    margin: 10px;
 }
 
-.community-icon {
-  margin: auto;
-  font-size: 30px;
-  margin-right: 20px;
-  margin-left: 10px;
-}
 
 .inputBox {
   font-family: "Trebuchet MS";
@@ -179,11 +175,15 @@ export default {
   position: fixed;
   bottom: 12vh;
   right: 0;
-  font-size: 16px;
+  font-size: 40px;
   font-weight: 600;
   border-width: 0;
   z-index: 1;
   box-shadow: 0px 3px 20px #9C39FF;
+}
+#submit p {
+  font-size: 16px;
+  margin: 0;
 }
 
 #errorMessage {
