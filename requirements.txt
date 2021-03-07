@@ -20,3 +20,7 @@ sqlparse==0.4.1
 termcolor==1.1.0
 urllib3==1.25.11
 wcwidth==0.1.9
+google-api-python-client==1.12.8
+google-auth-httplib2==0.0.4
+google-auth-oauthlib==0.4.2
+boto3==1.16.0

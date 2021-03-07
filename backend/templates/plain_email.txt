@@ -1,0 +1,6 @@
+Dear {{first_name}},
+
+You recently requested a password reset for {{username}}. If you didn't make this request, please ignore this email.
+Click the link below to reset your password, please note the link will expire after 30 minutes.
+
+{{url}}
