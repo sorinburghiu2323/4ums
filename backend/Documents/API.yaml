@@ -858,12 +858,20 @@ components:
           description: True if the logged in user has liked this comment.
         id:
           type: integer
+        is_community_owner:
+          type: boolean
+          description: True if user is community owner.
+        is_post_author:
+          type: boolean
+          description: True is user is the post author.
       required:
         - user
         - comment
         - comment_likes
         - created_at
         - id
+        - is_community_owner
+        - is_post_author
     User:
       title: User
       type: object
