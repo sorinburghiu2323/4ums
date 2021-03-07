@@ -48,4 +48,9 @@ body {
   padding: 10px;
 }
 
+
+button {
+  cursor: pointer;
+  outline: none;
+}
 </style>

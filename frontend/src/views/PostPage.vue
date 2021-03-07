@@ -483,6 +483,7 @@ export default {
 
 #back {
   text-align: left;
+  color: #777779;
 }
 
 .settings-icon {

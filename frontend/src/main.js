@@ -27,6 +27,7 @@ import {
   faUserSecret,
   faMedal,
   faCrown,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
@@ -52,6 +53,7 @@ library.add(
     faPaperPlane,
     faMedal,
     faCrown,
+    faTimes,
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

@@ -5,33 +5,55 @@
       id="circleButton"
       v-on:click="postSelect()"
     >
-      Create Post
+      Create Thread
     </button>
     <div v-if="this.selectVisible" id="iconContainer">
       <p id="title">Post to 4um</p>
-      <button class="icon2" v-on:click="createPost('question')">
-        <font-awesome-icon :icon="['fas', 'question']"/>
-      </button>
-      <button class="icon2" v-on:click="createPost('discussion')">
-        <font-awesome-icon :icon="['fas', 'comment-dots']"/>
-      </button>
-      <br/>
-      <button class="icon3" v-on:click="close()">
-        <font-awesome-icon :icon="['fas', 'times-circle']"/>
-      </button>
+      <div class="top-row">
+        <button class="icon2" v-on:click="createPost('question')">
+          <font-awesome-icon :icon="['fas', 'question']"/>
+        </button>
+        <button class="icon2" v-on:click="createPost('discussion')">
+          <font-awesome-icon :icon="['fas', 'comment-dots']"/>
+        </button>
+      </div>
+      <div class="bottom-row">
+        <button class="icon3" v-on:click="close()">
+          <font-awesome-icon :icon="['fa', 'times']"/>
+        </button>
+      </div>
+      
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    community: Object,
+  },
   data() {
     return {
       selectVisible: false,
       buttonVisible: true,
     };
   },
+  mounted() {
+    this.scroll();
+  },
   methods: {
+    scroll() {
+      window.onscroll = () => {
+          let bottomOfWindow = document.documentElement.scrollTop +
+              window.innerHeight > document.body.scrollHeight + 100;
+          if (bottomOfWindow) {
+            this.buttonVisible = false;
+            // only show button if the select question popup is not displayed
+          } else if(!this.selectVisible){
+            this.buttonVisible = true;
+          }
+      }
+    },
     postSelect: function() {
       this.selectVisible = true;
       this.buttonVisible = false;
@@ -40,7 +62,7 @@ export default {
       this.$router.push({
         name: "CreatePost",
         params: {
-          id: this.id,
+          id: this.community.id,
           type: type,
         },
       });
@@ -61,11 +83,14 @@ export default {
   height: 15vh;
   width: 15vh;
   position: fixed;
-  bottom: 10vh;
+  bottom: 12vh;
   right: 0;
-  font-size: 2.5vh;
+  font-size: 16px;
+  font-weight: 600;
   border-width: 0;
   z-index: 1;
+  box-shadow: 0px 3px 20px #9C39FF;
+  outline: none;
 }
 
 #title {
@@ -88,7 +113,8 @@ export default {
 
 .icon2 {
   border-radius: 50%;
-  background-color: #21242f;
+  background: rgb(40,44,58);
+  background: linear-gradient(180deg, rgba(40,44,58,1) 0%, rgba(28,31,40,1) 66%);
   color: #8a3bfe;
   height: 7vh;
   width: 7vh;
@@ -96,11 +122,19 @@ export default {
   text-align: center;
   vertical-align: middle;
   border-width: 0;
+  margin-right: 20px;
+  margin-left: 20px;
+  display: flex;
+}
+
+.icon2 svg, .icon3 svg {
+  margin: auto;
 }
 
 .icon3 {
   border-radius: 50%;
-  background-color: #21242f;
+  background: rgb(40,44,58);
+  background: linear-gradient(180deg, rgba(40,44,58,1) 0%, rgba(28,31,40,1) 66%);
   color: #8a3bfe;
   height: 5vh;
   width: 5vh;
@@ -109,5 +143,12 @@ export default {
   vertical-align: middle;
   top: 1vh;
   border-width: 0;
+  display: flex;
 }
+
+.top-row, .bottom-row {
+  display: flex;
+  justify-content: center;
+}
+
 </style>

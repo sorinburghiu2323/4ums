@@ -200,8 +200,6 @@ export default {
 
 #back {
   text-align: left;
-  margin-left: 2vh;
-  padding-top: 2vh;
   color: #777779;
 }
 

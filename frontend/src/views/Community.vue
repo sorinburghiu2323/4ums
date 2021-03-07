@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <CreatePostButton/>
+      <CreatePostButton :community="community"/>
       <router-link class="nav-link" to="/communities">
         <p id="back">
           <font-awesome-icon :icon="['fas', 'arrow-left']"/>
@@ -130,8 +130,6 @@ export default {
 }
 #back {
   text-align: left;
-  margin-left: 2vh;
-  padding-top: 2vh;
   color: #777779;
 }
 .header {
