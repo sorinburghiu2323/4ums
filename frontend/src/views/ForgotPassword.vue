@@ -47,11 +47,11 @@ export default {
 </script>
 <style scoped>
 .container{
-    margin-right: 10px;
-    width: calc(100vw - 20px);
+    margin-top: 10vh;
+    margin-left: 10vw;
 }
 .logo-container {
-    width: 300px;
+    width: 80vw;
     margin-top: 6vh;
     height: auto;
     background: None;
@@ -86,7 +86,7 @@ export default {
     margin: 10px;
     z-index: 2;
     height: 20px;
-    width: calc(100vw - 70px);
+    width: calc(100% - 60px);
     display: flex;
     flex-direction: column;
     left: 0;
@@ -113,10 +113,11 @@ export default {
     background: none;
     position: relative;
     top: -15px;
-    left: 10px;
+    left: 5%;
+    right: 10%;
     color: white;
     height: 30px;
-    width: calc(100vw - 110px);
+    width: calc(100% - 60px);
     margin: auto auto auto 20px;
     outline: none;
     font-size: 17px;
