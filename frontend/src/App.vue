@@ -3,7 +3,7 @@
     <router-view/>
     <!--Do not change -->
     <div v-if="this.$route.name !== 'LoginPage' && this.$route.name !== 'RegisterPage' && this.$route.name !==
-    'ForgotPassword'"
+    'ForgotPassword' && this.$route.name !== 'EnterNewPassword'"
          style="margin-bottom: 11vh;">
       <Navbar/>
     </div>

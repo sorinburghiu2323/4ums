@@ -16,6 +16,7 @@ import PostPage from "@/views/PostPage";
 import NotFound from "@/views/NotFound";
 import User from "@/views/User";
 import ForgotPassword from "@/views/ForgotPassword";
+import EnterNewPassword from "../views/EnterNewPassword";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
         path: "/login/forgot",
         name: "ForgotPassword",
         component: ForgotPassword,
+    },
+    {
+        path: "/login/forgot/update",
+        name: "EnterNewPassword",
+        component:  EnterNewPassword,
     },
     {
         path: "/register",
