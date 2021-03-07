@@ -125,6 +125,7 @@ export default {
   margin: auto;
   font-size: 30px;
   margin-right: 20px;
+  margin-left: 10px;
 }
 
 .inputBox {
@@ -140,6 +141,7 @@ export default {
   color: white;
   margin-top: 1vh;
   height: 75vh;
+  resize: none;
 }
 
 .inputBox::placeholder {
