@@ -218,6 +218,7 @@ export default {
 .container {
     display: flex;
     width: 100%;
+    animation: fade-in-move-down 0.7s;
     position: relative;
 }
 
@@ -309,6 +310,7 @@ input::placeholder {
     color: red;
 }
 
+
 .fulfilled ul {
     color: green;
 }
@@ -331,4 +333,14 @@ input::placeholder {
   cursor: pointer;
 }
 
+@keyframes fade-in-move-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>

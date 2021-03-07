@@ -69,6 +69,7 @@ export default {
     display: flex;
     width: 100%;
     height: 100vh;
+    animation: fade-in-move-down 0.7s;
 }
 .login-form {
     display: flex;
@@ -142,5 +143,15 @@ input {
     height:auto;
     margin-bottom: 10px;
     background:None;
+}
+@keyframes fade-in-move-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

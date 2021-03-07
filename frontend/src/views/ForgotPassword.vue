@@ -49,6 +49,8 @@ export default {
 .container{
     margin-top: 10vh;
     margin-left: 10vw;
+    animation: fade-in-move-down 0.7s;
+    overflow: hidden;
 }
 .logo-container {
     width: 80vw;
@@ -158,6 +160,15 @@ export default {
     margin-top: 20px;
     margin-left: -50px;
 }
-
+@keyframes fade-in-move-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 </style>

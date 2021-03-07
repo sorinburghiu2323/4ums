@@ -2,9 +2,30 @@
   <div id="app">
     <router-view/>
     <!--Do not change -->
-    <div v-if="this.$route.name !== 'LoginPage'" style="margin-bottom: 11vh;">
-        <Navbar/>
+    <div v-if="this.$route.name !== 'LoginPage' && this.$route.name !== 'RegisterPage' && this.$route.name !==
+    'ForgotPassword'"
+         style="margin-bottom: 11vh;">
+      <Navbar/>
     </div>
+    <Particles id="tsparticles" :options="{
+      fpsLimit: 30,
+      particles: {
+        number: {
+          value: 20
+        },
+        color: {
+          value: '#4CF1C4'
+        },
+        move: {
+          enable: true
+        },
+        size: {
+          random: true,
+          value: 3
+        }
+      }
+    }"
+    />
   </div>
 </template>
 
@@ -46,6 +67,14 @@ body {
   top:0;
   left: 0;
   padding: 10px;
+}
+#tsparticles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
 </style>
