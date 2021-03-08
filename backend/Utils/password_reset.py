@@ -6,7 +6,7 @@ from django.template import loader, Context, Template
 
 from os import environ as environ_variables
 import pickle
-from base64 import urlsafe_b64encode, urlsafe_b64decode
+from base64 import urlsafe_b64encode, urlsafe_b64decode, b64decode
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email import message_from_string
@@ -141,9 +141,13 @@ def send_reset_email(message):
             logger.error(
                 f"Failed to send email - secret request had invalid params: {e}"
             )
+        else:
+            logger.error(
+                "Failed to send email - secret request returned an error"
+            )
         return
 
-    creds_raw = secret_value['SecretString']
+    creds_raw = b64decode(secret_value['SecretString'])
     creds = pickle.loads(creds_raw)
 
     if not creds.valid:
