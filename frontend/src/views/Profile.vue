@@ -8,7 +8,7 @@
             <div class="share-icon" @click.prevent.stop="showShare()">
                 <div id = "share">
                     <div id = "link">
-
+                    <label style="text-align: left">Share this link : <u @click.prevent.stop="goLink()">{{this.link}}</u></label>
                     </div>
                 </div>
                 <div class="backgroundSquare"></div>
@@ -97,6 +97,25 @@ export default {
         VueBarGraph,
         CommunitiesList,
     },
+    data() {
+        return {
+            id: 0,
+            username: "",
+            firstName: "",
+            secondName: "",
+            isTeacher: false,
+            points: 0,
+            initials: "",
+            leaderboardPosition: 0,
+            leaderboardInfo: [],
+            communities: [],
+            bio: "",
+            displayGraph: true,
+            labels: ["This week", "Last week", "2 Weeks Ago", "3 Weeks Ago"],
+            link: '',
+            smallLink: '',
+        };
+    },
     mounted() {
         this.getUserDetails();
     },
@@ -104,18 +123,42 @@ export default {
         widthCalc() {
             return window.innerWidth - 100;
         },
+        goLink(){
+            this.$router.push(this.smallLink);
+        },
+        getLink(){
+            axios.get("/api/users/sharecode")
+            .then((response) => {
+                if (response.data.code === null) {
+                    axios.post("/api/users/sharecode").then((response2) => {
+                        console.log(response2);
+                        this.counter++;
+                    }).catch((error2) => {
+                        console.error(error2);
+                    })
+                } else {
+                    console.log(response);
+                    this.smallLink =  "/users/" + this.id + "?sharecode=" + response.data.code;
+                    this.link = window.location.origin + this.smallLink;
+                    console.log(this.link);
+                }
+            }  ).catch((error) => {
+                console.error(error);
+            })
+        },
         showShare() {
-            console.log("goat");
             if(document.getElementById("share").style.visibility === "visible"){
-                console.log("1")
+                document.getElementById("info").style.marginTop = "60px";
                 document.getElementById("share").style.visibility = "hidden";
             }else {
-                console.log("2")
+                document.getElementById("info").style.marginTop = "120px";
                 document.getElementById("share").style.visibility = "visible";
+                this.getLink();
             }
         },
         hideShare() {
             if(document.getElementById("share").style.visibility === "visible") {
+                document.getElementById("info").style.marginTop = "60px";
                 document.getElementById("share").style.visibility = "hidden";
             }
         },
@@ -129,7 +172,8 @@ export default {
                     this.isTeacher = response.data.is_teacher;
                     this.leaderboardPosition = response.data.leaderboard_position;
                     this.points = response.data.points;
-                    var recents = response.data.graphs.recent;
+                    let recents = response.data.graphs.recent;
+                    this.id = response.data.id;
                     this.leaderboardInfo = [
                         recents[0].points,
                         recents[1].points,
@@ -137,7 +181,7 @@ export default {
                         recents[3].points,
                     ];
                     if (
-                        JSON.stringify(this.leaderboardInfo) == JSON.stringify([0, 0, 0, 0])
+                        JSON.stringify(this.leaderboardInfo) === JSON.stringify([0, 0, 0, 0])
                     ) {
                         this.displayGraph = false;
                     }
@@ -159,23 +203,6 @@ export default {
                 });
         },
     },
-    data() {
-        return {
-            id: 0,
-            username: "",
-            firstName: "",
-            secondName: "",
-            isTeacher: false,
-            points: 0,
-            initials: "",
-            leaderboardPosition: 0,
-            leaderboardInfo: [],
-            communities: [],
-            bio: "",
-            displayGraph: true,
-            labels: ["This week", "Last week", "2 Weeks Ago", "3 Weeks Ago"],
-        };
-    },
 };
 </script>
 
@@ -185,6 +212,8 @@ export default {
     position:absolute;
     visibility: hidden;
     background: #34E7E4;
+    top:50px;
+    right:300px;
     color: white;
     height: 100px;
 }
@@ -193,9 +222,11 @@ export default {
     display: flex;
     position: absolute;
     visibility: inherit;
-    width:96vw;
+    width:90vw;
     height:60px;
     box-shadow: 0 0 20px black;
+    font-size: 16px;
+    font-weight: 600;
 }
 #info {
     position: relative;
