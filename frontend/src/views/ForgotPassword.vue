@@ -55,8 +55,8 @@ export default {
     overflow: hidden;
 }
 .logo-container {
-    width: 80vw;
-    margin-top: 6vh;
+    width: 333px;
+    padding-top: 6vh;
     height: auto;
     background: None;
 }

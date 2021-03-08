@@ -74,7 +74,6 @@ export default {
 .login-form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     margin: auto;
 }
 
@@ -111,6 +110,7 @@ input {
     width: 15px;
     border-radius: 10px 0px 0 10px;
     position: absolute;
+    z-index: 2;
 }
 
 .login-btn {
@@ -136,13 +136,10 @@ input {
 }
 
 .logo-container{
-    width: 300px;
-    margin-left: -10px;
-    margin-right:10px;
-    margin-top: -60px;
-    height:auto;
-    margin-bottom: 10px;
-    background:None;
+    width: 333px;
+    height: auto;
+    background: None;
+    padding-bottom: 20px;
 }
 @keyframes fade-in-move-down {
   0% {
