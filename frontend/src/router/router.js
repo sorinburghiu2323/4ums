@@ -6,12 +6,12 @@ import LoginPage from "../views/LoginPage.vue";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
-import Community from "../views/Community.vue"
-import ManageCommunities from "../views/ManageCommunities.vue"
+import Community from "../views/Community.vue";
+import ManageCommunities from "../views/ManageCommunities.vue";
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Feed from '../views/Feed.vue'
-import axios from 'axios'
+import Feed from "../views/Feed.vue";
+import axios from "axios";
 import PostPage from "@/views/PostPage";
 import NotFound from "@/views/NotFound";
 import User from "@/views/User";
@@ -92,16 +92,15 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    mode: 'history',
-    routes
-})
+  mode: "history",
+  routes,
+});
 
 router.beforeEach((to, from, next) => {
     if (to.name !== from.name) {
         // Direct user to login if they are not authenticated
-        axios.get('/api/communities?type=other')
-            .catch((err) => {
-                console.error(err);
+        axios.get('/api/users/me')
+            .catch(() => {
                 if (to.path !== '/login' && to.path !== '/register') {
                     return next({
                         path: '/login',
@@ -111,4 +110,4 @@ router.beforeEach((to, from, next) => {
     }
     next();
 });
-export default router
+export default router;

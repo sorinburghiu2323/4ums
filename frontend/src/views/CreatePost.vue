@@ -65,7 +65,7 @@ export default {
         this.message = "";
       }
       var post_url =
-          "/api/communities/" + this.community.id.toString() + "/posts";
+        "/api/communities/" + this.community.id.toString() + "/posts";
       axios
         .post(post_url, {
           title: this.title,
@@ -100,7 +100,6 @@ export default {
 </script>
 
 <style scoped>
-
 #communityBox {
   padding: 5px;
   color: white;

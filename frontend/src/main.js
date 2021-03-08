@@ -1,7 +1,7 @@
-import Vue from "vue";
 import App from "./App.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import Vue from "vue";
 import router from "./router/router.js";
-// Fontawesome documentation: https://www.npmjs.com/package/@fortawesome/vue-fontawesome
 
 import {
   library,
@@ -20,12 +20,17 @@ import {
   faCheckCircle,
   faCog,
   faCommentDots,
+  faEdit,
   faHome,
   faPaperPlane,
+  faPencilAlt,
   faQuestion,
   faQuestionCircle,
   faSearch,
+  faShare,
+  faShareSquare,
   faSort,
+  faStar,
   faThumbsUp,
   faTimesCircle,
   faTrophy,
@@ -36,11 +41,9 @@ import {
   faCrown,
   faTimes,
   faPlus,
-  faPencilAlt,
   faChalkboardTeacher,
   faHandPeace,
 } from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 // Add icons here after import
 library.add(
@@ -62,23 +65,28 @@ library.add(
     farThumbsUp,
     faQuestionCircle,
     faCheckCircle,
+    faEdit,
+    faStar,
+    faShareSquare,
     faPaperPlane,
+    faPencilAlt,
+    faShare,
+    faPaperPlane,
+    faTimes,
     faMedal,
     faCrown,
-    faTimes,
     faPlus,
-    faPencilAlt,
     faChalkboardTeacher,
     faHandPeace,
 );
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
 // Cookie library
-var VueCookie = require('vue-cookie');
+var VueCookie = require("vue-cookie");
 Vue.use(VueCookie);
 new Vue({
   router,
