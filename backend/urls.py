@@ -9,6 +9,7 @@ urlpatterns = [
     # Auth.
     path("login", views.login),
     path("logout", views.logout),
+    path("loign/passwordreset", views.reset_password)
     # Users.
     path("users", views.users),
     path("users/feed", views.feed),
