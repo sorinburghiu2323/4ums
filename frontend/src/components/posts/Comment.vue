@@ -220,6 +220,7 @@ export default {
   font-size: 15px;
   color: #7e7e7e;
   padding: 5px;
+  white-space: pre-wrap;
 }
 
 .description p {
