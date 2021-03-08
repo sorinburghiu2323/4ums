@@ -148,7 +148,7 @@ export default {
     width: calc(100% - 55px);
     margin: auto auto auto 20px;
     outline: none;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 .buttonSmart {
