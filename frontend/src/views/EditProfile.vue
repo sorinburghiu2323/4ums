@@ -7,6 +7,18 @@
       </p>
     </div>
     <h1 style="text-align: left">Edit Your Profile</h1>
+    <div
+      style="display: flex; justify-content: space-between; margin-bottom: 1vh"
+    >
+      <div style="vertical-align: center">Show me on the leaderboard?</div>
+
+      <div>
+        <label class="switch">
+          <input type="checkbox" v-model="hideLeaderboard" />
+          <span class="slider round"></span> </label
+        ><br />
+      </div>
+    </div>
     <div class="titleBox" style="height: 6.5vh">
       <p
         class="titleBox"
@@ -37,28 +49,22 @@ export default {
   data() {
     return {
       description: "",
-      email: "",
-      firstName: "",
-      lastName: "",
-      username: "",
+      hideLeaderboard: true,
     };
   },
   methods: {
     submit() {
       axios.get("/api/users/me").then((response) => {
-        console.log(response.data.description);
         axios
           .put("/api/users/me", {
             email: response.data.email,
             first_name: response.data.first_name,
             last_name: response.data.last_name,
-            hide_leaderboard: true,
+            hide_leaderboard: !this.hideLeaderboard,
             username: response.data.username,
             description: this.description,
           })
-          .then((response) => {
-            console.log(response);
-          })
+          .then(() => {})
           .catch((error) => {
             console.error(error.response.data);
           });
@@ -74,6 +80,66 @@ export default {
 </script>
 
 <style scoped>
+.switch {
+  padding-bottom: 2px;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 #submit {
   margin-top: 1vh;
   border-radius: 15px;
