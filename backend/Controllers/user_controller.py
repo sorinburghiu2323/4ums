@@ -293,3 +293,16 @@ def update_share_code(request):
     user.share_code = generate_share_code(6)
     user.save()
     return JsonResponse({"code": user.share_code}, status=200)
+
+
+def delete_me(request):
+    """
+    Delete a user.
+    :param request: session request.
+    :return: 401 - login required.
+             200 - account deleted.
+    """
+    user = request.user
+    user.is_active = False
+    user.save()
+    return JsonResponse("OK - Account deleted.", status=200, safe=False)
