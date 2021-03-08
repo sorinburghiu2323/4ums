@@ -1,11 +1,9 @@
 import App from "./App.vue";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import Vue from "vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {library} from "@fortawesome/fontawesome-svg-core";
 import router from "./router/router.js";
-
-import {
-  library,
-} from "@fortawesome/fontawesome-svg-core";
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 // Regular style icons
 import {
@@ -27,7 +25,6 @@ import {
   faQuestion,
   faQuestionCircle,
   faSearch,
-  faShare,
   faShareSquare,
   faSort,
   faStar,
@@ -35,7 +32,6 @@ import {
   faTimesCircle,
   faTrophy,
   faUser,
-  faUsers,
   faUserSecret,
   faMedal,
   faCrown,
@@ -43,6 +39,8 @@ import {
   faPlus,
   faChalkboardTeacher,
   faHandPeace,
+  faUsers,
+  faShare,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Add icons here after import
@@ -53,7 +51,6 @@ library.add(
     faSearch,
     faCog,
     faTrophy,
-    faUsers,
     faUser,
     faHome,
     faQuestion,
@@ -70,7 +67,6 @@ library.add(
     faShareSquare,
     faPaperPlane,
     faPencilAlt,
-    faShare,
     faPaperPlane,
     faTimes,
     faMedal,
@@ -78,10 +74,12 @@ library.add(
     faPlus,
     faChalkboardTeacher,
     faHandPeace,
-);
-Vue.component("font-awesome-icon", FontAwesomeIcon);
+    faUsers,
+    faShare,
+ )
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
+
+
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
 

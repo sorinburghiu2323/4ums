@@ -1,13 +1,10 @@
 <template>
   <div>
-    <router-link v-if="createVisible" class="nav-link" to="../communities">
+    <router-link class="nav-link" to="../communities">
       <p id="back">
         <font-awesome-icon :icon="['fas', 'arrow-left']" /> Communities
       </p>
     </router-link>
-    <p v-if="!createVisible" id="back" v-on:click="goToEdit()">
-      <font-awesome-icon :icon="['fas', 'arrow-left']" /> Edit Community
-    </p>
     <p id="pageTitle">Create a<br />Community</p>
     <br />
     <div v-if="createVisible">
@@ -22,9 +19,9 @@
         id="descriptionBox"
         v-model="description"
         class="inputBox"
-        placeholder="Write a community description..."
+        placeholder="(Optional) Write a community description..."
       ></textarea>
-      <p id="label">Choose a colour</p>
+      <p id="label">(Optional) Choose a colour</p>
       <div id="colourSelect">
         <button id="blueButton" v-on:click="setColour('blue')"></button>
         <button id="orangeButton" v-on:click="setColour('orange')"></button>
@@ -32,23 +29,30 @@
       </div>
       <button id="preview" v-on:click="preview()">Preview</button>
     </div>
-    <div v-if="!this.createVisible" id="previewDiv">
-      <div>
-        <p id="previewTitle">{{ this.name }}</p>
-        <p id="previewDesc">{{ this.description }}</p>
+
+    <div v-if="!this.createVisible" class="container">
+      <div v-if="colour" :class="colour" class="color-box"></div>
+      <div class="details">
+        <div class="title">
+          <p>{{ name }}</p>
+        </div>
+        <div class="description">
+          <p>{{ description }}</p>
+        </div>
       </div>
     </div>
-    <br />
+
     <div v-if="!this.createVisible" id="submitScrap">
       <button id="submit" v-on:click="submit()">
-        Post
+        Create
       </button>
-      <router-link to="../communities">
-        <button id="scrap">
-          Scrap
-        </button>
-      </router-link>
+      <button id="scrap" v-on:click="preview()">
+        Back
+      </button>
     </div>
+
+    <p style="color: red; font-size: 12px;">{{ errorMessage }}</p>
+
   </div>
 </template>
 
@@ -58,9 +62,6 @@ import axios from "axios";
 export default {
   name: "CreateCommunity",
   methods: {
-    goToEdit: function() {
-      this.createVisible = true;
-    },
     setColour: function(colour) {
       for (let i = 0; i < 3; i++) {
         document.getElementById(this.colours[i] + "Button").style = "";
@@ -77,7 +78,8 @@ export default {
         ", #1c1f29);";
     },
     preview: function() {
-      this.createVisible = false;
+      this.errorMessage = null;
+      this.createVisible = !this.createVisible;
       this.changeBackground();
     },
     submit: function() {
@@ -85,11 +87,15 @@ export default {
         .post("/api/communities", {
           name: this.name,
           description: this.description,
+          colour: this.colour,
+        })
+        .then(() => {
+          this.$router.push({name: 'Communities'});
         })
         .catch((error) => {
+          this.errorMessage = error.response.data;
           console.error(error);
         });
-      this.$router.push({name: 'Communities'});
     },
   },
   data() {
@@ -101,6 +107,7 @@ export default {
       hex: ["#4af4cb", "#fa7e1f", "#a038fe"],
       hexCode: "#4af4cb",
       createVisible: true,
+      errorMessage: null,
     };
   },
 };
@@ -126,16 +133,6 @@ export default {
   background-image: linear-gradient(to right, #fe6911, #fe9b2f);
   padding: 1vh;
   margin-left: 2vh;
-}
-
-#previewDesc {
-  color: #4d4f56;
-}
-
-#previewTitle {
-  color: white;
-  padding-bottom: 2vh;
-  font-size: 3vh;
 }
 
 #previewDiv {
@@ -238,5 +235,42 @@ export default {
 
 .innerText {
   color: white;
+}
+
+.container {
+  text-align: left;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0 3px 10px 0;
+  height: 100px;
+  border: none;
+  border-radius: 25px;
+  background: rgb(40, 44, 58);
+  background: linear-gradient(90deg, rgba(40, 44, 58, 1) 0%, rgba(27, 30, 40, 1) 35%, rgba(8, 9, 11, 1) 100%);
+}
+.details {
+  margin: auto 0 auto 25px;
+  padding-right: 10px;
+  width: 100%;
+  position: relative;
+}
+.color-box {
+  height: 108px;
+  width: 20px;
+  border-radius: 25px 0 0 25px;
+  position: absolute;
+}
+.orange {
+  background: rgb(254,155,47);
+  background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
+}
+.blue {
+  background: rgb(52, 235, 233);
+  background: linear-gradient(270deg, rgba(52, 235, 233, 1) 0%, rgba(101, 255, 167, 1) 35%);
+}
+.purple {
+  background: rgb(188, 98, 253);
+  background: linear-gradient(270deg, rgb(144, 98, 253) 0%, rgb(149, 0, 255) 35%);
 }
 </style>
