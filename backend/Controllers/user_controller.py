@@ -172,7 +172,6 @@ def update_me(request):
         "email" in request.DATA
         and "first_name" in request.DATA
         and "last_name" in request.DATA
-        and "email" in request.DATA
         and "hide_leaderboard" in request.DATA
         and "username" in request.DATA
         and "description" in request.DATA
@@ -182,6 +181,7 @@ def update_me(request):
             request.DATA["last_name"],
             request.DATA["email"],
             request.DATA["username"],
+            same_user=request.user,
         )
         if update_valid:
             return JsonResponse(
