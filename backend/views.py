@@ -28,6 +28,12 @@ def logout(request):
         POST=user_controller.user_logout,
     )
 
+@csrf_exempt
+def reset_password(request):
+    return handle_methods(
+        request,
+        POST=user_controller.reset_password
+    )
 
 # Users
 

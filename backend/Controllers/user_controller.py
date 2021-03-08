@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.http import JsonResponse
+from django.utils import timezone
 
 from backend.Utils.paginators import json_paginator
 from backend.Utils.points_handler import get_graphs
@@ -8,7 +9,7 @@ from backend.Utils.user_validation import (
     validate_user_data,
     validate_password,
 )
-from backend.models import User, Post
+from backend.models import User, Post, PasswordResetCode
 
 
 def user_login(request):
@@ -106,6 +107,70 @@ def user_register(request):
         status=400,
         safe=False,
     )
+
+
+def reset_password(request):
+    """
+    Reset the user's password.
+
+    :param request: session request.
+    :return: 200 OK
+             400 Bad request
+             401 Unauthorized (bad code)
+    """
+
+    if "user_id" in request.DATA and "code" in request.DATA:
+        try:
+            reset_code = PasswordResetCode.objects.get(
+                user_id=request.DATA["user_id"], code=request.DATA["code"]
+            )
+        except PasswordResetCode.DoesNotExist:
+            return JsonResponse(
+                "Unauthorized - Invalid reset code", status=401, safe=False
+            )
+        time_now = timezone.now()
+        if time_now > reset_code.expiry:
+            #current time is later than the expiry
+            return JsonResponse(
+                "Unauthorized - Reset code has expired", status=401, safe=False
+            )
+
+        if "password" not in request.DATA:
+            # emit password field -> check validity of code
+            return JsonResponse("OK - Code is valid", status=200, safe=False)
+        elif "password_repeat" not in request.DATA:
+            # otherwise repeat must also be specified
+            return JsonResponse(
+                "Bad request - Missing fields", status=400, safe=False
+            )
+
+
+        password_invalid = validate_password(
+            request.DATA["password"], request.DATA["password_repeat"]
+        )
+
+        if password_invalid:
+             return JsonResponse(
+                "Bad request - " + password_invalid, status=400, safe=False
+            )
+
+        #update the password
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse(
+                "Bad request - No user with that id", status=400, safe=False
+            )
+
+        user.set_password(request.DATA["password"])
+        user.save()
+
+        #code is single use
+        reset_code.delete()
+
+        return JsonResponse("OK - Password updated", status=200, safe=False)
+
+    return JsonResponse("Bad request - Missing fields", status=400, safe=False)
 
 
 def get_feed(request):
