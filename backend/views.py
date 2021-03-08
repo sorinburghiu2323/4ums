@@ -35,6 +35,13 @@ def reset_password(request):
         POST=user_controller.reset_password
     )
 
+@csrf_exempt
+def send_email(request):
+    return handle_methods(
+        request,
+        POST=user_controller.send_email
+    )
+
 # Users
 
 
