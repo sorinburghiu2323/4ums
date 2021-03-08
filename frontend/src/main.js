@@ -1,3 +1,12 @@
+
+import App from "./App.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import Vue from "vue";
+import {faFontAwesome} from "@fortawesome/free-brands-svg-icons";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import router from "./router/router.js";
+Vue.component("font-awesome-icon", FontAwesomeIcon);
+
 import {
   faAlignLeft,
   faArrowLeft,
@@ -9,6 +18,7 @@ import {
   faHome,
   faMedal,
   faPaperPlane,
+  faPencilAlt,
   faQuestion,
   faQuestionCircle,
   faSearch,
@@ -22,14 +32,8 @@ import {
   faUser,
   faUserSecret,
   faUsers,
+  faShare,
 } from "@fortawesome/free-solid-svg-icons";
-
-import App from "./App.vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import Vue from "vue";
-import { faFontAwesome } from "@fortawesome/free-brands-svg-icons";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import router from "./router/router.js";
 
 // Fontawesome documentation: https://www.npmjs.com/package/@fortawesome/vue-fontawesome
 // Regular style icons
@@ -63,11 +67,12 @@ library.add(
   faCrown,
   faEdit,
   faShareSquare,
-  faStar
+  faStar,
+  faPencilAlt,
+  faShare,
 );
-Vue.component("font-awesome-icon", FontAwesomeIcon);
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
+
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
