@@ -116,8 +116,9 @@ export default {
 }
 
 .details .title {
-  font-size: 20px;
+  font-size: 19px;
   height: 30%;
+  margin-top: 4px;
   margin-bottom: 4px;
   display: flex;
   justify-content: space-between;
@@ -140,7 +141,7 @@ export default {
 
 .editBtn {
   position: absolute;
-  top: -10px;
+  top: -22px;
   right: 20px;
 }
 
