@@ -81,7 +81,14 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': os.getenv("LOG_FILE_PATH"),
             'encoding': 'utf-8',
+            "formatter": "simple",
         },
+    },
+    'formatters': {
+        "simple": {
+            "format": "%asctime% - [%levelname%] %message%",
+            "style": "%",
+        }
     },
     'root': {
         'handlers': ['file'],
