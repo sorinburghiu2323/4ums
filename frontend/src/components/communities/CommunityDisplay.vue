@@ -51,12 +51,6 @@ export default {
       });
     },
     leaveCommunity() {
-      this.$router.push({
-        name: "Leave",
-        params: {
-          id: this.community.id,
-        },
-      });
       this.$root.$emit("updateCommunities");
     },
     deleteCommunity() {
