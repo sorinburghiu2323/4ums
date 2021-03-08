@@ -17,7 +17,7 @@
         <div class="top-three" v-if="loaded">
             <div class="top">
                 <p class="title">1st</p>
-                <div class="first circle">
+                <div class="first circle" @click="navigateToProfile(leaderboardUsers[0].id)">
                     <div class="crown">
                         <font-awesome-icon :icon="['fa', 'crown']"></font-awesome-icon>
                     </div>
@@ -34,7 +34,7 @@
             <div class="top-two">
                 <div class="second-place">
                     <p class="title">2nd</p>
-                    <div class="second circle">
+                    <div class="second circle" @click="navigateToProfile(leaderboardUsers[1].id)">
                         <div class="medal">
                             <font-awesome-icon :icon="['fa', 'medal']"></font-awesome-icon>
                         </div>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="third-place">
                     <p class="title">3rd</p>
-                    <div class="third circle">
+                    <div class="third circle" @click="navigateToProfile(leaderboardUsers[2].id)">
                         <div class="medal">
                             <font-awesome-icon :icon="['fa', 'medal']"></font-awesome-icon>
                         </div>
@@ -70,7 +70,7 @@
             <table class="table">
                 <tr v-for="(user,index) in leaderboardUsers.slice(3)" :key="index">
                     <td>{{user.leaderboard_position | ordinal_suffix}}</td>
-                    <td>{{user.username}}</td>
+                    <td><p style="margin: 0;" @click="navigateToProfile(user.id)">{{user.username}}</p></td>
                     <td class="points">Points: {{user.points}}</td>
                 </tr>
             </table>
@@ -130,6 +130,14 @@ export default {
                     }
                 }
             }
+        },
+        navigateToProfile(id) {
+            this.$router.push({
+                name: 'User',
+                params: {
+                id: id,
+                }
+            })
         },
         loadMoreUsers() {
             // On page scroll to bottom of page, display next page of users
