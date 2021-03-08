@@ -135,16 +135,14 @@ export default {
     sendComment() {
       axios.post('/api/communities/' + this.id + '/posts/' + this.postId + '/comments', {"comment": this.addComment})
           .then(() => {
-            console.log("added comment")
             this.showInput = false;
             this.$router.go(0);
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
           })
     },
     showCommentInput() {
-      console.log(this.showInput);
       this.addComment = null;
       this.showInput = !this.showInput;
     },
@@ -202,7 +200,7 @@ export default {
               this.userLiked = true;
             })
             .catch((error) => {
-              console.log(error);
+              console.error(error);
             })
       } else {
         axios.delete('/api/communities/' + this.id + '/posts/' + this.postId + '/likes')
@@ -210,7 +208,7 @@ export default {
               this.post["likes_num"]--;
               this.userLiked = false;
             }).catch((error) => {
-          console.log(error);
+          console.error(error);
         })
       }
     }

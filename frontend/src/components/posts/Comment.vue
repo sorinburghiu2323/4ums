@@ -76,7 +76,7 @@ export default {
               this.userLiked = true;
             })
             .catch((error) => {
-              console.log(error);
+              console.error(error);
             })
       } else {
         axios.delete('/api/communities/' + this.communityId + '/posts/' + this.postId + '/comments/' + this.commentId +
@@ -85,7 +85,7 @@ export default {
               this.numLikes--;
               this.userLiked = false;
             }).catch((error) => {
-          console.log(error);
+          console.error(error);
         })
       }
     }

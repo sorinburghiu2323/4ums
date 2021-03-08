@@ -103,6 +103,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return {
             "id": self.id,
             "username": self.username,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
             "points": self.points,
             "leaderboard_position": rank,
         }
@@ -211,7 +213,7 @@ class Post(models.Model):
             "id": self.id,
             "user": self.user.serialize_simple(),
             "is_community_owner": Community.objects.filter(
-                user=self.user
+                user=self.user, id=self.community.id
             ).exists(),
             "community": self.community.serialize_simple(),
             "title": self.title,
@@ -264,6 +266,12 @@ class PostComment(models.Model):
         return {
             "id": self.id,
             "user": self.user.serialize_simple(),
+            "is_community_owner": Community.objects.filter(
+                user=self.user, id=self.post.community.id
+            ).exists(),
+            "is_post_author": Post.objects.filter(
+                user=self.user, id=self.post.id
+            ).exists(),
             "comment": self.comment,
             "comment_likes": PostCommentLike.objects.filter(
                 post_comment=self
