@@ -114,6 +114,7 @@ export default {
             labels: ["This week", "Last week", "2 Weeks Ago", "3 Weeks Ago"],
             link: '',
             smallLink: '',
+            counter: 0,
         };
     },
     mounted() {
@@ -127,24 +128,26 @@ export default {
             this.$router.push(this.smallLink);
         },
         getLink(){
-            axios.get("/api/users/sharecode")
-            .then((response) => {
-                if (response.data.code === null) {
-                    axios.post("/api/users/sharecode").then((response2) => {
-                        console.log(response2);
-                        this.counter++;
-                    }).catch((error2) => {
-                        console.error(error2);
-                    })
-                } else {
-                    console.log(response);
-                    this.smallLink =  "/users/" + this.id + "?sharecode=" + response.data.code;
-                    this.link = window.location.origin + this.smallLink;
-                    console.log(this.link);
-                }
-            }  ).catch((error) => {
-                console.error(error);
-            })
+            if(this.counter >= 2){
+                console.error("Can't generate share code")
+            }else {
+                axios.get("/api/users/sharecode")
+                    .then((response) => {
+                        if (response.data.code === null) {
+                            axios.post("/api/users/sharecode").then(() => {
+                                this.counter++;
+                                this.getLink();
+                            }).catch((error2) => {
+                                console.error(error2);
+                            })
+                        }
+                        this.smallLink = "/users/" + this.id + "?sharecode=" + response.data.code;
+                        this.link = window.location.origin + this.smallLink;
+
+                    }).catch((error) => {
+                    console.error(error);
+                })
+            }
         },
         showShare() {
             if(document.getElementById("share").style.visibility === "visible"){
@@ -153,6 +156,7 @@ export default {
             }else {
                 document.getElementById("info").style.marginTop = "120px";
                 document.getElementById("share").style.visibility = "visible";
+                this.counter = 0;
                 this.getLink();
             }
         },
