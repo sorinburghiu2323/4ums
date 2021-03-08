@@ -56,35 +56,37 @@
                 <p>Already have an account? <a class="link" @click="navigate('login')">Sign in</a></p>
             </div>
         </div>
-        <div class="TC-popup">
-          <div class="close-TC" v-if="showTC">
-            <font-awesome-icon :icon="['fa', 'times']" @click="showTC = false" />
-          </div>
-          <TermsAndConditionsPopup v-if="showTC" />
-        </div>
+    
+    <div class="TC-popup">
+      <div class="close-TC" v-if="showTC">
+        <font-awesome-icon :icon="['fa', 'times']" @click="showTC = false" />
+      </div>
+      <TermsAndConditionsPopup v-if="showTC" />
+    </div>
+    
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import TermsAndConditionsPopup from '@/components/TermsAndConditionsPopup.vue'
+import axios from "axios";
+import TermsAndConditionsPopup from "@/components/TermsAndConditionsPopup.vue";
 
 export default {
-  name: 'RegisterPage',
+  name: "RegisterPage",
   components: {
     TermsAndConditionsPopup,
   },
   data() {
     return {
       showTC: false,
-      firstName: '',
-      lastName: '',
-      username: '',
-      password: '',
+      firstName: "",
+      lastName: "",
+      username: "",
+      password: "",
       isTeacher: false,
-      passwordConfirmation: '',
-            email: '',
-            isTermsAgreed: false,
+      passwordConfirmation: "",
+      email: "",
+      isTermsAgreed: false,
 
       // Pass requirements
       showRequirements: false,
@@ -107,10 +109,10 @@ export default {
       // Check 9 character password
       this.nineChars = this.password.length >= 9;
       // Check for white space
-      this.noSpaces = !/\s/g.test(this.password);
-      this.lowercase = /[a-z]/.test(this.password);
-      this.uppercase = /[A-Z]/.test(this.password);
-      this.containsNumber = /[0-9]/.test(this.password);
+      this.noSpaces = !/\s/g.test(this.password) ? true : false;
+      this.lowercase = /[a-z]/.test(this.password) ? true : false;
+      this.uppercase = /[A-Z]/.test(this.password) ? true : false;
+      this.containsNumber = /[0-9]/.test(this.password) ? true: false;
     },
     passwordConfirmation: function() {
       if (
@@ -144,6 +146,11 @@ export default {
 
       if (this.validatePassword() === false) {
         this.showRequirements = true;
+        return false;
+      }
+
+      if(!this.isTermsAgreed) {
+        this.termErrMessage = "You must agree to the terms to register"
         return false;
       }
 
@@ -215,9 +222,9 @@ export default {
 
 <style scoped>
 .container {
-    display: flex;
-    width: 100%;
-    position: relative;
+  display: flex;
+  width: 100%;
+  position: relative;
 }
 .register-form {
   display: flex;
@@ -308,7 +315,7 @@ input::placeholder {
   color: red;
 }
 
-.fulfilled ul {
+.fulfilled{
   color: green;
 }
 
@@ -329,5 +336,4 @@ input::placeholder {
   font-size: 30px;
   cursor: pointer;
 }
-
 </style>
