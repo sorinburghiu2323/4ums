@@ -153,7 +153,7 @@ def update_me(request):
              401 - login required.
     """
     user = request.user
-    password_updated = False
+    password_updated, body_updated = False, False
     if "password" in request.DATA and "password_repeat" in request.DATA:
         update_password = validate_password(
             request.DATA["password"], request.DATA["password_repeat"]
@@ -196,8 +196,9 @@ def update_me(request):
         user.hide_leaderboard = request.DATA["hide_leaderboard"]
         user.description = request.DATA["description"]
         user.save()
+        body_updated = True
 
-    if not password_updated:
+    if not password_updated and not body_updated:
         return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
     return JsonResponse("OK - User updated.", status=200, safe=False)
 
