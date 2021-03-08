@@ -36,14 +36,19 @@
         </p>
 
         <div class="lines"></div>
-        <p v-if="this.bio === ''" style="position: absolute;">
-          {{ this.bio }}
-        </p>
-        <p v-else>
-          You haven't filled out a bio yet. Click the
-          <font-awesome-icon :icon="['fas', 'pencil-alt']" style="color:grey" />
-          button to make one!
-        </p>
+        <div>
+          <p v-if="this.bio !== ''" style="padding-top: 0">
+            {{ this.bio }}
+          </p>
+          <p v-else>
+            You haven't filled out a bio yet. Click the
+            <font-awesome-icon
+              :icon="['fas', 'pencil-alt']"
+              style="color:grey"
+            />
+            button to make one!
+          </p>
+        </div>
       </div>
       <div class="comm">
         <p style="width: 100%; text-align: left;">Top Communities</p>
@@ -144,7 +149,7 @@ export default {
           }
           this.initials =
             this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
-          this.bio = response.data.descrtiption;
+          this.bio = response.data.description;
         })
         .catch((error) => {
           console.error(error);

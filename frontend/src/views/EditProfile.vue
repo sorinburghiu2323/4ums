@@ -46,7 +46,7 @@ export default {
   methods: {
     submit() {
       axios.get("/api/users/me").then((response) => {
-        console.log(response);
+        console.log(response.data.description);
         axios
           .put("/api/users/me", {
             email: response.data.email,
