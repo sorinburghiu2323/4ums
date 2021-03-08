@@ -3,7 +3,7 @@
     <div id="top-buttons">
       <div class="edit-icon">
         <div class="backgroundSquare"></div>
-        <font-awesome-icon :icon="['fas', 'pencil-alt']"/>
+        <font-awesome-icon :icon="['fas', 'pencil-alt']" @click="edit()" />
       </div>
       <div class="share-icon">
         <div class="backgroundSquare"></div>
@@ -23,9 +23,9 @@
         </p>
         <p class="info">{{ this.firstName + " " + this.secondName }}</p>
         <p class="info">
-          <font-awesome-icon :icon="['fas', 'star']" style="color:grey"/>
+          <font-awesome-icon :icon="['fas', 'star']" style="color:grey" />
           Points: {{ this.points }}
-          <font-awesome-icon :icon="['fas', 'trophy'] " style="color:grey"/>
+          <font-awesome-icon :icon="['fas', 'trophy']" style="color:grey" />
           Position:
           {{ this.leaderboardPosition }}
         </p>
@@ -33,14 +33,15 @@
       <div class="bio">
         <p style="width: 100%; text-align: left; margin-top:-10px;">
           Bio
+        </p>
+
         <div class="lines"></div>
-        <p v-if="this.bio === ''"
-           style="position: absolute;">
+        <p v-if="this.bio === ''" style="position: absolute;">
           {{ this.bio }}
         </p>
         <p v-else>
           You haven't filled out a bio yet. Click the
-          <font-awesome-icon :icon="['fas', 'pencil-alt']" style="color:grey"/>
+          <font-awesome-icon :icon="['fas', 'pencil-alt']" style="color:grey" />
           button to make one!
         </p>
       </div>
@@ -50,9 +51,9 @@
       </div>
       <div class="communities-list">
         <CommunitiesList
-            :communities="communities"
-            :communityType="'memberof'"
-            :myCommunities="false"
+          :communities="communities"
+          :communityType="'memberof'"
+          :myCommunities="false"
         />
       </div>
       <div class="engage">
@@ -63,16 +64,23 @@
         <div v-if="!displayGraph">No data yet!</div>
         <div v-else>
           <div id="graph">
-            <VueBarGraph :barColor="'#3aeddf'" :customLabels="['This week','Last week','2 Weeks Ago','3 Weeks Ago']"
-                         :height="200"
-                         :points="this.leaderboardInfo"
-                         :showValues="true"
-                         :showXAxis="true"
-                         :showYAxis="true"
-                         :textAltColor="'white'"
-                         :textColor="'white'"
-                         :use-custom-labels="true"
-                         :width="widthCalc()"
+            <VueBarGraph
+              :barColor="'#3aeddf'"
+              :customLabels="[
+                'This week',
+                'Last week',
+                '2 Weeks Ago',
+                '3 Weeks Ago',
+              ]"
+              :height="200"
+              :points="this.leaderboardInfo"
+              :showValues="true"
+              :showXAxis="true"
+              :showYAxis="true"
+              :textAltColor="'white'"
+              :textColor="'white'"
+              :use-custom-labels="true"
+              :width="widthCalc()"
             />
           </div>
         </div>
@@ -95,44 +103,49 @@ export default {
     this.getUserDetails();
   },
   methods: {
+    edit() {
+      this.$router.push({
+        name: "EditProfile",
+      });
+    },
     widthCalc() {
       return window.innerWidth - 100;
     },
     getUserDetails() {
       axios
-          .get("/api/users/me")
-          .then((response) => {
-            this.firstName = response.data.first_name;
-            this.secondName = response.data.last_name;
-            this.username = response.data.username;
-            this.isTeacher = response.data.is_teacher;
-            this.leaderboardPosition = response.data.leaderboard_position;
-            this.points = response.data.points;
-            var recents = response.data.graphs.recent;
-            this.leaderboardInfo = [
-              recents[0].points,
-              recents[1].points,
-              recents[2].points,
-              recents[3].points,
-            ];
-            if (
-                JSON.stringify(this.leaderboardInfo) == JSON.stringify([0, 0, 0, 0])
-            ) {
-              this.displayGraph = false;
-            }
-            for (
-                var i = 0;
-                i < response.data.graphs.top_communities.length;
-                i++
-            ) {
-              this.communities.push(
-                  response.data.graphs.top_communities[i].community
-              );
-            }
-            this.initials =
-                this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
-            this.bio = response.data.descrtiption;
-          })
+        .get("/api/users/me")
+        .then((response) => {
+          this.firstName = response.data.first_name;
+          this.secondName = response.data.last_name;
+          this.username = response.data.username;
+          this.isTeacher = response.data.is_teacher;
+          this.leaderboardPosition = response.data.leaderboard_position;
+          this.points = response.data.points;
+          var recents = response.data.graphs.recent;
+          this.leaderboardInfo = [
+            recents[0].points,
+            recents[1].points,
+            recents[2].points,
+            recents[3].points,
+          ];
+          if (
+            JSON.stringify(this.leaderboardInfo) == JSON.stringify([0, 0, 0, 0])
+          ) {
+            this.displayGraph = false;
+          }
+          for (
+            var i = 0;
+            i < response.data.graphs.top_communities.length;
+            i++
+          ) {
+            this.communities.push(
+              response.data.graphs.top_communities[i].community
+            );
+          }
+          this.initials =
+            this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
+          this.bio = response.data.descrtiption;
+        })
         .catch((error) => {
           console.log(error);
         });
@@ -200,8 +213,8 @@ export default {
   top: -3px;
   right: -37px;
   border-radius: 15px;
-  background: linear-gradient(45deg, #5FFCAF, #39EADE);
-  box-shadow: 0 0 10px #4CF3C7;
+  background: linear-gradient(45deg, #5ffcaf, #39eade);
+  box-shadow: 0 0 10px #4cf3c7;
 }
 
 .share-icon {
@@ -222,8 +235,8 @@ export default {
   width: 45px;
   left: 37px;
   border-radius: 15px;
-  background: linear-gradient(45deg, #1262F4, #0379E9);
-  box-shadow: 0 0 10px #0B6EEF;
+  background: linear-gradient(45deg, #1262f4, #0379e9);
+  box-shadow: 0 0 10px #0b6eef;
 }
 
 .communities-list {
@@ -243,7 +256,7 @@ export default {
 }
 
 .bio .lines {
-  border: 1px solid #4F4C55;
+  border: 1px solid #4f4c55;
   position: relative;
   top: -25px;
   left: 20px;
@@ -254,7 +267,7 @@ export default {
 }
 
 .comm .lines {
-  border: 1px solid #4F4C55;
+  border: 1px solid #4f4c55;
   position: relative;
   top: -25px;
   left: 120px;
@@ -265,7 +278,7 @@ export default {
 }
 
 .engage .lines {
-  border: 1px solid #4F4C55;
+  border: 1px solid #4f4c55;
   position: relative;
   top: -25px;
   left: 160px;
@@ -281,11 +294,11 @@ export default {
   position: relative;
   border-radius: 50%;
   top: 20px;
-  background: linear-gradient(to bottom, #8A3AFE, #B237FE);
+  background: linear-gradient(to bottom, #8a3afe, #b237fe);
   display: flex;
   text-align: center;
   margin: auto;
-  box-shadow: 0 0 30px #9E39FE;
+  box-shadow: 0 0 30px #9e39fe;
 }
 
 #profilePicture p {
@@ -298,6 +311,4 @@ export default {
 #graph {
   margin-top: 0;
 }
-
-
 </style>
