@@ -186,6 +186,7 @@ def update_me(request):
             request.DATA["last_name"],
             request.DATA["email"],
             request.DATA["username"],
+            same_user=request.user,
         )
         if update_valid:
             return JsonResponse(
