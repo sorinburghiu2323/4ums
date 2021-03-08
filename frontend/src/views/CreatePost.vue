@@ -1,10 +1,14 @@
 <template>
   <div id="form">
     <div id="communityBox" v-if="communities">
-      <font-awesome-icon :icon="['fas', 'users']" style="color: #5ff9ab"/>
+      <font-awesome-icon :icon="['fas', 'users']" style="color: #5ff9ab" />
       Select a Community
       <select v-model="community">
-        <option v-for="(comm,index) in this.communities" :key="index" :value="comm">
+        <option
+          v-for="(comm, index) in this.communities"
+          :key="index"
+          :value="comm"
+        >
           {{ comm.name }}
         </option>
       </select>
@@ -19,9 +23,9 @@
     />
     <br />
     <textarea
-        v-model="description"
-        class="inputBox"
-        placeholder="Post text (optional)..."
+      v-model="description"
+      class="inputBox"
+      placeholder="Post text (optional)..."
     ></textarea>
     <br />
     <p id="success" style="color: green;"></p>
@@ -52,7 +56,7 @@ export default {
         return;
       }
       var post_url =
-          "/api/communities/" + this.community.id.toString() + "/posts";
+        "/api/communities/" + this.community.id.toString() + "/posts";
       axios
         .post(post_url, {
           title: this.title,
@@ -86,9 +90,9 @@ export default {
   },
   mounted() {
     axios
-        .get("/api/communities?type=memberof", {
-          type: "memberof",
-        })
+      .get("/api/communities?type=memberof", {
+        type: "memberof",
+      })
       .then((response) => {
         this.communities = response.data.data;
       });
@@ -97,7 +101,6 @@ export default {
 </script>
 
 <style scoped>
-
 #communityBox {
   width: 99%;
   background-color: #222531;
