@@ -107,6 +107,7 @@ def community(request, community_id):
         request,
         POST=community_controller.join_community,
         GET=community_controller.get_community,
+        DELETE=community_controller.delete_community,
         args=[community_id],
     )
 

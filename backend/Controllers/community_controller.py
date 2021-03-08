@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.db.utils import IntegrityError
 from django.http import JsonResponse
 
@@ -196,3 +197,29 @@ def get_community(request, community_id):
         )
 
     return JsonResponse(comm_instance.serialize(), status=200, safe=True)
+
+
+def delete_community(request, community_id):
+    """
+    Delete a community. Only owner can do it.
+    :param request: session request.
+    :param community_id: id of community to be deleted.
+    :return: 200 - community deleted.
+             401 - unauthorized.
+             404 - community not found.
+    """
+    try:
+        community = Community.objects.get(id=community_id)
+    except Community.DoesNotExist:
+        return JsonResponse(
+            f'Not found - No community with the id "{community_id}" exists',
+            status=404,
+            safe=False,
+        )
+
+    # Verify user is the community creator.
+    user = request.user
+    if community.user != user:
+        return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
+    community.delete()
+    return JsonResponse("OK - Community deleted.", status=200, safe=False)
