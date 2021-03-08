@@ -238,10 +238,6 @@ export default {
   text-align: center;
 }
 
-.container {
-  z-index: -1;
-}
-
 .bio .lines {
   border: 1px solid #4F4C55;
   position: relative;
@@ -289,10 +285,9 @@ export default {
 }
 
 #profilePicture p {
-  position: absolute;
-  left: 24px;
-  top: -20px;
   font-size: 50px;
+  margin: auto;
+  text-transform: uppercase;
 }
 
 #graph {

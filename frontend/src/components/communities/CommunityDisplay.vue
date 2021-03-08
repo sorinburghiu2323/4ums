@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     navigateToCommunity() {
+      console.log('here');
       this.$router.push({
         name: "Community",
         params: {
@@ -77,6 +78,7 @@ export default {
     rgba(27, 30, 40, 1) 35%,
     rgba(8, 9, 11, 1) 100%
   );
+  z-index: 999;
 }
 .color-box {
   height: 108px;

@@ -38,7 +38,7 @@
       <CommunitiesList
         :communities="communities"
         :myCommunities="false"
-        :communityType="'memberof'"
+        communityType='memberof'
       />
     </div>
     <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
@@ -195,6 +195,7 @@ export default {
 #profilePicture p {
   font-size: 50px;
   margin: auto;
+  text-transform: uppercase;
 }
 
 #graph {
