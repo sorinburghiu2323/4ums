@@ -163,7 +163,6 @@ export default {
     getCommunity() {
       axios.get("/api/communities/" + this.id)
       .then(response => {
-        console.log(response);
         this.community = response.data;
       })
       .catch(error =>{

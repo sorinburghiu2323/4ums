@@ -47,7 +47,6 @@ export default {
   created() {
     this.type = this.$route.params.type;
     this.communityId = this.$route.params.id;
-    console.log(this.communityId);
     // Fetch and set the data of the community which the post is being created for
     const url = "/api/communities/" + this.communityId.toString();
     axios.get(url)

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <CreatePostButton :community="community"/>
+      <CreatePostButton v-if="showCreateButton" :community="community"/>
       <router-link class="nav-link" to="/communities">
         <p id="back">
           <font-awesome-icon :icon="['fas', 'arrow-left']"/>
@@ -35,9 +35,6 @@
         <div v-else-if="!joined" style="margin-top: 50px;">
           Join community to see posts...
         </div>
-
-        <button v-if="loadMore" class="load-more-btn" @click="loadMorePosts()">Load more</button>
-
       </div>
   </div>
 </template>
@@ -57,6 +54,7 @@ export default {
         return {
             loadedCommunity: false,
             loadedPosts: false,
+            showCreateButton: true,
             community: null,
             currentPage: 1,
             posts: [],
@@ -71,8 +69,26 @@ export default {
     mounted() {
         this.getCommunity();
         this.getPosts();
+        this.scroll();
     },
+
     methods: {
+        scroll() {
+          window.onscroll = () => {
+            let bottomOfWindow =
+              document.documentElement.scrollTop + window.innerHeight >
+              document.body.scrollHeight;
+            if (bottomOfWindow) {
+              this.showCreateButton = false;
+              if (this.loadMore) {
+                this.loadMorePosts();
+                this.loadMore = false;
+              }
+            } else {
+              this.showCreateButton = true;
+            }
+          };
+        },
         getCommunity() {
           const community_id = this.$route.params.id;
           const url = '/api/communities/' + community_id;
