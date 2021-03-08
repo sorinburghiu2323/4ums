@@ -158,4 +158,8 @@ yarn-error.log*
 #Milo's special deployment files
 deploy_script.bat
 public/vue/
+
+#Gmail api files
 make_email_creds.py
+credentials.json
+token.pickle
