@@ -20,6 +20,8 @@ def create_new(request):
     user_instance = request.user
 
     if "name" in request.DATA and "description" in request.DATA:
+        if request.DATA["name"].isspace() or request.DATA["name"] == "":
+            return JsonResponse("Bad request - Community name cannot be empty.", status=400, safe=False)
         try:
             new_community = Community.objects.create(
                 user=user_instance,
@@ -28,7 +30,7 @@ def create_new(request):
             )
         except IntegrityError:
             return JsonResponse(
-                "Conflict - Name is already in use", status=409, safe=False
+                "Conflict - Name is already in use.", status=409, safe=False
             )
 
         # Assign colour to community if its included in request.
