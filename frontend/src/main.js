@@ -65,7 +65,7 @@ library.add(
     faShareSquare,
     faPaperPlane,
     faPencilAlt,
-    faShare
+    faShare,
     faPaperPlane,
     faTimes,
     faMedal,
