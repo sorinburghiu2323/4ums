@@ -62,9 +62,6 @@ export default {
     isByPostOwner: Boolean,
     isByCommunityOwner: Boolean,
   },
-  mounted() {
-    console.log(this.comment);
-  },
   data() {
     return {
       info: 3,

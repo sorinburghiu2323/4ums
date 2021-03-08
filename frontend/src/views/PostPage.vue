@@ -85,13 +85,17 @@
         </div>
       </div>
     </div>
-    <div class="comment-btn" @click.stop="showCommentInput">
+    <div class="comment-btn" @click.stop="showCommentInput" v-if="!showInput">
       <div class="comment-icon">
         <font-awesome-icon :icon="['fas', 'comment-dots']"></font-awesome-icon>
       </div>
       <p>Add a comment...</p>
     </div>
     <div v-if="showInput" class="comment-input">
+      <div class="close-comment">
+        <font-awesome-icon :icon="['fa','times']"
+        @click="showInput=false; addComment= ''"/>
+      </div>
       <label style="color:white">Add a comment...</label>
       <textarea v-model="addComment"></textarea>
       <div class="send-icon" @click.stop="sendComment">
@@ -274,8 +278,14 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: dodgerblue;
-  font-size: 25px;
+  font-size: 20px;
+  background: white;
+  color: black;
+  padding: 3px 7px 3px 7px;
+  border-radius: 12px;
+  margin: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .header {
@@ -299,7 +309,7 @@ export default {
 }
 
 .comment-input textarea {
-  border: 1px solid black;
+  border: 1px solid #7e7e7e;
   overflow-y: auto;
   background: linear-gradient(to right, #272b39, #1e212b);
   height: 110px;
@@ -308,6 +318,7 @@ export default {
   margin: auto;
   margin-top: 5px;
   outline: none;
+  resize: none;
 }
 .comment-btn {
   position: fixed;
@@ -318,10 +329,16 @@ export default {
   height: 50px;
   display: flex;
   border-radius: 10px;
-  background: rgba(255,255,255,0.2);
+  z-index: 999;
+  filter: drop-shadow(0px 0px 5px white);
 
 }
 
+.close-comment {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
 .comment-btn .comment-icon {
   font-size: 30px;
   margin: auto;
