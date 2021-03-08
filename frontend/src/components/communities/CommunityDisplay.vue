@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     navigateToCommunity() {
-      console.log('here');
       this.$router.push({
         name: "Community",
         params: {

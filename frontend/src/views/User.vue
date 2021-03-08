@@ -133,7 +133,7 @@ export default {
           this.bio = response.data.descrtiption;
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     },
   },
