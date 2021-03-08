@@ -15,6 +15,7 @@ urlpatterns = [
     path("users/me", views.users_me),
     path("users/leaderboard", views.leaderboard),
     path("users/<int:user_id>", views.users_individual),
+    path("users/sharecode", views.users_share_code),
     # Communities.
     path("communities", views.communities),
     path("communities/<int:community_id>", views.community),
