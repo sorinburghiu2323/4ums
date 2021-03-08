@@ -1,6 +1,7 @@
 <template>
   <div class="container" @click="navigateToCommunity()">
-    <div :class="communityType" class="color-box"></div>
+    <div v-if="community.colour" :class="community.colour" class="color-box"></div>
+    <div v-else class="color-box"></div>
     <div class="details">
       <div class="title">
         <p>{{ community.name }}</p>
@@ -77,6 +78,7 @@ export default {
     rgba(27, 30, 40, 1) 35%,
     rgba(8, 9, 11, 1) 100%
   );
+  z-index: 999;
 }
 .color-box {
   height: 108px;
@@ -85,15 +87,11 @@ export default {
   position: absolute;
 }
 
-.all {
-  background: rgb(254, 155, 47);
-  background: linear-gradient(
-    90deg,
-    rgba(254, 155, 47, 1) 0%,
-    rgba(254, 101, 15, 1) 35%
-  );
+.orange {
+  background: rgb(254,155,47);
+  background: linear-gradient(90deg, rgba(254,155,47,1) 0%, rgba(254,101,15,1) 35%);
 }
-.memberof {
+.blue {
   background: rgb(52, 235, 233);
   background: linear-gradient(
     270deg,
@@ -101,13 +99,9 @@ export default {
     rgba(101, 255, 167, 1) 35%
   );
 }
-.created {
-  background: rgb(253, 248, 98);
-  background: linear-gradient(
-    270deg,
-    rgb(253, 248, 98) 0%,
-    rgba(255, 237, 0, 1) 35%
-  );
+.purple {
+  background: rgb(188, 98, 253);
+  background: linear-gradient(270deg, rgb(144, 98, 253) 0%, rgb(149, 0, 255) 35%);
 }
 
 .details {

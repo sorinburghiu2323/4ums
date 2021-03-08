@@ -85,6 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def serialize(self):
         return {
             "id": self.id,
+            "email": self.email,
             "username": self.username,
             "first_name": self.first_name,
             "last_name": self.last_name,
