@@ -56,6 +56,7 @@ def users_me(request):
         request,
         GET=user_controller.get_user(request, request.user.id),
         PUT=user_controller.update_me,
+        DELETE=user_controller.delete_me,
     )
 
 
