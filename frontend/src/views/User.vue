@@ -172,11 +172,13 @@ export default {
 
 .container {
   z-index: -1;
+  margin-top: 50px;
 }
 
 #back {
   position: absolute;
   text-align: left;
+  top: 0;
 }
 
 #profilePicture {
@@ -191,10 +193,8 @@ export default {
 }
 
 #profilePicture p {
-  position: absolute;
-  left: 19px;
-  top: -33px;
   font-size: 50px;
+  margin: auto;
 }
 
 #graph {
@@ -209,8 +209,10 @@ export default {
 
 #top-buttons {
   position: absolute;
-  right: 45px;
-  width: 0;
+  top: 20px;
+  right: 15px;
+  font-size: 35px;
+  color: #7e7e7e;
   display: flex;
   justify-content: space-around;
 }
