@@ -172,9 +172,9 @@ class CommunityMember(models.Model):
     Community-User relationship to keep track of the community members.
     """
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     community = models.ForeignKey(
-        Community, on_delete=models.SET_NULL, null=True
+        Community, on_delete=models.CASCADE, null=True
     )
     created_at = models.DateTimeField(default=timezone.now)
 
