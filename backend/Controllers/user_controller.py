@@ -9,6 +9,7 @@ from backend.Utils.user_validation import (
     validate_user_data,
     validate_password,
 )
+from backend.Utils.password_reset import build_email, send_reset_email
 from backend.models import User, Post, PasswordResetCode
 
 
@@ -172,6 +173,37 @@ def reset_password(request):
 
     return JsonResponse("Bad request - Missing fields", status=400, safe=False)
 
+
+def send_email(request):
+    """
+    Send the password reset email.
+
+    :param request: session request
+    :return: 200 OK
+             400 Bad request
+    """
+    if "email" in request.DATA:
+        #validate email
+        email_addr = request.DATA["email"]
+        if "@" not in email_addr:
+            return JsonResponse(
+                "Bad request - Invalid email address", status=400, safe=False
+            )
+        try:
+            user = User.objects.get(email=email_addr)
+        except User.DoesNotExist:
+            return JsonResponse(
+                "Bad request - No registered user with that email",
+                status=400,
+                safe=False,
+            )
+
+        #generate code and send email
+        pass
+
+    return JsonResponse(
+        "Bad request - Must provide email", status=400, safe=False
+    )
 
 def get_feed(request):
     """
