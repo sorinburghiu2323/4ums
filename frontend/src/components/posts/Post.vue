@@ -39,13 +39,13 @@
     <div class="likes" @click.stop='likePost'>
       <div v-if="this.userLiked" style="color:white">
         <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+          <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
         </div>
         <div class="like-count">{{ post["likes_num"] }}</div>
       </div>
       <div v-else style="color:grey">
         <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+          <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
         </div>
         <div class="like-count">{{ post["likes_num"] }}</div>
       </div>

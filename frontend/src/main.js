@@ -2,8 +2,15 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/router.js";
 // Fontawesome documentation: https://www.npmjs.com/package/@fortawesome/vue-fontawesome
+
+import {
+  library,
+} from "@fortawesome/fontawesome-svg-core";
+
 // Regular style icons
-import {library} from "@fortawesome/fontawesome-svg-core";
+import {
+  faThumbsUp as farThumbsUp,
+} from '@fortawesome/free-regular-svg-icons'
 // Brand style icons
 import {faFontAwesome} from "@fortawesome/free-brands-svg-icons";
 // Solid style icons
@@ -30,6 +37,8 @@ import {
   faTimes,
   faPlus,
   faPencilAlt,
+  faChalkboardTeacher,
+  faHandPeace,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
@@ -50,6 +59,7 @@ library.add(
     faCommentDots,
     faArrowLeft,
     faThumbsUp,
+    farThumbsUp,
     faQuestionCircle,
     faCheckCircle,
     faPaperPlane,
@@ -58,6 +68,8 @@ library.add(
     faTimes,
     faPlus,
     faPencilAlt,
+    faChalkboardTeacher,
+    faHandPeace,
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
