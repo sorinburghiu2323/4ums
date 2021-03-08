@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       description: "",
-      email: "Hello",
+      email: "",
       firstName: "",
       lastName: "",
       username: "",
@@ -45,24 +45,24 @@ export default {
   },
   methods: {
     submit() {
-      axios.get("/api/user/me").then((response) => {
-        //this.email = response.data.email;
-        this.firstName = response.data.first_name;
-        this.lastName = response.data.last_name;
-        this.username = response.data.username;
+      axios.get("/api/users/me").then((response) => {
+        console.log(response);
+        axios
+          .put("/api/users/me", {
+            email: response.data.email,
+            first_name: response.data.first_name,
+            last_name: response.data.last_name,
+            hide_leaderboard: true,
+            username: response.data.username,
+            description: this.description,
+          })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error(error.response.data);
+          });
       });
-      axios
-        .put("/api/users/me", {
-          email: this.email,
-          first_name: this.firstName,
-          last_name: this.lastName,
-          hide_leaderboard: true,
-          username: this.username,
-          description: this.description,
-        })
-        .then((response) => {
-          console.log(response);
-        });
     },
     goBack() {
       this.$router.push({

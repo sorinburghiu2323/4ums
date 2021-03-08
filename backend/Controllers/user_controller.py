@@ -154,6 +154,9 @@ def update_me(request):
     """
     user = request.user
     password_updated = False
+    
+    print(request.DATA)
+    
     if "password" in request.DATA and "password_repeat" in request.DATA:
         update_password = validate_password(
             request.DATA["password"], request.DATA["password_repeat"]
@@ -166,17 +169,18 @@ def update_me(request):
         # Update password.
         user.set_password(request.DATA["password"])
         user.save()
-        password_updated = True
+        password_updated = True       
 
     elif (
         "email" in request.DATA
         and "first_name" in request.DATA
         and "last_name" in request.DATA
-        and "email" in request.DATA
         and "hide_leaderboard" in request.DATA
         and "username" in request.DATA
         and "description" in request.DATA
     ):
+        
+        print("HErepw")
         update_valid = validate_user_data(
             request.DATA["first_name"],
             request.DATA["last_name"],
@@ -200,6 +204,8 @@ def update_me(request):
     if not password_updated:
         return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
     return JsonResponse("OK - User updated.", status=200, safe=False)
+
+
 
 
 def get_user(request, user_id):
