@@ -79,7 +79,9 @@ LOGGING = {
     'handlers': {
         'file': {
             'class': 'logging.FileHandler',
-            'filename': os.getenv("LOG_FILE_PATH"),
+            'filename': os.getenv(
+                "LOG_FILE_PATH", os.path.join(BASE_DIR, "django.log")
+            ),
             'encoding': 'utf-8',
             "formatter": "simple",
         },
@@ -93,7 +95,7 @@ LOGGING = {
     "loggers": {
         'root': {
             'handlers': ['file'],
-            'level': os.getenv("LOG_LEVEL"),
+            'level': os.getenv("LOG_LEVEL", "INFO"),
         },
     },
 }
