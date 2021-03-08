@@ -23,22 +23,22 @@
             <input v-model="lastName" placeholder="Last name" type="text"/>
           </div>
           <div class="input">
-                <div class="color-bar" style="background: #B437FF"></div>
-            <input v-model="username" placeholder="Username" type="text"/>
-            </div>
-            <div class="input">
-                <div class="color-bar" style="background: #FB6D13"></div>
-              <input v-model="email" placeholder="University Email" type="email"/>
-            </div>
-            <div class="input">
-                <div class="color-bar" style="background: #D223AF"></div>
-              <input v-model="password" placeholder="Password" type="password">
-            </div>
-            <div class="input">
-                <div class="color-bar" style="background: #D223AF"></div>
+              <div class="color-bar" style="background: #B437FF"></div>
+              <input v-model="username" placeholder="Username" type="text"/>
+          </div>
+          <div class="input">
+              <div class="color-bar" style="background: #FB6D13"></div>
+            <input v-model="email" placeholder="University Email" type="email"/>
+          </div>
+          <div class="input">
+              <div class="color-bar" style="background: #D223AF"></div>
+            <input v-model="password" placeholder="Password" type="password">
+          </div>
+          <div class="input">
+              <div class="color-bar" style="background: #D223AF"></div>
               <input v-model="passwordConfirmation" placeholder="Confirm password" type="password">
-                <p style="color: red; font-size: 12px;">{{errMessage}}</p>
-            </div>
+              <p style="color: red; font-size: 12px;">{{errMessage}}</p>
+          </div>
             <div class="terms">
               <div><input v-model="isTeacher" type="checkbox"><span>I am a teacher/lecturer</span></div>
             </div>
@@ -47,7 +47,7 @@
                 <input v-model="isTermsAgreed" type="checkbox"> 
                 <span class="tc-link" @click="showTC=true;">I agree to all terms</span>
               </div>
-                <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
+              <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
             </div>
             <div>
                 <button class="register-btn" @click="registerUser()">Register</button>
@@ -62,8 +62,6 @@
           </div>
           <TermsAndConditionsPopup v-if="showTC" />
         </div>
-        
-    </div>
   </div>
 </template>
 
@@ -149,115 +147,58 @@ export default {
         return false;
       }
 
-          axios.post('/api/users', {
-            email: this.email,
-            username: this.username,
-            password: this.password,
-            first_name: this.firstName,
-            last_name: this.lastName,
-            is_teacher: this.isTeacher ? 'true' : 'false',
-            password_repeat: this.passwordConfirmation,
-          })
-              .then(() => {
-                this.errMessage = '';
-                this.termErrMessage = '';
-                this.$router.push({name: 'Feed'});
-              })
-              .catch((error) => {
-                console.error(error);
-                this.errMessage = error.response.data;
-              })
-        },
-        validatePassword() {
-            if(this.password.length >= 9) {
-                this.nineChars = true;
-            } else {
-                this.nineChars = false;
-                return false;
-            }
-            // Check for white space
-            if(/\s/g.test(this.password)) {
-                this.noSpaces = false;
-                return false;
-            } else {
-                this.noSpaces = true;
-            }
-            if(/[a-z]/.test(this.password)){
-                this.lowercase = true;
-            } else {
-                this.lowercase = false;
-                return false;
-            }
-            if(/[A-Z]/.test(this.password)) {
-                this.uppercase = true;
-            } else {
-                this.uppercase = false;
-                return false;
-            }
-            if(/[0-9]/.test(this.password)) {
-                this.containsNumber = true;
-            } else {
-                this.containsNumber = false;
-                return false;
-            }
-        },
-        validateFields() {
-          return !!(this.firstName && this.lastName &&
-              this.password && this.passwordConfirmation &&
-              this.email);
-
-      axios
-        .post("/api/users", {
-          email: this.email,
-          username: this.username,
-          password: this.password,
-          first_name: this.firstName,
-          last_name: this.lastName,
-          is_teacher: "false",
-          password_repeat: this.passwordConfirmation,
-        })
-        .then(() => {
-          this.errMessage = "";
-          this.termErrMessage = "";
-          this.$router.push(Feed);
-        })
-        .catch((error) => {
-          console.error(error);
-          this.errMessage = error.response.data;
-        });
+      axios.post('/api/users', {
+        email: this.email,
+        username: this.username,
+        password: this.password,
+        first_name: this.firstName,
+        last_name: this.lastName,
+        is_teacher: this.isTeacher ? 'true' : 'false',
+        password_repeat: this.passwordConfirmation,
+      })
+      .then(() => {
+        this.errMessage = '';
+        this.termErrMessage = '';
+        this.$router.push({name: 'Feed'});
+      })
+      .catch((error) => {
+        console.error(error);
+        this.errMessage = error.response.data;
+      })
     },
+
     validatePassword() {
-      if (this.password.length >= 9) {
-        this.nineChars = true;
-      } else {
-        this.nineChars = false;
-        return false;
-      }
-      // Check for white space
-      if (/\s/g.test(this.password)) {
-        this.noSpaces = false;
-        return false;
-      } else {
-        this.noSpaces = true;
-      }
-      if (/[a-z]/.test(this.password)) {
-        this.lowercase = true;
-      } else {
-        this.lowercase = false;
-        return false;
-      }
-      if (/[A-Z]/.test(this.password)) {
-        this.uppercase = true;
-      } else {
-        this.uppercase = false;
-        return false;
-      }
-      if (/[0-9]/.test(this.password)) {
-        this.containsNumber = true;
-      } else {
-        this.containsNumber = false;
-        return false;
-      }
+        if(this.password.length >= 9) {
+            this.nineChars = true;
+        } else {
+            this.nineChars = false;
+            return false;
+        }
+        // Check for white space
+        if(/\s/g.test(this.password)) {
+            this.noSpaces = false;
+            return false;
+        } else {
+            this.noSpaces = true;
+        }
+        if(/[a-z]/.test(this.password)){
+            this.lowercase = true;
+        } else {
+            this.lowercase = false;
+            return false;
+        }
+        if(/[A-Z]/.test(this.password)) {
+            this.uppercase = true;
+        } else {
+            this.uppercase = false;
+            return false;
+        }
+        if(/[0-9]/.test(this.password)) {
+            this.containsNumber = true;
+        } else {
+            this.containsNumber = false;
+            return false;
+        }
     },
     validateFields() {
       return !!(
