@@ -86,13 +86,15 @@ LOGGING = {
     },
     'formatters': {
         "simple": {
-            "format": "%asctime% - [%levelname%] %message%",
-            "style": "%",
+            "format": "{asctime} - [{levelname}] {message}",
+            "style": "{",
         }
     },
-    'root': {
-        'handlers': ['file'],
-        'level': os.getenv("LOG_LEVEL"),
+    "loggers": {
+        'root': {
+            'handlers': ['file'],
+            'level': os.getenv("LOG_LEVEL"),
+        },
     },
 }
 
