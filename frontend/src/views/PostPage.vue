@@ -321,7 +321,7 @@ export default {
 }
 .comment-btn {
   position: fixed;
-  bottom: 11vh;
+  bottom: 12vh;
   width: 100%;
   background: linear-gradient(to right, #272b39, #1e212b);
   margin-left: -8px;
