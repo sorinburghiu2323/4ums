@@ -4,9 +4,11 @@ declare module "particles.vue";
         <div class="header">
             <img src="@/assets/website-logo.png" class="logo-container">
         </div>
+        <div v-if="!sentEmail && invalidEmail">
         <div class="info">
             Reset Your Password:
         </div>
+            <div style="color:red; z-index: 2; text-align: left;">{{this.errorMessage}}</div>
         <div class="inputBox">
             <div class="color-bar"></div>
             <input v-model="emailField" maxlength="34" spellcheck="false" type="text"
@@ -19,6 +21,10 @@ declare module "particles.vue";
         <button class="buttonSmart" type="submit" @click.stop="submitEmail">
             Email Me
         </button>
+        </div>
+        <div v-else>
+            The reset link has been sent to your email address, this link will expire in 30 minutes.
+        </div>
         <div class="back-button" @click.prevent="goBack()">
             <font-awesome-icon :icon="['fas', 'arrow-left']"/>
             Back to <u>login page</u>
@@ -28,18 +34,30 @@ declare module "particles.vue";
 
 <script>
 import LoginPage from "@/views/LoginPage";
-import EnterNewPassword from "../views/EnterNewPassword";
+import axios from "axios";
 export default {
     name: "ForgotPassword",
     data() {
         return {
             emailField: '',
             hover: false,
+            sentEmail: false,
+            invalidEmail: true,
+            errorMessage: ''
         };
     },
     methods: {
         submitEmail() {
-            this.$router.push(EnterNewPassword);
+            axios.post('/api/login/sendreset', {body: {email : this.emailField}})
+            .then(() => {
+                this.sentEmail = true;
+                this.invalidEmail = false;
+                this.errorMessage = '';
+            }).catch((error) => {
+                this.invalidEmail = true;
+                this.errorMessage = "We couldn't find any account with that email address";
+                console.error(error);
+            })
         },
         goBack() {
             this.$router.push(LoginPage);

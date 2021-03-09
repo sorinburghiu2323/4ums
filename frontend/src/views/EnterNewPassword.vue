@@ -29,6 +29,8 @@ declare module "particles.vue";
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "EnterNewPassword",
     data() {
@@ -44,7 +46,20 @@ export default {
             if(this.isMatching()){
                 this.notMatching = true;
             }else {
-                console.log("goat");
+                this.notMatching = false;
+                axios.post('/api/login/passwordreset', {
+                    body : {
+                        user_id: 1,
+                        code: this.$route.params.code,
+                        password: this.passwordField1,
+                        password_repeated : this.passwordField2,
+                    }})
+                .then((response) =>{
+                    console.log(response);
+                })
+                .catch((error) =>{
+                    console.error(error);
+                });
             }
         },
         goBack() {
