@@ -112,6 +112,7 @@ export default {
       this.$router.push({
         name: "EditProfile",
       });
+      this.getUserDetails();
     },
     widthCalc() {
       return window.innerWidth - 100;

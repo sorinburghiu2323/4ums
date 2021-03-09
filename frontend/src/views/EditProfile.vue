@@ -69,6 +69,7 @@ export default {
             console.error(error.response.data);
           });
       });
+      this.$router.go(-1);
     },
     goBack() {
       this.$router.push({
