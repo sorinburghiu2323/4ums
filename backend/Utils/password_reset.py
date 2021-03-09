@@ -16,7 +16,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
 # boto is used *ONLY* in deployed app to access secrets
-if True or ("DJANGO-AWS-4UMS-DEPLOYED" in environ_variables):
+if "DJANGO-AWS-4UMS-DEPLOYED" in environ_variables:
     import boto3
     from botocore.exceptions import ClientError
 
@@ -34,11 +34,11 @@ def create_message(sender, to, subject, message_html):
         A base64 encoded email object.
     """
     message = MIMEText(message_text, "html")
-    message['to'] = to
-    message['from'] = sender
-    message['subject'] = subject
+    message["to"] = to
+    message["from"] = sender
+    message["subject"] = subject
 
-    return {'raw': urlsafe_b64encode(message.as_string().encode()).decode()}
+    return {"raw": urlsafe_b64encode(message.as_string().encode()).decode()}
 
 
 def send_message(service, user_id, message):
@@ -77,20 +77,12 @@ def build_email(email_addr, user_id, reset_code, first_name, username):
     """
 
     link_url = f"http://4ums.co.uk/login/passwordreset?id={user_id}&code={reset_code}"
-
     template = loader.get_template("reset_email.html")
-
-    context = {'username': username, 'first_name': first_name, 'url': link_url}
-
-
-    plain_str = plain_template.render(context)
-    html_str = html_template.render(context)
-
-    message = create_message(
-        "me", email_addr, "Password reset", plain_str, html_str
+    message_content = template.render(
+        {"username": username, "first_name": first_name, "url": link_url}
     )
 
-    return message
+    return create_message("me", email_addr, "Password reset", message_content)
 
 
 def send_reset_email(message):
@@ -99,8 +91,7 @@ def send_reset_email(message):
 
     :param message: base64 encoded message object
     """
-    #DEBUG: remove hard trap
-    if False and ("DJANGO-AWS-4UMS-DEPLOYED" not in environ_variables):
+    if "DJANGO-AWS-4UMS-DEPLOYED" not in environ_variabless:
         # don't send the email unless we're in live deployment
         # for testing purposes: decode plain text and print to console
         msg_b64 = message['raw']

@@ -12,6 +12,8 @@ from backend.Utils.user_validation import (
 from backend.Utils.password_reset import build_email, send_reset_email
 from backend.models import User, Post, PasswordResetCode
 
+import random
+import string
 
 def user_login(request):
     """
@@ -183,12 +185,7 @@ def send_email(request):
              400 Bad request
     """
     if "email" in request.DATA:
-        #validate email
         email_addr = request.DATA["email"]
-        if "@" not in email_addr:
-            return JsonResponse(
-                "Bad request - Invalid email address", status=400, safe=False
-            )
         try:
             user = User.objects.get(email=email_addr)
         except User.DoesNotExist:
@@ -198,8 +195,22 @@ def send_email(request):
                 safe=False,
             )
 
-        #generate code and send email
-        pass
+        urlsafe_chars = string.ascii_letters+string.digits+"-_"
+        code_str = "".join(random.choice(urlsafe_chars) for _ in range(100))
+
+        #30 minutes from now
+        expiry_time = timezone.now() + datetime.timedelta(minutes=30)
+
+        PasswordResetCode.objects.create(
+            user_id=user.id, code=code_str, expiry=expiry_time
+        )
+
+        message = build_email(
+            email_addr, user.id, code_str, user.first_name, user.username
+        )
+        send_reset_email(message)
+
+        return JsonResponse("OK - email sent", status=200, safe=False)
 
     return JsonResponse(
         "Bad request - Must provide email", status=400, safe=False
