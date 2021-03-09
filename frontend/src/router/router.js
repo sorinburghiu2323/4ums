@@ -1,8 +1,12 @@
 import CommunitiesPage from "../views/CommunitiesPage.vue";
 import CreateCommunity from "../views/CreateCommunity.vue";
 import CreatePost from "../views/CreatePost.vue";
+import EditProfile from "../views/EditProfile.vue";
+import Feed from "../views/Feed.vue";
 import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
+import NotFound from "@/views/NotFound";
+import PostPage from "@/views/PostPage";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
@@ -10,13 +14,10 @@ import Community from "../views/Community.vue";
 import ManageCommunities from "../views/ManageCommunities.vue";
 import LeaveCommunity from "../views/LeaveCommunity.vue";
 import DeleteCommunity from "@/views/DeleteCommunity";
+import User from "@/views/User";
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Feed from "../views/Feed.vue";
 import axios from "axios";
-import PostPage from "@/views/PostPage";
-import NotFound from "@/views/NotFound";
-import User from "@/views/User";
 
 Vue.use(VueRouter);
 
@@ -50,6 +51,11 @@ const routes = [
         path: "/profile",
         name: "Profile",
         component: Profile,
+    },
+    {
+      path: "/users/me/edit",
+      name: "EditProfile",
+      component: EditProfile,
     },
     {
         path: "/leaderboard",
@@ -109,17 +115,16 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.name !== from.name) {
-        // Direct user to login if they are not authenticated
-        axios.get('/api/users/me')
-            .catch(() => {
-                if (to.path !== '/login' && to.path !== '/register') {
-                    return next({
-                        path: '/login',
-                    });
-                }
-            });
-    }
-    next();
+  if (to.name !== from.name) {
+    // Direct user to login if they are not authenticated
+    axios.get("/api/users/me").catch(() => {
+      if (to.path !== "/login" && to.path !== "/register") {
+        return next({
+          path: "/login",
+        });
+      }
+    });
+  }
+  next();
 });
 export default router;
