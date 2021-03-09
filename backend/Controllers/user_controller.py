@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import timezone
@@ -8,6 +9,8 @@ from backend.Utils.points_handler import get_graphs
 from backend.Utils.user_validation import (
     validate_user_data,
     validate_password,
+    generate_share_code,
+    verify_user_login,
 )
 from backend.Utils.password_reset import build_email, send_reset_email
 from backend.models import User, Post, PasswordResetCode
@@ -104,6 +107,9 @@ def user_register(request):
 
         if "description" in request.DATA:
             new_user.description = request.DATA["description"]
+
+        # Automatically login the user upon registering.
+        login(request, new_user)
 
         return JsonResponse("Created - User created.", status=201, safe=False)
 
@@ -262,7 +268,7 @@ def update_me(request):
              401 - login required.
     """
     user = request.user
-    password_updated = False
+    password_updated, body_updated = False, False
     if "password" in request.DATA and "password_repeat" in request.DATA:
         update_password = validate_password(
             request.DATA["password"], request.DATA["password_repeat"]
@@ -281,7 +287,6 @@ def update_me(request):
         "email" in request.DATA
         and "first_name" in request.DATA
         and "last_name" in request.DATA
-        and "email" in request.DATA
         and "hide_leaderboard" in request.DATA
         and "username" in request.DATA
         and "description" in request.DATA
@@ -291,6 +296,7 @@ def update_me(request):
             request.DATA["last_name"],
             request.DATA["email"],
             request.DATA["username"],
+            same_user=request.user,
         )
         if update_valid:
             return JsonResponse(
@@ -305,8 +311,9 @@ def update_me(request):
         user.hide_leaderboard = request.DATA["hide_leaderboard"]
         user.description = request.DATA["description"]
         user.save()
+        body_updated = True
 
-    if not password_updated:
+    if not password_updated and not body_updated:
         return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
     return JsonResponse("OK - User updated.", status=200, safe=False)
 
@@ -320,12 +327,28 @@ def get_user(request, user_id):
              401 - login required.
              404 - user not found.
     """
+
     try:
         get_user = User.objects.get(id=user_id)
     except:
         return JsonResponse(
             "Not Found - User does not exist.", status=404, safe=False
         )
+
+    # Check for share code.
+    valid_sc = False
+    if get_user.share_code:
+        if request.GET.get("sharecode") == get_user.share_code:
+            valid_sc = True
+
+    if not valid_sc:
+        try:
+            verify_user_login(request)
+        except PermissionDenied:
+            return JsonResponse(
+                "Unauthorized - Login required.", status=401, safe=False
+            )
+
     response = get_user.serialize()
     response["graphs"] = get_graphs(get_user)
     return JsonResponse(response, status=200)
@@ -340,7 +363,7 @@ def lb_serializer(data):
 def get_leaderboard(request):
     """
     Get the leaderboard; a (paginated) list of all users ordered by ranking
-    :param requet: session request.
+    :param request: session request.
     :return: 200 OK
              401 Unauthorized
     """
@@ -365,3 +388,36 @@ def get_leaderboard(request):
         json_paginator(request, paginationData, lb_serializer),
         status=200,
     )
+
+
+def get_share_code(request):
+    """
+    Get the logged in user code.
+    :param request: session request.
+    """
+    user = request.user
+    return JsonResponse({"code": user.share_code}, status=200)
+
+
+def update_share_code(request):
+    """
+    Update the share code and return it.
+    :param request: session request.
+    """
+    user = request.user
+    user.share_code = generate_share_code(6)
+    user.save()
+    return JsonResponse({"code": user.share_code}, status=200)
+
+
+def delete_me(request):
+    """
+    Delete a user.
+    :param request: session request.
+    :return: 401 - login required.
+             200 - account deleted.
+    """
+    user = request.user
+    user.is_active = False
+    user.save()
+    return JsonResponse("OK - Account deleted.", status=200, safe=False)

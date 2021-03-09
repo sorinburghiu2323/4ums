@@ -1,9 +1,14 @@
-import Vue from "vue";
 import App from "./App.vue";
-import router from "./router/router.js";
-// Fontawesome documentation: https://www.npmjs.com/package/@fortawesome/vue-fontawesome
-// Regular style icons
+import Vue from "vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
+import router from "./router/router.js";
+Vue.component("font-awesome-icon", FontAwesomeIcon);
+
+// Regular style icons
+import {
+  faThumbsUp as farThumbsUp,
+} from '@fortawesome/free-regular-svg-icons'
 // Brand style icons
 import {faFontAwesome} from "@fortawesome/free-brands-svg-icons";
 // Solid style icons
@@ -13,20 +18,30 @@ import {
   faCheckCircle,
   faCog,
   faCommentDots,
+  faEdit,
   faHome,
   faPaperPlane,
+  faPencilAlt,
   faQuestion,
   faQuestionCircle,
   faSearch,
+  faShareSquare,
   faSort,
+  faStar,
   faThumbsUp,
   faTimesCircle,
   faTrophy,
   faUser,
+  faUserSecret,
+  faMedal,
+  faCrown,
+  faTimes,
+  faPlus,
+  faChalkboardTeacher,
+  faHandPeace,
   faUsers,
-  faUserSecret
+  faShare,
 } from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 // Add icons here after import
 library.add(
@@ -36,7 +51,6 @@ library.add(
     faSearch,
     faCog,
     faTrophy,
-    faUsers,
     faUser,
     faHome,
     faQuestion,
@@ -45,18 +59,32 @@ library.add(
     faCommentDots,
     faArrowLeft,
     faThumbsUp,
+    farThumbsUp,
     faQuestionCircle,
     faCheckCircle,
-    faPaperPlane
-);
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+    faEdit,
+    faStar,
+    faShareSquare,
+    faPaperPlane,
+    faPencilAlt,
+    faPaperPlane,
+    faTimes,
+    faMedal,
+    faCrown,
+    faPlus,
+    faChalkboardTeacher,
+    faHandPeace,
+    faUsers,
+    faShare,
+ )
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
+
+
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
 // Cookie library
-var VueCookie = require('vue-cookie');
+var VueCookie = require("vue-cookie");
 Vue.use(VueCookie);
 new Vue({
   router,

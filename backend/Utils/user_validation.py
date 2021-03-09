@@ -1,4 +1,6 @@
+import random
 import re
+import string
 from functools import wraps
 
 from django.core.exceptions import PermissionDenied
@@ -57,13 +59,14 @@ def user_login_required(msg):
     return decorator
 
 
-def validate_user_data(first_name, last_name, email, username):
+def validate_user_data(first_name, last_name, email, username, same_user=None):
     """
     Check if user data for registering is adequate. Return string message otherwise.
     :param first_name: string - user's first name.
     :param last_name: string - user's last name.
     :param email: string - user's email.
     :param username: string - user's username.
+    :param same_user: (optional) User instance for update.
     :return: False - data is valid.
              {any string} - user can't be created.
     """
@@ -73,8 +76,6 @@ def validate_user_data(first_name, last_name, email, username):
         return "First name cannot be empty or too large."
     if "@" not in email:
         return "Email cannot be empty and must be valid."
-    if User.objects.filter(email=email).exists():
-        return "Email is already in use."
     if (
         username.isspace()
         or username == ""
@@ -82,8 +83,21 @@ def validate_user_data(first_name, last_name, email, username):
         or not re.search("[a-z]", username.lower())
     ):
         return "Username cannot be empty or too large."
-    if User.objects.filter(username=username).exists():
-        return "An account with this username already exists."
+
+    # Validate email/username conflict.
+    check_email, check_username = False, False
+    if same_user:
+        if same_user.email != email:
+            check_email = True
+        if same_user.username != username:
+            check_username = True
+    if not same_user or check_email:
+        if User.objects.filter(email=email).exists():
+            return "Email is already in use."
+    if not same_user or check_username:
+        if User.objects.filter(username=username).exists():
+            return "An account with this username already exists."
+
     return False
 
 
@@ -114,3 +128,16 @@ def validate_password(password, password_repeat=None):
             "and be at least 9 characters."
         )
     return False
+
+
+def generate_share_code(length: int):
+    """
+    Generate a share_code of random letters and numbers given a length.
+    :param length: int - length.
+    :return: str - share code.
+    """
+    letters_and_digits = string.ascii_letters + string.digits
+    result_str = "".join(
+        (random.choice(letters_and_digits) for _ in range(length))
+    )
+    return result_str

@@ -54,6 +54,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_teacher = models.BooleanField(default=False)
     hide_leaderboard = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)  # Bio
+    share_code = models.CharField(
+        max_length=6, null=True, blank=True
+    )  # Number for generating the unique sharable link
 
     # Permission fields.
     is_staff = models.BooleanField(default=False)
@@ -82,6 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def serialize(self):
         return {
             "id": self.id,
+            "email": self.email,
             "username": self.username,
             "first_name": self.first_name,
             "last_name": self.last_name,
@@ -100,6 +104,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return {
             "id": self.id,
             "username": self.username,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
             "points": self.points,
             "leaderboard_position": rank,
         }
@@ -166,9 +172,9 @@ class CommunityMember(models.Model):
     Community-User relationship to keep track of the community members.
     """
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     community = models.ForeignKey(
-        Community, on_delete=models.SET_NULL, null=True
+        Community, on_delete=models.CASCADE, null=True
     )
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -208,7 +214,7 @@ class Post(models.Model):
             "id": self.id,
             "user": self.user.serialize_simple(),
             "is_community_owner": Community.objects.filter(
-                user=self.user
+                user=self.user, id=self.community.id
             ).exists(),
             "community": self.community.serialize_simple(),
             "title": self.title,
@@ -261,6 +267,12 @@ class PostComment(models.Model):
         return {
             "id": self.id,
             "user": self.user.serialize_simple(),
+            "is_community_owner": Community.objects.filter(
+                user=self.user, id=self.post.community.id
+            ).exists(),
+            "is_post_author": Post.objects.filter(
+                user=self.user, id=self.post.id
+            ).exists(),
             "comment": self.comment,
             "comment_likes": PostCommentLike.objects.filter(
                 post_comment=self
