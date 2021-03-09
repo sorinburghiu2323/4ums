@@ -107,8 +107,8 @@
         v-for="(comment, index) in allComments"
         :key="index"
         :comment="comment"
-        :isByPostOwner="post.user === comment.user"
-        :isByCommunityOwner="community.creator === comment.user"
+        :isByPostOwner="post.user.id === comment.user.id"
+        :isByCommunityOwner="community.creator.id === comment.user.id"
       />
     </div>
   </div>
