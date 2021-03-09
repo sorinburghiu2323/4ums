@@ -1,14 +1,16 @@
 <template>
-    <div class="container" @click="hideShare()">
+    <div class="container" @click.self="hideShare()">
         <div id="top-buttons">
             <div class="edit-icon">
                 <div class="backgroundSquare"></div>
                 <font-awesome-icon :icon="['fas', 'pencil-alt']"/>
             </div>
             <div class="share-icon" @click.prevent.stop="showShare()">
-                <div id = "share">
-                    <div id = "link">
-                    <label style="text-align: left">Share this link : <u @click.prevent.stop="goLink()">{{this.link}}</u></label>
+                <div id="share">
+                    <div id="link">
+                        <p @click.prevent.stop="goLink()">{{ this.link }}</p>
+                        <font-awesome-icon :icon="['fas', 'link'] " class="copy-icon"
+                        v-clipboard:copy="() => this.link"/>
                     </div>
                 </div>
                 <div class="backgroundSquare"></div>
@@ -124,13 +126,13 @@ export default {
         widthCalc() {
             return window.innerWidth - 100;
         },
-        goLink(){
+        goLink() {
             this.$router.push(this.smallLink);
         },
-        getLink(){
-            if(this.counter >= 2){
+        getLink() {
+            if (this.counter >= 2) {
                 console.error("Can't generate share code")
-            }else {
+            } else {
                 axios.get("/api/users/sharecode")
                     .then((response) => {
                         if (response.data.code === null) {
@@ -150,10 +152,10 @@ export default {
             }
         },
         showShare() {
-            if(document.getElementById("share").style.visibility === "visible"){
+            if (document.getElementById("share").style.visibility === "visible") {
                 document.getElementById("info").style.marginTop = "60px";
                 document.getElementById("share").style.visibility = "hidden";
-            }else {
+            } else {
                 document.getElementById("info").style.marginTop = "120px";
                 document.getElementById("share").style.visibility = "visible";
                 this.counter = 0;
@@ -161,7 +163,7 @@ export default {
             }
         },
         hideShare() {
-            if(document.getElementById("share").style.visibility === "visible") {
+            if (document.getElementById("share").style.visibility === "visible") {
                 document.getElementById("info").style.marginTop = "60px";
                 document.getElementById("share").style.visibility = "hidden";
             }
@@ -211,27 +213,61 @@ export default {
 </script>
 
 <style scoped>
-#share{
+#share {
     display: flex;
-    position:absolute;
+    position: absolute;
     visibility: hidden;
-    background: #34E7E4;
-    top:50px;
-    right:300px;
-    color: white;
+    background: #135AF6;
+    top: 50px;
+    right: 10px;
     height: 100px;
 }
 
 #share #link {
-    display: flex;
-    position: absolute;
+    position: fixed;
+    margin: auto;
+    right: 10px;
     visibility: inherit;
-    width:90vw;
-    height:60px;
+    max-width: calc(100vw - 20px);
+    min-width: 300px;
+    width: 280px;
+    height: 40px;
     box-shadow: 0 0 20px black;
+    cursor: pointer;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, #135AF6, #1A88FE);
     font-size: 16px;
     font-weight: 600;
 }
+
+#share #link p {
+    height: inherit;
+    width: 280px;
+    max-width: 330px;
+    min-width: 280px;
+    position: absolute;
+    top: -13px;
+    white-space: nowrap;
+    left: 10px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 20px;
+}
+
+#share .copy-icon{
+    display: flex;
+    position:absolute;
+    top: 4px;
+    left: calc(100% - 36px);
+    background: white;
+    color: black;
+    border-radius: 40px;
+    font-size: 20px;
+    padding:6px;
+    z-index: 2;
+}
+
 #info {
     position: relative;
     margin-top: 60px;
