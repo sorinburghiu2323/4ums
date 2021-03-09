@@ -330,6 +330,17 @@ paths:
         '404':
           description: 'Not found - No community with the id "{id}" exists'
       description: Get an individual community.
+    delete:
+      summary: ''
+      operationId: delete-communities-id
+      responses:
+        '200':
+          description: OK - Community deleted.
+        '401':
+          description: Unauthorized - Permission denied.
+      description: |-
+        Delete a community.
+        Only the creator can do this.
   '/communities/{id}/leave':
     parameters:
       - schema:
@@ -584,6 +595,15 @@ paths:
         '401':
           description: Unauthorized - Login required.
       description: Get logged in user profile.
+    delete:
+      summary: ''
+      operationId: delete-users-me
+      responses:
+        '200':
+          description: OK - Account deleted.
+        '401':
+          description: Unauthorized - Login required.
+      description: Delete account.
   '/users/{id}':
     parameters:
       - schema:

@@ -56,6 +56,7 @@ def users_me(request):
         request,
         GET=user_controller.get_user(request, request.user.id),
         PUT=user_controller.update_me,
+        DELETE=user_controller.delete_me,
     )
 
 
@@ -107,6 +108,7 @@ def community(request, community_id):
         request,
         POST=community_controller.join_community,
         GET=community_controller.get_community,
+        DELETE=community_controller.delete_community,
         args=[community_id],
     )
 
