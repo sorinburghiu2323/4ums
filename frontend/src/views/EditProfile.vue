@@ -3,14 +3,14 @@
     <div @click="goBack()">
       <p id="back">
         <font-awesome-icon :icon="['fas', 'arrow-left']" />
-        Communities
+        Profile
       </p>
     </div>
     <h1 style="text-align: left">Edit Your Profile</h1>
     <div
       style="display: flex; justify-content: space-between; margin-bottom: 1vh"
     >
-      <div style="vertical-align: center">Show me on the leaderboard?</div>
+      <div style="vertical-align: center; margin: auto; margin-left: 0;">Show me on the leaderboard?</div>
 
       <div>
         <label class="switch">
@@ -52,8 +52,18 @@ export default {
       hideLeaderboard: true,
     };
   },
+  created() {
+    axios.get("/api/users/me")
+    .then(response => {
+      this.description = response.data.description;
+    })
+    .catch(error => {
+      console.error(error);
+    })
+  },
   methods: {
     submit() {
+      console.log(this.description);
       axios.get("/api/users/me").then((response) => {
         axios
           .put("/api/users/me", {
@@ -64,12 +74,13 @@ export default {
             username: response.data.username,
             description: this.description,
           })
-          .then(() => {})
+          .then(() => {
+            this.goBack();
+          })
           .catch((error) => {
             console.error(error.response.data);
           });
       });
-      this.$router.go(-1);
     },
     goBack() {
       this.$router.push({
@@ -87,6 +98,8 @@ export default {
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin: auto;
+  margin-right: 0;
 }
 
 .switch input {
@@ -150,6 +163,8 @@ input:checked + .slider:before {
   color: black;
   background-image: linear-gradient(to right, #348be9, #65ffa7);
   padding: 1vh;
+  border: none;
+  cursor: pointer;
 }
 
 #back {
