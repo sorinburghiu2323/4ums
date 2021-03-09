@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .container{
     margin-top: 10vh;
-    margin-left: 10vw;
+    padding-left: 10vw;
     animation: fade-in-move-down 0.7s;
     overflow: hidden;
 }
@@ -59,14 +59,15 @@ export default {
     padding-top: 6vh;
     height: auto;
     background: None;
+    z-index: 3;
 }
 
 .header {
-    z-index: 1;
     width: auto;
-    margin-left: -40px;
+    margin-left: -35px;
     left: calc(50vw - 160px);
     margin-bottom: 10px;
+    z-index: 2;
 }
 
 .header h1 {
