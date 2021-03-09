@@ -1,20 +1,25 @@
 <template>
     <div class="container" @click.self="hideShare()">
         <div id="top-buttons">
+            <!-- edit Icon --> 
             <div class="edit-icon">
                 <div class="backgroundSquare"></div>
                 <font-awesome-icon :icon="['fas', 'pencil-alt']"/>
             </div>
-            <div class="share-icon" @click.prevent.stop="showShare()">
+            <!-- share Icon -->
+            <div class="share-icon">
+                <div class="backgroundSquare"></div>
+                <font-awesome-icon :icon="['fas', 'share']" @click.prevent.stop="showShare()"></font-awesome-icon>
+                <!-- pop up share link -->
                 <div id="share">
                     <div id="link">
+                        <!-- link text -->
                         <p @click.prevent.stop="goLink()">{{ this.link }}</p>
+                        <!-- copy link button -->
                         <font-awesome-icon :icon="['fas', 'link'] " class="copy-icon"
                         v-clipboard:copy="() => this.link"/>
                     </div>
                 </div>
-                <div class="backgroundSquare"></div>
-                <font-awesome-icon :icon="['fas', 'share']"></font-awesome-icon>
             </div>
             <div class="settings-icon">
                 <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
@@ -153,10 +158,10 @@ export default {
         },
         showShare() {
             if (document.getElementById("share").style.visibility === "visible") {
-                document.getElementById("info").style.marginTop = "60px";
+                //document.getElementById("info").style.marginTop = "60px";
                 document.getElementById("share").style.visibility = "hidden";
             } else {
-                document.getElementById("info").style.marginTop = "120px";
+                //document.getElementById("info").style.marginTop = "120px";
                 document.getElementById("share").style.visibility = "visible";
                 this.counter = 0;
                 this.getLink();
@@ -228,9 +233,8 @@ export default {
     margin: auto;
     right: 10px;
     visibility: inherit;
-    max-width: calc(100vw - 20px);
+    max-width: calc(100vw - 5px);
     min-width: 300px;
-    width: 280px;
     height: 40px;
     box-shadow: 0 0 20px black;
     cursor: pointer;
@@ -238,6 +242,8 @@ export default {
     background: linear-gradient(to bottom, #135AF6, #1A88FE);
     font-size: 16px;
     font-weight: 600;
+    z-index: 5;
+
 }
 
 #share #link p {
@@ -265,7 +271,7 @@ export default {
     border-radius: 40px;
     font-size: 20px;
     padding:6px;
-    z-index: 2;
+    z-index: 10;
 }
 
 #info {
