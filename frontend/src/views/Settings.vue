@@ -15,6 +15,10 @@
         Privacy
       </p>
       Show me on the leaderboard
+      <label class="switch">
+        <input type="checkbox" v-model="hideLeaderboard" />
+        <span class="slider round"></span> </label
+      ><br />
     </div>
   </div>
 </template>
