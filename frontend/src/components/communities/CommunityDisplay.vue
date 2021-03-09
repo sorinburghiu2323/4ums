@@ -52,10 +52,20 @@ export default {
       });
     },
     leaveCommunity() {
-      this.$root.$emit("updateCommunities");
+      this.$router.push({
+        name: "Leave",
+        params: {
+          id: this.community.id,
+        },
+      });
     },
     deleteCommunity() {
-      this.$root.$emit("updateCommunities");
+      this.$router.push({
+        name: "Delete",
+        params: {
+          id: this.community.id,
+        },
+      });
     },
   },
 };

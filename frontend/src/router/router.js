@@ -1,17 +1,19 @@
 import CommunitiesPage from "../views/CommunitiesPage.vue";
-import Community from "../views/Community.vue";
 import CreateCommunity from "../views/CreateCommunity.vue";
 import CreatePost from "../views/CreatePost.vue";
 import EditProfile from "../views/EditProfile.vue";
 import Feed from "../views/Feed.vue";
 import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
-import ManageCommunities from "../views/ManageCommunities.vue";
 import NotFound from "@/views/NotFound";
 import PostPage from "@/views/PostPage";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
+import Community from "../views/Community.vue";
+import ManageCommunities from "../views/ManageCommunities.vue";
+import LeaveCommunity from "../views/LeaveCommunity.vue";
+import DeleteCommunity from "@/views/DeleteCommunity";
 import User from "@/views/User";
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -89,6 +91,16 @@ const routes = [
         path: '/manage',
         name: 'Manage',
         component: ManageCommunities,
+    },
+    {
+        path: "/leave/:id",
+        name: "Leave",
+        component: LeaveCommunity,
+    },
+    {
+        path: "/delete/:id",
+        name: "Delete",
+        component: DeleteCommunity,
     },
     {
         path: '*',
