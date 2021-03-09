@@ -1,4 +1,3 @@
-
 from SoftwareDev import settings
 import logging
 
@@ -51,14 +50,15 @@ def send_message(service, user_id, message):
     :param message: base64 encoded message to be sent.
     """
     try:
-        message = (service.users().messages().send(
-            userId=user_id, body=message
-        ).execute())
+        message = (
+            service.users()
+            .messages()
+            .send(userId=user_id, body=message)
+            .execute()
+        )
     except HttpError as error:
         logger = logging.getLogger("root")
-        logger.error(
-            "HTTP error occured when calling the Gmail API:"
-        )
+        logger.error("HTTP error occured when calling the Gmail API:")
         logger.error(str(error))
 
 
@@ -76,7 +76,9 @@ def build_email(email_addr, user_id, reset_code, first_name, username):
         A base64 encoded email object.
     """
 
-    link_url = f"http://4ums.co.uk/login/passwordreset?id={user_id}&code={reset_code}"
+    link_url = (
+        f"http://4ums.co.uk/login/passwordreset?id={user_id}&code={reset_code}"
+    )
     template = loader.get_template("reset_email.html")
     message_content = template.render(
         {"username": username, "first_name": first_name, "url": link_url}
@@ -94,13 +96,12 @@ def send_reset_email(message):
     if "DJANGO_AWS_4UMS_DEPLOYED" not in environ_variables:
         # don't send the email unless we're in live deployment
         # for testing purposes: decode plain text and print to console
-        msg_b64 = message['raw']
+        msg_b64 = message["raw"]
         msg_str = urlsafe_b64decode(msg_b64.encode()).decode()
 
         message = message_from_string(msg_str)
         print(message.get_payload())
         return
-
 
     session = boto3.session.Session()
     client = session.client(
@@ -111,15 +112,15 @@ def send_reset_email(message):
         secret_value = client.get_secret_value(SecretId="4ums/email-creds")
     except ClientError as e:
         logger = logging.getLogger("root")
-        if e.response['Error']['Code'] == 'ResourceNotFoundException':
+        if e.response["Error"]["Code"] == "ResourceNotFoundException":
             logger.error(
                 "Failed to send email - Couldn't get secret '4ums/email-creds'"
             )
-        elif e.response['Error']['Code'] == 'InvalidRequestException':
+        elif e.response["Error"]["Code"] == "InvalidRequestException":
             logger.error(
                 f"Failed to send email - secret request was invalid due to: {e}"
             )
-        elif e.response['Error']['Code'] == 'InvalidParameterException':
+        elif e.response["Error"]["Code"] == "InvalidParameterException":
             logger.error(
                 f"Failed to send email - secret request had invalid params: {e}"
             )
@@ -129,18 +130,18 @@ def send_reset_email(message):
             )
         return
 
-    creds_raw = b64decode(secret_value['SecretString'])
+    creds_raw = b64decode(secret_value["SecretString"])
     creds = pickle.loads(creds_raw)
 
     if not creds.valid:
         if creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            #credentials not usable; can't send email
+            # credentials not usable; can't send email
             logger = logging.getLogger("root")
             logger.error(
                 "Failed to send email - Gmail API credentials are invalid"
             )
 
-    service = build('gmail', 'v1', credentials=creds)
+    service = build("gmail", "v1", credentials=creds)
     send_message(service, "me", message)

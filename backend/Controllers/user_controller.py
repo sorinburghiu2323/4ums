@@ -16,6 +16,7 @@ import random
 import string
 import datetime
 
+
 def user_login(request):
     """
     Login a user using email and password.
@@ -134,7 +135,7 @@ def reset_password(request):
             )
         time_now = timezone.now()
         if time_now > reset_code.expiry:
-            #current time is later than the expiry
+            # current time is later than the expiry
             return JsonResponse(
                 "Unauthorized - Reset code has expired", status=401, safe=False
             )
@@ -148,17 +149,16 @@ def reset_password(request):
                 "Bad request - Missing fields", status=400, safe=False
             )
 
-
         password_invalid = validate_password(
             request.DATA["password"], request.DATA["password_repeat"]
         )
 
         if password_invalid:
-             return JsonResponse(
+            return JsonResponse(
                 "Bad request - " + password_invalid, status=400, safe=False
             )
 
-        #update the password
+        # update the password
         try:
             user = User.objects.get(id=request.DATA["user_id"])
         except User.DoesNotExist:
@@ -169,7 +169,7 @@ def reset_password(request):
         user.set_password(request.DATA["password"])
         user.save()
 
-        #code is single use
+        # code is single use
         reset_code.delete()
 
         return JsonResponse("OK - Password updated", status=200, safe=False)
@@ -196,13 +196,13 @@ def send_email(request):
                 safe=False,
             )
 
-        urlsafe_chars = string.ascii_letters+string.digits+"-_"
+        urlsafe_chars = string.ascii_letters + string.digits + "-_"
         code_str = "".join(random.choice(urlsafe_chars) for _ in range(100))
 
-        #30 minutes from now
+        # 30 minutes from now
         expiry_time = timezone.now() + datetime.timedelta(minutes=30)
 
-        #overwrite old code
+        # overwrite old code
         if PasswordResetCode.objects.filter(user_id=user.id).exists():
             reset_code = PasswordResetCode.objects.get(user_id=user.id)
             reset_code.delete()
@@ -221,6 +221,7 @@ def send_email(request):
     return JsonResponse(
         "Bad request - Must provide email", status=400, safe=False
     )
+
 
 def get_feed(request):
     """

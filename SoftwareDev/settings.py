@@ -72,30 +72,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "SoftwareDev.wsgi.application"
 
-#Logging settings
+# Logging settings
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': os.getenv(
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": os.getenv(
                 "LOG_FILE_PATH", os.path.join(BASE_DIR, "django.log")
             ),
-            'encoding': 'utf-8',
+            "encoding": "utf-8",
             "formatter": "simple",
         },
     },
-    'formatters': {
+    "formatters": {
         "simple": {
             "format": "{asctime} - [{levelname}] {message}",
             "style": "{",
         }
     },
     "loggers": {
-        'root': {
-            'handlers': ['file'],
-            'level': os.getenv("LOG_LEVEL", "INFO"),
+        "root": {
+            "handlers": ["file"],
+            "level": os.getenv("LOG_LEVEL", "INFO"),
         },
     },
 }

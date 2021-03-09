@@ -6,17 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('backend', '0005_auto_20210301_0957'),
+        ("backend", "0005_auto_20210301_0957"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PasswordResetCode',
+            name="PasswordResetCode",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user_id', models.IntegerField(unique=True)),
-                ('code', models.TextField(max_length=100)),
-                ('expiry', models.DateTimeField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("user_id", models.IntegerField(unique=True)),
+                ("code", models.TextField(max_length=100)),
+                ("expiry", models.DateTimeField()),
             ],
         ),
     ]
