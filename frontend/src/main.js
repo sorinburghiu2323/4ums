@@ -1,22 +1,25 @@
-
 import App from "./App.vue";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import Vue from "vue";
-import {faFontAwesome} from "@fortawesome/free-brands-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import router from "./router/router.js";
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
+// Regular style icons
+import {
+  faThumbsUp as farThumbsUp,
+} from '@fortawesome/free-regular-svg-icons'
+// Brand style icons
+import {faFontAwesome} from "@fortawesome/free-brands-svg-icons";
+// Solid style icons
 import {
   faAlignLeft,
   faArrowLeft,
   faCheckCircle,
   faCog,
   faCommentDots,
-  faCrown,
   faEdit,
   faHome,
-  faMedal,
   faPaperPlane,
   faPencilAlt,
   faQuestion,
@@ -26,51 +29,55 @@ import {
   faSort,
   faStar,
   faThumbsUp,
-  faTimes,
   faTimesCircle,
   faTrophy,
   faUser,
   faUserSecret,
+  faMedal,
+  faCrown,
+  faTimes,
+  faPlus,
+  faChalkboardTeacher,
+  faHandPeace,
   faUsers,
   faShare,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Fontawesome documentation: https://www.npmjs.com/package/@fortawesome/vue-fontawesome
-// Regular style icons
-
-// Brand style icons
-
-// Solid style icons
-
 // Add icons here after import
 library.add(
-  faUserSecret,
-  faSort,
-  faFontAwesome,
-  faSearch,
-  faCog,
-  faTrophy,
-  faUsers,
-  faUser,
-  faHome,
-  faQuestion,
-  faAlignLeft,
-  faTimesCircle,
-  faCommentDots,
-  faArrowLeft,
-  faThumbsUp,
-  faQuestionCircle,
-  faCheckCircle,
-  faPaperPlane,
-  faTimes,
-  faMedal,
-  faCrown,
-  faEdit,
-  faShareSquare,
-  faStar,
-  faPencilAlt,
-  faShare,
-);
+    faUserSecret,
+    faSort,
+    faFontAwesome,
+    faSearch,
+    faCog,
+    faTrophy,
+    faUser,
+    faHome,
+    faQuestion,
+    faAlignLeft,
+    faTimesCircle,
+    faCommentDots,
+    faArrowLeft,
+    faThumbsUp,
+    farThumbsUp,
+    faQuestionCircle,
+    faCheckCircle,
+    faEdit,
+    faStar,
+    faShareSquare,
+    faPaperPlane,
+    faPencilAlt,
+    faPaperPlane,
+    faTimes,
+    faMedal,
+    faCrown,
+    faPlus,
+    faChalkboardTeacher,
+    faHandPeace,
+    faUsers,
+    faShare,
+ )
+
 
 
 Vue.config.devtools = true;

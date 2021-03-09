@@ -77,4 +77,9 @@ body {
   z-index: -1;
 }
 
+
+button {
+  cursor: pointer;
+  outline: none;
+}
 </style>

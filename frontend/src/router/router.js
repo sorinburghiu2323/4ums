@@ -27,7 +27,7 @@ const routes = [
         component: Feed,
     },
     {
-        path: "/communities/post/:type",
+        path: "/communities/:id/post/:type",
         name: "CreatePost",
         component: CreatePost,
     },

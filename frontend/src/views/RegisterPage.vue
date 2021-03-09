@@ -109,10 +109,10 @@ export default {
       // Check 9 character password
       this.nineChars = this.password.length >= 9;
       // Check for white space
-      this.noSpaces = !/\s/g.test(this.password);
-      this.lowercase = /[a-z]/.test(this.password);
-      this.uppercase = /[A-Z]/.test(this.password);
-      this.containsNumber = /[0-9]/.test(this.password);
+      this.noSpaces = !/\s/g.test(this.password) ? true : false;
+      this.lowercase = /[a-z]/.test(this.password) ? true : false;
+      this.uppercase = /[A-Z]/.test(this.password) ? true : false;
+      this.containsNumber = /[0-9]/.test(this.password) ? true : false;
     },
     passwordConfirmation: function() {
       if (
@@ -149,6 +149,11 @@ export default {
         return false;
       }
 
+      if (!this.isTermsAgreed) {
+        this.termErrMessage = "You must agree to the terms to register";
+        return false;
+      }
+
       axios
         .post("/api/users", {
           email: this.email,
@@ -169,6 +174,7 @@ export default {
           this.errMessage = error.response.data;
         });
     },
+
     validatePassword() {
       if (this.password.length >= 9) {
         this.nineChars = true;
@@ -318,7 +324,6 @@ input::placeholder {
   text-align: left;
   color: red;
 }
-
 
 .fulfilled ul {
   color: green;

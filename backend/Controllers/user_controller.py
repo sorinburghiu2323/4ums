@@ -153,7 +153,7 @@ def update_me(request):
              401 - login required.
     """
     user = request.user
-    password_updated = False
+    password_updated, body_updated = False, False
     if "password" in request.DATA and "password_repeat" in request.DATA:
         update_password = validate_password(
             request.DATA["password"], request.DATA["password_repeat"]
@@ -172,7 +172,6 @@ def update_me(request):
         "email" in request.DATA
         and "first_name" in request.DATA
         and "last_name" in request.DATA
-        and "email" in request.DATA
         and "hide_leaderboard" in request.DATA
         and "username" in request.DATA
         and "description" in request.DATA
@@ -182,6 +181,7 @@ def update_me(request):
             request.DATA["last_name"],
             request.DATA["email"],
             request.DATA["username"],
+            same_user=request.user,
         )
         if update_valid:
             return JsonResponse(
@@ -196,8 +196,9 @@ def update_me(request):
         user.hide_leaderboard = request.DATA["hide_leaderboard"]
         user.description = request.DATA["description"]
         user.save()
+        body_updated = True
 
-    if not password_updated:
+    if not password_updated and not body_updated:
         return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
     return JsonResponse("OK - User updated.", status=200, safe=False)
 
@@ -292,3 +293,16 @@ def update_share_code(request):
     user.share_code = generate_share_code(6)
     user.save()
     return JsonResponse({"code": user.share_code}, status=200)
+
+
+def delete_me(request):
+    """
+    Delete a user.
+    :param request: session request.
+    :return: 401 - login required.
+             200 - account deleted.
+    """
+    user = request.user
+    user.is_active = False
+    user.save()
+    return JsonResponse("OK - Account deleted.", status=200, safe=False)

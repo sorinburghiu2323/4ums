@@ -1,96 +1,137 @@
 <template>
-  <div class="containers">
+  <div class="containers container">
+    <div class="badges">
+      <div class="chosen-answer" v-if="is_approved">
+          <font-awesome-icon :icon="['fa', 'crown']"></font-awesome-icon>
+          <p>Chosen Answer</p>
+      </div>
+      <div class="lecturer" v-if="comment.user.is_teacher">
+        <font-awesome-icon :icon="['fa', 'chalkboard-teacher']"/>
+        <p>Lecturer</p>
+      </div>
+      <div class="community-owner" v-if="isByCommunityOwner">
+        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
+        <p>Community Owner</p>
+      </div>
+      <div class="thread-owner" v-if="isByPostOwner">
+        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
+        <p>Thread Owner</p>
+      </div>
+    </div>
     <div class="details">
-      <div class="description">
-        <p>{{ this.comment.comment }}</p>
+      <div class="description" v-if="comment.comment">
+        <p>{{ comment.comment }}</p>
+      </div>
+    </div>
+    <div style="display: flex;">
+      <div class="likes" @click.stop="likeComment">
+        <div v-if="userLiked" style="color:white">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['fa', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ numLikes }}</div>
+        </div>
+        <div v-else style="color:grey">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ numLikes }}</div>
+        </div>
       </div>
       <div class="date">
-        <p>{{ date_time }}</p>
-      </div>
-      <div v-if="is_approved">
-        <div class="answer">
-          <div class="oval">
-          </div>
-          <font-awesome-icon :icon="['fa', 'check-circle']"></font-awesome-icon>
-          <p>Chosen Answer</p>
-        </div>
+        <p>Posted {{date_time}}</p>
       </div>
     </div>
-    <div class="likes" @click.stop="likeComment">
-      <div v-if="this.userLiked" style="color:white">
-        <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
-        </div>
-        <div class="like-count">{{ this.numLikes }}</div>
-      </div>
-      <div v-else style="color:grey">
-        <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
-        </div>
-        <div class="like-count">{{ this.numLikes }}</div>
-      </div>
-    </div>
+
     <div class="author" @click.stop="navigateToUser">
-      <p>Authored by <span class="author-name">{{ comment.user.username }}</span></p>
+      <p>
+       By <span class="author-name">{{ comment.user.username }}</span>
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 import axios from "axios";
 
 export default {
-  name: 'Comment',
+  name: "Comment",
   props: {
-    comment: Object
+    comment: Object,
+    isByPostOwner: Boolean,
+    isByCommunityOwner: Boolean,
   },
   data() {
     return {
       info: 3,
       comment_data: this.comment.comment,
       is_approved: this.comment.is_approved,
-      date_time: moment((this.comment["created_at"])).format('DD/MM/YY'),
       userLiked: this.comment["is_liked"],
-      commentId: this.comment.id,
       numLikes: this.comment["comment_likes"],
-      postId: this.$route.params.postId,
-      communityId: this.$route.params.id,
+    };
+  },
+  computed: {
+    communityId() {
+      return this.$route.params.id;
+    },
+    postId() {
+      return this.$route.params.postId;
+    },
+    date_time() {
+      return moment(this.comment["created_at"]).format("DD/MM/YY");
     }
   },
   methods: {
     navigateToUser() {
       this.$router.push({
-        name: 'User',
+        name: "User",
         params: {
-          id: this.comment["user"]["id"]
-        }
-      })
+          id: this.comment["user"]["id"],
+        },
+      });
     },
     likeComment() {
       if (!this.userLiked) {
-        axios.post('/api/communities/' + this.communityId + '/posts/' + this.postId + '/comments/' + this.commentId +
-            '/likes')
-            .then(() => {
-              this.numLikes++;
-              this.userLiked = true;
-            })
-            .catch((error) => {
-              console.error(error);
-            })
+        axios
+          .post(
+            "/api/communities/" +
+              this.communityId +
+              "/posts/" +
+              this.postId +
+              "/comments/" +
+              this.comment.id +
+              "/likes"
+          )
+          .then(() => {
+            this.numLikes++;
+            this.userLiked = true;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } else {
-        axios.delete('/api/communities/' + this.communityId + '/posts/' + this.postId + '/comments/' + this.commentId +
-            '/likes')
-            .then(() => {
-              this.numLikes--;
-              this.userLiked = false;
-            }).catch((error) => {
-          console.error(error);
-        })
+        axios
+          .delete(
+            "/api/communities/" +
+              this.communityId +
+              "/posts/" +
+              this.postId +
+              "/comments/" +
+              this.comment.id +
+              "/likes"
+          )
+          .then(() => {
+            this.numLikes--;
+            this.userLiked = false;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -102,12 +143,57 @@ export default {
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
-  background: linear-gradient(to right, #272B39, #1E212B);
+  background: linear-gradient(to right, #272b39, #1e212b);
   position: relative;
 }
 
-.details {
-  margin: 20px auto 20px 25px;
+.container {
+  font-size: 15px;
+  color: #7e7e7e;
+  background: linear-gradient(to right, #272b39, #1e212b);
+  margin-left: -8px !important;
+  margin-right: -7px !important;
+  padding: 10px 10px 0px 10px !important;
+}
+
+.badges {
+  display:flex;
+  flex-wrap: wrap;
+}
+
+.badges div {
+  border-radius: 25px;
+  padding: 2px 15px 2px 15px;
+  color: black;
+  display: flex;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.badges div p {
+  margin: auto;
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.badges div svg {
+  margin: auto;
+  margin-left: 0;
+}
+
+.lecturer {
+  background: rgb(138, 59, 254);
+  background: linear-gradient(225deg, rgba(138, 59, 254, 1) 11%, rgba(180, 55, 255, 1) 49%);
+}
+
+.community-owner {
+  background: rgb(255,237,0);
+  background: linear-gradient(270deg, rgba(255,237,0,1) 15%, rgba(253,248,98,1) 100%);
+}
+
+.thread-owner {
+  background: rgb(20,90,246);
+  background: linear-gradient(90deg, rgba(20,90,246,1) 27%, rgba(0,137,255,1) 100%);
 }
 
 .details p {
@@ -131,30 +217,22 @@ export default {
 }
 
 .details .description {
-  height: 70%;
   font-size: 15px;
   color: #7e7e7e;
+  padding: 5px;
+  white-space: pre-wrap;
 }
 
 .description p {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: relative;
-  top: 10px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  text-align: left;
+    text-align: left;
+    overflow-wrap: break-word;
 }
 
 .date {
-  display: flex;
-  position: absolute;
-  top: 0;
-  right: 0;
   color: #7e7e7e;
-  font-style: italic;
-  margin-right: 10px;
-  margin-top: 1vh;
+  font-size: 15px;
+  margin: auto;
+  margin-left: 0px;
 }
 
 .answer .oval {
@@ -168,51 +246,63 @@ export default {
   margin-top: 1px;
   margin-left: -10px;
   border-radius: 20vw 20vw 20vw 20vw;
-  background: linear-gradient(to right, #145AF6, #0089FF);
-  box-shadow: 0 0 30px #0A72FB;
+  background: linear-gradient(to right, #145af6, #0089ff);
+  box-shadow: 0 0 30px #0a72fb;
 }
 
-.answer {
-  display: flex;
-  position: absolute;
-  top: 4px;
-  left: 0;
-  color: black;
-  margin-left: 30px;
-  margin-top: 1.2vh;
-}
 
-.answer p {
-  font-family: "Trebuchet MS", serif;
-  position: relative;
-  top: 0;
-  margin-top: -0.1vh;
-  left: 5px;
+.chosen-answer  {
+  background: linear-gradient(270deg, rgba(52, 235, 233, 1) 0%, rgba(101, 255, 167, 1) 35%);
+  box-shadow: 0px 5px 40px #268079;
 }
 
 .likes {
+  position: relative;
+  width: 60px;
+  z-index: 1;
   display: flex;
-  margin-left: 25px;
+  margin-left: 8px;
+  margin-right: 10px;
+}
+
+.likes > div {
+  display: flex;
+  width: 100%;
 }
 
 .like-icon {
   font-size: 20px;
+  background: white;
+  color: black;
+  padding: 3px 7px 3px 7px;
+  border-radius: 12px;
+  margin: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .like-count {
-  margin-left: 10px;
-  font-size: 20px;
+  font-size: 18px;
   margin: auto;
   margin-left: 10px;
+  color: white;
 }
 
 .author {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 16px;
+  right: 16px;
   color: #7e7e7e;
-  font-style: italic;
   margin-right: 10px;
+}
+
+.author p {
+  margin: 0;
+  font-size: 15px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .author-name {

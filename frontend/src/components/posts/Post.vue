@@ -7,10 +7,6 @@
       <div class="description">
         <p>{{ post.description }}</p>
       </div>
-      <div class="date">
-        <p>{{ date_time }}</p>
-      </div>
-
       <div v-if="post_type === 'question'&& !this.approvedAnswer">
         <div class="open">
           <div class="oval">
@@ -36,23 +32,29 @@
         </div>
       </div>
     </div>
-    <div class="likes" @click.stop='likePost'>
-      <div v-if="this.userLiked" style="color:white">
-        <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
+    <div style="display: flex;">
+      <div class="likes" @click.stop='likePost'>
+        <div v-if="this.userLiked" style="color:white">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['fa', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ post["likes_num"] }}</div>
         </div>
-        <div class="like-count">{{ post["likes_num"] }}</div>
+        <div v-else style="color:grey">
+          <div class="like-icon">
+            <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
+          </div>
+          <div class="like-count">{{ post["likes_num"] }}</div>
+        </div>
       </div>
-      <div v-else style="color:grey">
-        <div class="like-icon">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']"></font-awesome-icon>
-        </div>
-        <div class="like-count">{{ post["likes_num"] }}</div>
+      <div class="date">
+          <p>Posted {{date_time}}</p>
+      </div>
+      <div class="author" @click.stop='navigateToUser'>
+        <p>By <span class="author-name">{{ post["user"]["username"] }}</span></p>
       </div>
     </div>
-    <div class="author" @click.stop='navigateToUser'>
-      <p>Authored by <span class="author-name">{{ post["user"]["username"] }}</span></p>
-    </div>
+    
   </div>
 </template>
 <script>
@@ -169,14 +171,8 @@ export default {
 }
 
 .date {
-  display: flex;
-  position: absolute;
-  top: 0;
-  right: 0;
   color: #7e7e7e;
-  font-style: italic;
-  margin-right: 10px;
-  margin-top: 1vh;
+  font-size: 15px;
 }
 
 .open .oval {
@@ -278,31 +274,54 @@ export default {
 
 .likes {
   position: relative;
-  z-index: 0;
   width: 60px;
+  z-index: 1;
   display: flex;
-  margin-left: 25px;
+  margin-left: 8px;
+  margin-right: 10px;
+}
+
+.likes > div {
+  display: flex;
+  width: 100%;
 }
 
 .like-icon {
   font-size: 20px;
+  background: white;
+  color: black;
+  padding: 3px 7px 3px 7px;
+  border-radius: 12px;
+  margin: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .like-count {
+  font-size: 18px;
+  margin: auto;
   margin-left: 10px;
-  font-size: 20px;
 }
+
 .author {
   position: absolute;
-  z-index: 1;
-  bottom: 0;
+  bottom: 26px;
   right: 0;
   color: #7e7e7e;
-  font-style: italic;
   margin-right: 10px;
+}
+
+.author p {
+  margin: 0;
+  font-size: 15px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .author-name {
   text-decoration: underline;
 }
+
 </style>
