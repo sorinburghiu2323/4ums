@@ -20,81 +20,81 @@ import axios from "axios";
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
-    name: "Feed",
-    component: Feed,
-  },
-  {
-    path: "/communities/post/:type",
-    name: "CreatePost",
-    component: CreatePost,
-  },
-  {
-    path: "/login",
-    name: "LoginPage",
-    component: LoginPage,
-  },
-  {
-    path: "/register",
-    name: "RegisterPage",
-    component: RegisterPage,
-  },
-  {
-    path: "/communities",
-    name: "Communities",
-    component: CommunitiesPage,
-  },
-  {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
-  },
-  {
-    path: "/leaderboard",
-    name: "Leaderboard",
-    component: Leaderboard,
-  },
-  {
-    path: "/communities/create",
-    name: "CreateCommunity",
-    component: CreateCommunity,
-  },
-  {
-    path: "/communities/create/preview",
-    name: "PreviewCommunity",
-    component: PreviewCommunity,
-  },
-  {
-    path: "/communities/:id/posts/:postId",
-    name: "PostPage",
-    component: PostPage,
-  },
-  {
-    path: "/communities/:id",
-    name: "Community",
-    component: Community,
-  },
-  {
-    path: "/users/:id",
-    name: "User",
-    component: User,
-  },
-  {
-    path: "/users/me/edit",
-    name: "EditProfile",
-    component: EditProfile,
-  },
-  {
-    path: "/manage",
-    name: "Manage",
-    component: ManageCommunities,
-  },
-  {
-    path: "*",
-    name: "NotFound",
-    component: NotFound,
-  },
+    {
+        path: "/",
+        name: "Feed",
+        component: Feed,
+    },
+    {
+        path: "/communities/:id/post/:type",
+        name: "CreatePost",
+        component: CreatePost,
+    },
+    {
+        path: "/login",
+        name: "LoginPage",
+        component: LoginPage,
+    },
+    {
+        path: "/register",
+        name: "RegisterPage",
+        component: RegisterPage,
+    },
+    {
+        path: "/communities",
+        name: "Communities",
+        component: CommunitiesPage,
+    },
+    {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
+    },
+    {
+      path: "/users/me/edit",
+      name: "EditProfile",
+      component: EditProfile,
+    },
+    {
+        path: "/leaderboard",
+        name: "Leaderboard",
+        component: Leaderboard,
+    },
+    {
+        path: "/communities/create",
+        name: "CreateCommunity",
+        component: CreateCommunity,
+    },
+    {
+        path: "/communities/create/preview",
+        name: "PreviewCommunity",
+        component: PreviewCommunity,
+    },
+    {
+        path: "/communities/:id/posts/:postId",
+        name: "PostPage",
+        component: PostPage,
+    },
+    {
+        path: '/communities/:id',
+        name: 'Community',
+        component: Community,
+    },
+    {
+        path: '/users/:id',
+        name: 'User',
+        component: User,
+    },
+    {
+        path: '/manage',
+        name: 'Manage',
+        component: ManageCommunities,
+    },
+    {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound,
+    }
 ];
 
 const router = new VueRouter({
