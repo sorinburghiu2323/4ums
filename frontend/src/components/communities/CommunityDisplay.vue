@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "CommunityDisplay",
   props: {
@@ -55,7 +57,14 @@ export default {
       this.$root.$emit("updateCommunities");
     },
     deleteCommunity() {
-      this.$root.$emit("updateCommunities");
+      axios
+        .delete("/api/communities/" + this.community.id)
+        .then(() => {
+          this.$root.$emit("updateCommunities");
+        })
+        .catch((error) => {
+          console.error(error.response.data);
+        })
     },
   },
 };
