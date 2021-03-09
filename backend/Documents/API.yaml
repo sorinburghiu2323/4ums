@@ -40,7 +40,7 @@ paths:
                   type: string
                 is_teacher:
                   type: boolean
-                  description: "Bool to whether the user is applied for a teacher's account."
+                  description: Bool to whether the user is applied for a teacher's account.
                 description:
                   type: string
               required:
@@ -117,7 +117,7 @@ paths:
                   type: string
                 post_type:
                   type: string
-                  description: 'Either "question" or "discussion"'
+                  description: Either "question" or "discussion"
               required:
                 - title
                 - description
@@ -240,7 +240,7 @@ paths:
               required:
                 - name
                 - description
-        description: "'name' is the name of the community to be created, 'description' is a description of the community to be created."
+        description: '''name'' is the name of the community to be created, ''description'' is a description of the community to be created.'
     parameters: []
     get:
       summary: ''
@@ -674,6 +674,57 @@ paths:
         '404':
           description: Not Found - Comment not found.
       description: Disapprove a comment.
+  /login/sendreset:
+    post:
+      summary: ''
+      operationId: post-login-passwordreset
+      responses:
+        '200':
+          description: OK - email sent
+        '400':
+          description: 'Bad Request - {either missing email or email not valid}'
+      description: Make a password reset request for the provided email.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+        description: Email address of the account to reset password for.
+    parameters: []
+  /login/passwordreset:
+    post:
+      summary: ''
+      operationId: post-login-passwordreset
+      responses:
+        '200':
+          description: 'OK - {either "Code is valid" or "Password updated"}'
+        '400':
+          description: 'Bad Request - {either "Missing fields" or "No user with that id" or password not valid}'
+        '401':
+          description: 'Unauthorized - {either "Invalid reset code" or "Reset code has expired"}'
+      description: 'Reset the user''s password, using the code that was emailed to them'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                code:
+                  type: string
+                  description: 'Reset code which comes from the URL params of the password reset page (param has the same name). '
+                password:
+                  type: string
+                password_repeat:
+                  type: string
+              required:
+                - user_id
+                - code
+        description: 'If password and password_repeat are not sent then the password is not changed, and the response only depends on whether the given code is valid and not expired. '
 components:
   schemas:
     Post:
@@ -693,7 +744,7 @@ components:
           type: string
         post_type:
           type: string
-          description: 'Either "discussion" or "questions".'
+          description: Either "discussion" or "questions".
         created_at:
           type: string
         likes_num:
