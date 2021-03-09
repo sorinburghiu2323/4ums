@@ -177,7 +177,8 @@ h1 {
 }
 
 #back {
-    text-align: left;
+  text-align: left;
+  color: #777779;
 }
 </style>
 
