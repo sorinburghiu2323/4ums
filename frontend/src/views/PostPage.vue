@@ -7,7 +7,14 @@
       </p>
     </router-link>
     <div class="header">
-      <div class="settings-icon">
+      <div
+        class="settings-icon"
+        @click="
+          $router.push({
+            name: 'Settings',
+          })
+        "
+      >
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>
@@ -41,10 +48,10 @@
               </div>
             </div>
             <div class="date">
-              <p>Posted {{date_time}}</p>
+              <p>Posted {{ date_time }}</p>
             </div>
           </div>
-    
+
           <div class="author" @click.stop="navigateToUser">
             <p>
               By
@@ -93,8 +100,13 @@
     </div>
     <div v-if="showInput" class="comment-input">
       <div class="close-comment">
-        <font-awesome-icon :icon="['fa','times']"
-        @click="showInput=false; addComment= ''"/>
+        <font-awesome-icon
+          :icon="['fa', 'times']"
+          @click="
+            showInput = false;
+            addComment = '';
+          "
+        />
       </div>
       <label style="color:white">Add a comment...</label>
       <textarea v-model="addComment"></textarea>
@@ -161,13 +173,14 @@ export default {
   },
   methods: {
     getCommunity() {
-      axios.get("/api/communities/" + this.id)
-      .then(response => {
-        this.community = response.data;
-      })
-      .catch(error =>{
-        console.error(error);
-      })
+      axios
+        .get("/api/communities/" + this.id)
+        .then((response) => {
+          this.community = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     sendComment() {
       axios
@@ -330,7 +343,6 @@ export default {
   border-radius: 10px;
   z-index: 999;
   filter: drop-shadow(0px 0px 5px white);
-
 }
 
 .close-comment {
@@ -401,8 +413,8 @@ export default {
 }
 
 .description p {
-    text-align: left;
-    overflow-wrap: break-word;
+  text-align: left;
+  overflow-wrap: break-word;
 }
 
 .date {

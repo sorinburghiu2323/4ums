@@ -9,7 +9,14 @@
         <div class="backgroundSquare"></div>
         <font-awesome-icon :icon="['fas', 'share']"></font-awesome-icon>
       </div>
-      <div class="settings-icon" @click="goToSettings()">
+      <div
+        class="settings-icon"
+        @click="
+          $router.push({
+            name: 'Settings',
+          })
+        "
+      >
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>

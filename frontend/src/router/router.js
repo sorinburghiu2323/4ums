@@ -1,7 +1,9 @@
+import ChangePassword from "../views/ChangePassword.vue";
 import CommunitiesPage from "../views/CommunitiesPage.vue";
 import Community from "../views/Community.vue";
 import CreateCommunity from "../views/CreateCommunity.vue";
 import CreatePost from "../views/CreatePost.vue";
+import DeleteCheck from "../views/DeleteCheck.vue";
 import Feed from "../views/Feed.vue";
 import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
@@ -11,7 +13,7 @@ import PostPage from "@/views/PostPage";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
-import Settings from "../views/Settings";
+import Settings from "../views/Settings.vue";
 import User from "@/views/User";
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -24,6 +26,11 @@ const routes = [
     path: "/",
     name: "Feed",
     component: Feed,
+  },
+  {
+    path: "/profile/delete",
+    name: "DeleteCheck",
+    component: DeleteCheck,
   },
   {
     path: "/communities/:id/post/:type",
@@ -79,6 +86,11 @@ const routes = [
     path: "/users/:id",
     name: "User",
     component: User,
+  },
+  {
+    path: "/changePassword",
+    name: "ChangePassword",
+    component: ChangePassword,
   },
   {
     path: "/manage",

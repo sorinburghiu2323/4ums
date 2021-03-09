@@ -5,7 +5,14 @@
     </div>
     <div class="header">
       <h1>Communities</h1>
-      <div class="settings-icon">
+      <div
+        class="settings-icon"
+        @click="
+          $router.push({
+            name: 'Settings',
+          })
+        "
+      >
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>
