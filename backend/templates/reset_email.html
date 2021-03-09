@@ -1,3 +1,28 @@
 <html>
-    <body><p>hello?</p></body>
+    <body style="margin: 0; font-family: Helvetica, sans-serif;">
+        <div style="background-color: lightgrey; height: 100%; align-items: center">
+            <!-- logo header-->
+            <div style="text-align: center; padding: 2.5% 0 2.5% 0;">
+                <h1 style="margin: 0;">4UMS</h1>
+            </div>
+
+            <!-- email container -->
+            <div style="background-color:white;height:80%;width:70%;margin-left:15%;margin-right:15%;border:groove;padding:1.5%;">
+                <p>
+                    Hi {{first_name}},<br><br>
+                    We recently received a request to reset the password of your 4ums account, <i>{{username}}</i>.<br>
+                    Click the button below to reset it.
+                </p>
+                <br>
+                <form action="{{url}}" style="text-align: center; width: 100%;">
+                    <input type="submit" value="Reset your password" style="background-color: #c23b22; color: white; padding: 1em; border: solid; border-radius: 0.5em; font-size: 1.2em;">
+                </form>
+                <br>
+                <p>
+                    If you did not make this request, kindly ignore this email, and your password won't change.
+                </p>
+            </div>
+
+        </div>
+    </body>
 </html>

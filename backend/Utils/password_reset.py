@@ -33,7 +33,7 @@ def create_message(sender, to, subject, message_html):
     :returns:
         A base64 encoded email object.
     """
-    message = MIMEText(message_text, "html")
+    message = MIMEText(message_html, "html")
     message["to"] = to
     message["from"] = sender
     message["subject"] = subject
