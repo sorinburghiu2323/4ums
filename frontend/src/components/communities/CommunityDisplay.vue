@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "CommunityDisplay",
   props: {
@@ -54,17 +52,20 @@ export default {
       });
     },
     leaveCommunity() {
-      this.$root.$emit("updateCommunities");
+      this.$router.push({
+        name: "Leave",
+        params: {
+          id: this.community.id,
+        },
+      });
     },
     deleteCommunity() {
-      axios
-        .delete("/api/communities/" + this.community.id)
-        .then(() => {
-          this.$root.$emit("updateCommunities");
-        })
-        .catch((error) => {
-          console.error(error.response.data);
-        })
+      this.$router.push({
+        name: "Delete",
+        params: {
+          id: this.community.id,
+        },
+      });
     },
   },
 };

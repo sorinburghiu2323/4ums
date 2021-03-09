@@ -8,6 +8,8 @@ import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import Community from "../views/Community.vue";
 import ManageCommunities from "../views/ManageCommunities.vue";
+import LeaveCommunity from "../views/LeaveCommunity.vue";
+import DeleteCommunity from "@/views/DeleteCommunity";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Feed from "../views/Feed.vue";
@@ -83,6 +85,16 @@ const routes = [
         path: '/manage',
         name: 'Manage',
         component: ManageCommunities,
+    },
+    {
+        path: "/leave/:id",
+        name: "Leave",
+        component: LeaveCommunity,
+    },
+    {
+        path: "/delete/:id",
+        name: "Delete",
+        component: DeleteCommunity,
     },
     {
         path: '*',
