@@ -160,7 +160,7 @@ def reset_password(request):
 
         #update the password
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(id=request.DATA["user_id"])
         except User.DoesNotExist:
             return JsonResponse(
                 "Bad request - No user with that id", status=400, safe=False
@@ -201,6 +201,11 @@ def send_email(request):
 
         #30 minutes from now
         expiry_time = timezone.now() + datetime.timedelta(minutes=30)
+
+        #overwrite old code
+        if PasswordResetCode.objects.filter(user_id=user.id).exists():
+            reset_code = PasswordResetCode.objects.get(user_id=user.id)
+            reset_code.delete()
 
         PasswordResetCode.objects.create(
             user_id=user.id, code=code_str, expiry=expiry_time

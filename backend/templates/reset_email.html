@@ -1,4 +1,30 @@
 <html>
+    <head>
+    <style>
+    #button {
+        background-color: #c23b22;
+        color: white;
+        padding: 1em;
+        border-radius: 0.5em;
+        font-size: 1.2em;
+        text-decoration: none;
+    }
+    #button:hover {
+        background-color: #d1513b;
+    }
+
+    #emailcontainer {
+        background-color:white;
+        height:80%;
+        width:70%;
+        margin-left:15%;
+        margin-right:15%;
+        border:groove;
+        padding:1.5%;
+        margin-bottom: 5%;
+    }
+    </style>
+    </head>
     <body style="margin: 0; font-family: Helvetica, sans-serif;">
         <div style="background-color: lightgrey; height: 100%; align-items: center">
             <!-- logo header-->
@@ -7,21 +33,23 @@
             </div>
 
             <!-- email container -->
-            <div style="background-color:white;height:80%;width:70%;margin-left:15%;margin-right:15%;border:groove;padding:1.5%;">
+            <div id="emailcontainer">
                 <p>
                     Hi {{first_name}},<br><br>
-                    We recently received a request to reset the password of your 4ums account, <i>{{username}}</i>.<br>
+                    We recently received a request to reset the password of your 4ums account (username: <b>{{username}}</b>).<br>
                     Click the button below to reset it.
                 </p>
                 <br>
-                <form action="{{url}}" style="text-align: center; width: 100%;">
-                    <input type="submit" value="Reset your password" style="background-color: #c23b22; color: white; padding: 1em; border: solid; border-radius: 0.5em; font-size: 1.2em;">
-                </form>
+                <div style="text-align: center;">
+                    <a href="{{url}}" id="button">Reset your password</a>
+                </div>
                 <br>
                 <p>
                     If you did not make this request, kindly ignore this email, and your password won't change.
                 </p>
             </div>
+
+            <div style="color: lightgrey;">4UMS</div>
 
         </div>
     </body>

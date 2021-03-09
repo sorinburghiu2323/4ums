@@ -16,7 +16,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
 # boto is used *ONLY* in deployed app to access secrets
-if "DJANGO-AWS-4UMS-DEPLOYED" in environ_variables:
+if "DJANGO_AWS_4UMS_DEPLOYED" in environ_variables:
     import boto3
     from botocore.exceptions import ClientError
 
@@ -91,17 +91,14 @@ def send_reset_email(message):
 
     :param message: base64 encoded message object
     """
-    if "DJANGO-AWS-4UMS-DEPLOYED" not in environ_variabless:
+    if "DJANGO_AWS_4UMS_DEPLOYED" not in environ_variables:
         # don't send the email unless we're in live deployment
         # for testing purposes: decode plain text and print to console
         msg_b64 = message['raw']
         msg_str = urlsafe_b64decode(msg_b64.encode()).decode()
 
         message = message_from_string(msg_str)
-        for payload in message.get_payload():
-            if payload.get_content_type() == "text/plain":
-                print(payload.get_payload())
-                break
+        print(message.get_payload())
         return
 
 
