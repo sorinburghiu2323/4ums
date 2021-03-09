@@ -126,7 +126,6 @@ export default {
             })
             .catch((error) => {
               this.errMessage = error.response.data;
-              console.log(error);
             });
         })
         .catch((error) => {
