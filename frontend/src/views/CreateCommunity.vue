@@ -64,11 +64,15 @@ export default {
   methods: {
     setColour: function(colour) {
       for (let i = 0; i < 3; i++) {
-        document.getElementById(this.colours[i] + "Button").style = "";
+        if(document.getElementById(this.colours[i] + "Button")) {
+          document.getElementById(this.colours[i] + "Button").style = "";
+        }   
       }
 
-      document.getElementById(colour + "Button").style =
+      if(document.getElementById(colour + "Button")) {
+        document.getElementById(colour + "Button").style =
         "border-color: white; border-width: 1vh; border: 3px solid white;";
+      }
       this.colour = colour;
       this.hexCode = this.hex[this.colours.indexOf(colour)];
     },
