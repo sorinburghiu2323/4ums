@@ -83,10 +83,7 @@ export default {
 .login-form {
   display: flex;
   flex-direction: column;
-  margin: auto;
-}
-
-.input {
+  justify-content: center;
   margin: auto;
   text-align: left;
 }
@@ -96,9 +93,13 @@ export default {
   color: white;
   font-weight: 500;
 }
-input {
-  width: calc(100vw - 60px);
-  position: relative;
+
+.input {
+  text-align: left;
+}
+
+.input input {
+  width: 96%;
   height: 46px;
   margin-left: 8px;
   margin-bottom: 15px;
@@ -112,12 +113,17 @@ input {
     rgba(40, 44, 58, 1) 0%,
     rgba(27, 30, 40, 1) 35%,
     rgba(8, 9, 11, 1) 100%
-  ) !important;
+  );
   padding-left: 15px;
 }
 
-.input input {
-  width: calc(100vw - 140px);
+input::placeholder {
+  font-weight: 500;
+  color: white;
+}
+
+.input p {
+  margin-bottom: 3px;
 }
 
 .color-bar {
@@ -125,7 +131,6 @@ input {
   width: 15px;
   border-radius: 10px 0px 0 10px;
   position: absolute;
-  z-index: 2;
 }
 
 .login-btn {
@@ -154,11 +159,12 @@ input {
   font-size: 14px;
 }
 
-.logo-container {
-  width: 333px;
-  height: auto;
-  background: None;
-  padding-bottom: 20px;
+.logo-container{
+  width: 300px;
+  height:auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background:None;
 }
 @keyframes fade-in-move-down {
   0% {
