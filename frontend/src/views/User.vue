@@ -5,7 +5,14 @@
       Back
     </p>
     <div id="top-buttons">
-      <div class="settings-icon">
+      <div
+        class="settings-icon"
+        @click="
+          $router.push({
+            name: 'Settings',
+          })
+        "
+      >
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>
@@ -19,8 +26,11 @@
       <p class="info">{{ this.firstName + " " + this.secondName }}</p>
       <p class="info">
         <font-awesome-icon :icon="['fas', 'star']" /> Points: {{ this.points }}
-        <font-awesome-icon :icon="['fas', 'trophy']" /> Position:
-        {{ this.leaderboardPosition }}
+        <a v-if="this.leaderboardPosition">
+          <font-awesome-icon :icon="['fas', 'trophy']" />
+          Position:
+          {{ this.leaderboardPosition }}
+        </a>
       </p>
     </div>
     <p style="width: 100%; text-align: left;"><u>Bio:</u></p>
@@ -38,7 +48,7 @@
       <CommunitiesList
         :communities="communities"
         :myCommunities="false"
-        communityType='memberof'
+        communityType="memberof"
       />
     </div>
     <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
@@ -206,6 +216,7 @@ export default {
   font-size: 35px;
   color: #7e7e7e;
   position: relative;
+  cursor: pointer;
 }
 
 #top-buttons {

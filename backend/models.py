@@ -322,3 +322,16 @@ class PointsGained(models.Model):
 
     def __str__(self):
         return self.user.email + " gained: " + str(self.points) + " points."
+
+
+class PasswordResetCode(models.Model):
+    """
+    Record of password reset codes emailed to users, and the time when they expire.
+    """
+
+    user_id = models.IntegerField(unique=True)
+    code = models.TextField(max_length=100, unique=False)
+    expiry = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.user_id) + ", expires: " + str(self.expiry)

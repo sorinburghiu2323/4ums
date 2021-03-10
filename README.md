@@ -17,13 +17,14 @@ Some features 4ums offers:
 
 ## Setup
 
-First set up you python virtual environment.
+First set up you python virtual environment and activate it.
 
-`python -m venv .venv`
+```bash
+$ python -m venv .venv
 
-and activate it
-
-`.venv\Scripts\activate.bat` or `.venv/bin/activate`
+$ .venv\Scripts\activate.bat      # Windows
+$ .venv\bin\activate              # Linux
+```
 
 Then install python dependencies:
 ```

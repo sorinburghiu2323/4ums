@@ -1,20 +1,20 @@
 import CommunitiesPage from "../views/CommunitiesPage.vue";
+import Community from "../views/Community.vue";
 import CreateCommunity from "../views/CreateCommunity.vue";
 import CreatePost from "../views/CreatePost.vue";
+import Feed from "../views/Feed.vue";
 import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
+import ManageCommunities from "../views/ManageCommunities.vue";
+import NotFound from "@/views/NotFound";
+import PostPage from "@/views/PostPage";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
-import Community from "../views/Community.vue";
-import ManageCommunities from "../views/ManageCommunities.vue";
+import User from "@/views/User";
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Feed from "../views/Feed.vue";
 import axios from "axios";
-import PostPage from "@/views/PostPage";
-import NotFound from "@/views/NotFound";
-import User from "@/views/User";
 import ForgotPassword from "@/views/ForgotPassword";
 import EnterNewPassword from "../views/EnterNewPassword";
 
@@ -114,7 +114,7 @@ router.beforeEach((to, from, next) => {
         axios.get('/api/users/me')
             .catch(() => {
                 if (to.path !== '/login' && to.path !== '/register' && to.path !== '/login/forgot'
-                && to.path !== '/login/forgot/update') {
+                    && to.path !== '/login/forgot/passwordreset') {
                     return next({
                         path: '/login',
                     });

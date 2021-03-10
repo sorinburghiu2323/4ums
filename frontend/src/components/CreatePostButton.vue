@@ -114,8 +114,8 @@ export default {
 }
 
 #iconContainer {
-background: rgb(178,50,255);
-background: linear-gradient(180deg, rgba(178,50,255,1) 15%, rgba(155,0,249,1) 100%);
+  background: rgb(178,50,255);
+  background: linear-gradient(180deg, rgba(178,50,255,1) 15%, rgba(155,0,249,1) 100%);
   width: 100%;
   border-radius: 20% 20% 0 0;
   height: 21vh;
