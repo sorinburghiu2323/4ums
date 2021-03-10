@@ -17,9 +17,6 @@
         <font-awesome-icon :icon="['fa', 'hand-peace']" />
         <p>Thread Owner</p>
       </div>
-      <div class="approve" @click="is_approved = true">
-        <p>Approve Answer</p>
-      </div>
     </div>
     <div class="details">
       <div class="description" v-if="comment.comment">
@@ -142,7 +139,7 @@ export default {
 
 <style scoped>
 .approve {
-  background-color: green;
+  background-color: white;
 }
 .containers {
   cursor: pointer;
