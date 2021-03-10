@@ -17,6 +17,10 @@ import VueRouter from "vue-router";
 import axios from "axios";
 import ForgotPassword from "@/views/ForgotPassword";
 import EnterNewPassword from "../views/EnterNewPassword";
+import Settings from "@/views/Settings";
+import EditProfile from "@/views/EditProfile";
+import LeaveCommunity from "@/views/LeaveCommunity";
+import DeleteCommunity from "@/views/DeleteCommunity";
 
 Vue.use(VueRouter);
 
@@ -95,6 +99,26 @@ const routes = [
         path: '/manage',
         name: 'Manage',
         component: ManageCommunities,
+    },
+    {
+        path: "/settings",
+        name: "Settings",
+        component: Settings,
+    },
+    {
+        path: "/users/me/edit",
+        name: "EditProfile",
+        component: EditProfile,
+    },
+    {
+        path: "/leave/:id",
+        name: "Leave",
+        component: LeaveCommunity,
+    },
+    {
+        path: "/delete/:id",
+        name: "Delete",
+        component: DeleteCommunity,
     },
     {
         path: '*',
