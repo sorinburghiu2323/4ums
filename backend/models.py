@@ -216,6 +216,11 @@ class Post(models.Model):
             "is_community_owner": Community.objects.filter(
                 user=self.user, id=self.community.id
             ).exists(),
+            "is_user_owner": Post.objects.filter(
+                user=request.user, id=self.id
+            ).exists()
+            if request
+            else False,
             "community": self.community.serialize_simple(),
             "title": self.title,
             "description": self.description,
