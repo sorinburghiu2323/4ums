@@ -17,6 +17,24 @@
         <font-awesome-icon :icon="['fa', 'hand-peace']" />
         <p>Thread Owner</p>
       </div>
+      <div
+        class="approve"
+        v-if="displayApprove && !is_approved && isQuestion"
+        @click="approveAnswer()"
+      >
+        <p>
+          <font-awesome-icon :icon="['fas', 'check-circle']" /> Approve Answer
+        </p>
+      </div>
+      <div
+        class="approve"
+        v-if="displayApprove && is_approved && isQuestion"
+        @click="unapproveAnswer()"
+      >
+        <p>
+          <font-awesome-icon :icon="['fas', 'times-circle']" /> Unapprove Answer
+        </p>
+      </div>
     </div>
     <div class="details">
       <div class="description" v-if="comment.comment">
@@ -93,7 +111,30 @@ export default {
         },
       });
     },
-    approveAnswer() {},
+    unapproveAnswer() {
+      axios.delete(
+        "/api/communities/" +
+          this.communityId +
+          "/posts/" +
+          this.postId +
+          "/comments/" +
+          this.comment.id +
+          "/approve"
+      );
+      this.is_approved = false;
+    },
+    approveAnswer() {
+      axios.post(
+        "/api/communities/" +
+          this.communityId +
+          "/posts/" +
+          this.postId +
+          "/comments/" +
+          this.comment.id +
+          "/approve"
+      );
+      this.is_approved = true;
+    },
     likeComment() {
       if (!this.userLiked) {
         axios
