@@ -1,15 +1,15 @@
 <template>
   <div v-if="loadedPost" class="container">
-    <div class="nav-link" @click.prevent.stop="goBack()">
+    <router-link class="nav-link" to="..">
       <p id="back">
-        <font-awesome-icon :icon="['fas', 'arrow-left']"/>
+        <font-awesome-icon :icon="['fas', 'arrow-left']" />
         {{ post.community.name }}
       </p>
-    </div>
+    </router-link>
     <div class="header">
       <div
-          class="settings-icon"
-          @click="
+        class="settings-icon"
+        @click="
           $router.push({
             name: 'Settings',
           })
@@ -118,8 +118,8 @@
     <div v-if="showInput" class="comment-input">
       <div class="close-comment">
         <font-awesome-icon
-            :icon="['fa', 'times']"
-            @click="
+          :icon="['fa', 'times']"
+          @click="
             showInput = false;
             addComment = '';
           "
@@ -136,10 +136,12 @@
         v-for="(comment, index) in allComments"
         :key="index"
         :comment="comment"
-        :isByPostOwner="post.user.id === comment.user.id"
-        :isByCommunityOwner="community.creator.id === comment.user.id"
-        :isQuestion="post_type === 'question'"
         :displayApprove="isUserOwner"
+        :hasBeenApproved="isAnswered"
+        :isByCommunityOwner="community.creator.id === comment.user.id"
+        :isByPostOwner="post.user.id === comment.user.id"
+        :isQuestion="post_type === 'question'"
+        v-on:update-post="updatePost"
       />
     </div>
   </div>
@@ -179,7 +181,7 @@ export default {
       post: Object,
       post_type: "discussion",
       date_time: "10/20/30",
-      isAnswered: false,
+      isAnswered: true,
       userLiked: false,
       addComment: null,
       showInput: false,
@@ -193,25 +195,29 @@ export default {
   },
   computed: {
     isByCommunityOwner() {
-      if(this.community === null || this.post === null) {
+      if (this.community === null || this.post === null) {
         return false;
       }
       return this.community.creator.id === this.post.user.id;
     },
   },
   methods: {
-    goBack() {
-      this.$router.go(-1);
+    updatePost() {
+      console.log("hi");
+      this.currentPage = 1;
+      this.allComments = [];
+      this.isAnswered = !this.isAnswered;
+      this.getPost();
     },
     getCommunity() {
       axios
-          .get("/api/communities/" + this.id)
-          .then((response) => {
-            this.community = response.data;
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        .get("/api/communities/" + this.id)
+        .then((response) => {
+          this.community = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     sendComment() {
       axios
@@ -221,8 +227,7 @@ export default {
         )
         .then(() => {
           this.showInput = false;
-          this.allComments = [];
-          this.getPost();
+          this.$router.go(0);
         })
         .catch((error) => {
           console.error(error);
@@ -339,19 +344,29 @@ export default {
   font-weight: 600;
 }
 
-.lecturer .oval svg, .community-owner .oval svg, .thread-owner .oval svg {
+.lecturer .oval svg,
+.community-owner .oval svg,
+.thread-owner .oval svg {
   margin-left: 0;
 }
 
 .community-owner .oval {
-  background: rgb(255,237,0);
-  background: linear-gradient(270deg, rgba(255,237,0,1) 15%, rgba(253,248,98,1) 100%);
+  background: rgb(255, 237, 0);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 237, 0, 1) 15%,
+    rgba(253, 248, 98, 1) 100%
+  );
   font-weight: 600;
 }
 
 .thread-owner .oval {
-  background: rgb(20,90,246);
-  background: linear-gradient(90deg, rgba(20,90,246,1) 27%, rgba(0,137,255,1) 100%);
+  background: rgb(20, 90, 246);
+  background: linear-gradient(
+    90deg,
+    rgba(20, 90, 246, 1) 27%,
+    rgba(0, 137, 255, 1) 100%
+  );
   font-weight: 600;
 }
 
