@@ -1,12 +1,10 @@
 <template>
   <div class="container">
     <div id="top-buttons">
-      <div class="edit-icon">
-        <div class="backgroundSquare"></div>
-        <font-awesome-icon :icon="['fas', 'pencil-alt']" />
+      <div class="edit-icon backgroundSquare" @click="edit()">
+        <font-awesome-icon :icon="['fas', 'pencil-alt']"  />
       </div>
-      <div class="share-icon">
-        <div class="backgroundSquare"></div>
+      <div class="share-icon backgroundSquare">
         <font-awesome-icon :icon="['fas', 'share']"></font-awesome-icon>
       </div>
       <div
@@ -41,16 +39,20 @@
         <p style="width: 100%; text-align: left; margin-top:-10px;">
           Bio
         </p>
-
         <div class="lines"></div>
-        <p v-if="this.bio === ''" style="position: absolute;">
-          {{ this.bio }}
-        </p>
-        <p v-else>
-          You haven't filled out a bio yet. Click the
-          <font-awesome-icon :icon="['fas', 'pencil-alt']" style="color:grey" />
-          button to make one!
-        </p>
+        <div>
+          <p v-if="this.bio !== ''" style="padding-top: 0">
+            {{ this.bio }}
+          </p>
+          <p v-else>
+            You haven't filled out a bio yet. Click the
+            <font-awesome-icon
+              :icon="['fas', 'pencil-alt']"
+              style="color:grey"
+            />
+            button to make one!
+          </p>
+        </div>
       </div>
       <div class="comm">
         <p style="width: 100%; text-align: left;">Top Communities</p>
@@ -115,6 +117,12 @@ export default {
         name: "Settings",
       });
     },
+    edit() {
+      this.$router.push({
+        name: "EditProfile",
+      });
+      this.getUserDetails();
+    },
     widthCalc() {
       return window.innerWidth - 100;
     },
@@ -151,7 +159,7 @@ export default {
           }
           this.initials =
             this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
-          this.bio = response.data.descrtiption;
+          this.bio = response.data.description;
         })
         .catch((error) => {
           console.error(error);
@@ -187,7 +195,6 @@ export default {
 #top-buttons {
   position: absolute;
   right: 15px;
-  width: 10%;
   top: 10px;
   display: flex;
   justify-content: space-around;
@@ -201,25 +208,21 @@ export default {
   color: #7e7e7e;
   position: relative;
   cursor: pointer;
+  margin: auto;
 }
 
 .edit-icon {
-  position: relative;
   font-size: 32px;
   display: flex;
-  width: 500px;
   top: 8px;
   right: 70px;
   color: black;
   border-radius: 10px;
 }
 
-.edit-icon .backgroundSquare {
-  z-index: -1;
-  position: relative;
-  width: 45px;
-  top: -3px;
-  right: -37px;
+.backgroundSquare {
+  margin-right: 10px;
+  padding: 10px;
   border-radius: 15px;
   background: linear-gradient(45deg, #5ffcaf, #39eade);
   box-shadow: 0 0 10px #4cf3c7;
@@ -229,20 +232,13 @@ export default {
   font-size: 32px;
   display: flex;
   top: 6px;
-  position: relative;
   right: 90px;
   background: none;
   color: black;
   border-radius: 10px;
 }
 
-.share-icon .backgroundSquare {
-  z-index: -1;
-  position: relative;
-  top: -1px;
-  width: 45px;
-  left: 37px;
-  border-radius: 15px;
+.share-icon.backgroundSquare {
   background: linear-gradient(45deg, #1262f4, #0379e9);
   box-shadow: 0 0 10px #0b6eef;
 }

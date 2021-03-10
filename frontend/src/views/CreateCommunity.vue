@@ -1,8 +1,8 @@
 <template>
   <div>
-    <router-link class="nav-link" to="../communities">
+    <router-link class="nav-link" to="../manage">
       <p id="back">
-        <font-awesome-icon :icon="['fas', 'arrow-left']" /> Communities
+        <font-awesome-icon :icon="['fas', 'arrow-left']" /> Manage Communities
       </p>
     </router-link>
     <p id="pageTitle">Create a<br />Community</p>
@@ -66,8 +66,9 @@ export default {
       for (let i = 0; i < 3; i++) {
         document.getElementById(this.colours[i] + "Button").style = "";
       }
+
       document.getElementById(colour + "Button").style =
-        "border-color: white; border-width: 1vh;";
+        "border-color: white; border-width: 1vh; border: 3px solid white;";
       this.colour = colour;
       this.hexCode = this.hex[this.colours.indexOf(colour)];
     },
@@ -114,6 +115,10 @@ export default {
 </script>
 
 <style scoped>
+button {
+  outline: none;
+}
+
 #submit {
   border-radius: 15px;
   width: 33%;
@@ -122,6 +127,7 @@ export default {
   color: black;
   background-image: linear-gradient(to right, #348be9, #65ffa7);
   padding: 1vh;
+  border: none;
 }
 
 #scrap {
@@ -133,6 +139,7 @@ export default {
   background-image: linear-gradient(to right, #fe6911, #fe9b2f);
   padding: 1vh;
   margin-left: 2vh;
+  border: none;
 }
 
 #previewDiv {
@@ -158,9 +165,12 @@ export default {
 
 #preview {
   border-radius: 15px;
+  border: none;
   width: 75%;
   height: 7.5%;
   font-family: "Trebuchet MS";
+  font-weight: 600;
+  font-size: 15px;
   color: black;
   background-image: linear-gradient(to right, #348be9, #65ffa7);
   padding: 1vh;
@@ -169,6 +179,7 @@ export default {
 #blueButton {
   border-radius: 50%;
   background-color: #4af4cb;
+  filter: drop-shadow(0px 0px 5px #4af4cb);
   height: 5vh;
   width: 5vh;
   margin: 1vh;
@@ -177,6 +188,7 @@ export default {
 #orangeButton {
   border-radius: 50%;
   background-color: #fa7e1f;
+  filter: drop-shadow(0px 0px 5px #fa7e1f);
   height: 5vh;
   width: 5vh;
   margin: 1vh;
@@ -185,6 +197,7 @@ export default {
 #purpleButton {
   border-radius: 50%;
   background-color: #a038fe;
+  filter: drop-shadow(0px 0px 5px #a038fe);
   height: 5vh;
   width: 5vh;
   margin: 1vh;
@@ -195,6 +208,12 @@ export default {
   padding: 2vh;
 }
 
+#colourSelect button{
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
 #back {
   text-align: left;
   color: #777779;
@@ -202,6 +221,7 @@ export default {
 
 #descriptionBox {
   height: 25vh;
+  resize: none;
 }
 
 #pageTitle {
@@ -222,15 +242,14 @@ export default {
 }
 
 .inputBox {
-  width: 90vw;
-  border: 0;
+  width: 90%;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
   color: white;
-  background-image: linear-gradient(to right, #262b38, #1d2029);
+  background: linear-gradient(to right, #262b38, #1d2029);
   font-family: "Trebuchet MS";
-  min-height: 5vh;
-  padding-left: 2vh;
-  padding-top: 2vh;
-  padding-bottom: 2vh;
+  outline: none;
 }
 
 .innerText {
@@ -273,4 +292,5 @@ export default {
   background: rgb(188, 98, 253);
   background: linear-gradient(270deg, rgb(144, 98, 253) 0%, rgb(149, 0, 255) 35%);
 }
+
 </style>

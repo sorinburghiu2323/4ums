@@ -8,12 +8,15 @@ import Feed from "../views/Feed.vue";
 import Leaderboard from "../views/Leaderboard.vue";
 import LoginPage from "../views/LoginPage.vue";
 import ManageCommunities from "../views/ManageCommunities.vue";
+import EditProfile from "../views/EditProfile.vue";
 import NotFound from "@/views/NotFound";
 import PostPage from "@/views/PostPage";
 import PreviewCommunity from "../views/PreviewCommunity.vue";
 import Profile from "../views/Profile.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import Settings from "../views/Settings.vue";
+import LeaveCommunity from "../views/LeaveCommunity.vue";
+import DeleteCommunity from "@/views/DeleteCommunity";
 import User from "@/views/User";
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -103,10 +106,25 @@ const routes = [
     component: Settings,
   },
   {
-    path: "*",
-    name: "NotFound",
-    component: NotFound,
+    path: "/users/me/edit",
+    name: "EditProfile",
+    component: EditProfile,
   },
+  {
+      path: "/leave/:id",
+      name: "Leave",
+      component: LeaveCommunity,
+  },
+  {
+      path: "/delete/:id",
+      name: "Delete",
+      component: DeleteCommunity,
+  },
+  {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound,
+  }
 ];
 
 const router = new VueRouter({

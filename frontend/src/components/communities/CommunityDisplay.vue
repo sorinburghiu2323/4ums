@@ -52,10 +52,20 @@ export default {
       });
     },
     leaveCommunity() {
-      this.$root.$emit("updateCommunities");
+      this.$router.push({
+        name: "Leave",
+        params: {
+          id: this.community.id,
+        },
+      });
     },
     deleteCommunity() {
-      this.$root.$emit("updateCommunities");
+      this.$router.push({
+        name: "Delete",
+        params: {
+          id: this.community.id,
+        },
+      });
     },
   },
 };
@@ -116,8 +126,9 @@ export default {
 }
 
 .details .title {
-  font-size: 20px;
+  font-size: 19px;
   height: 30%;
+  margin-top: 4px;
   margin-bottom: 4px;
   display: flex;
   justify-content: space-between;
@@ -140,7 +151,7 @@ export default {
 
 .editBtn {
   position: absolute;
-  top: -10px;
+  top: -22px;
   right: 20px;
 }
 
