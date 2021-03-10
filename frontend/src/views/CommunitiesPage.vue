@@ -6,8 +6,8 @@
     <div class="header">
       <h1>Communities</h1>
       <div
-        class="settings-icon"
-        @click="
+          class="settings-icon"
+          @click="
           $router.push({
             name: 'Settings',
           })
@@ -17,53 +17,63 @@
       </div>
     </div>
     <div class="search-section">
-      <input placeholder="Search for a community..." type="text" />
-      <div class="search-icon">
+      <input id="search" v-model="query" placeholder="Search for a community..." type="text"
+             @keyup.enter="getSearchCommunities()"/>
+      <div v-if="query === '' && firstGet">
+        {{ getSearchCommunities() }}
+        {{ this.firstGet = false }}
+      </div>
+      <div class="search-icon" @click.stop.prevent="getSearchCommunities()">
         <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
       </div>
     </div>
     <div class="communities-list">
       <div class="filter">
         <button
-          id="your-communities-btn"
-          :class="{ active: !showAllCommunities }"
-          @click="showAllCommunities = false"
+            id="your-communities-btn"
+            :class="{ active: !showAllCommunities }"
+            @click="showAllCommunities = false"
         >
           Your communities
         </button>
         <button
-          id="all-communities-btn"
-          :class="{ active: showAllCommunities }"
-          @click="showAllCommunities = true"
+            id="all-communities-btn"
+            :class="{ active: showAllCommunities }"
+            @click="showAllCommunities = true"
         >
           Other communities
         </button>
       </div>
 
       <!--Communities user created-->
-      <p v-if="!showAllCommunities">Created by you:</p>
-      <CommunitiesList
-        v-if="loadedCommunities && !showAllCommunities"
-        :communities="createdCommunities"
-        communityType="created"
-      />
+      <div v-if="!noPosts">
+        <p v-if="!showAllCommunities">Created by you:</p>
+        <CommunitiesList
+            v-if="loadedCommunities && !showAllCommunities"
+            :communities="createdCommunities"
+            communityType="created"
+        />
+        <!--Communities user is a member of -->
+        <p v-if="!showAllCommunities">Communities you have joined:</p>
+        <CommunitiesList
+            v-if="loadedCommunities && !showAllCommunities"
+            :communities="myCommunities"
+            communityType="memberof"
+        />
 
-      <!--Communities user is a member of -->
-      <p v-if="!showAllCommunities">Communities you have joined:</p>
-      <CommunitiesList
-        v-if="loadedCommunities && !showAllCommunities"
-        :communities="myCommunities"
-        communityType="memberof"
-      />
-
-      <!-- all Communities -->
-      <CommunitiesList
-        v-if="loadedCommunities && showAllCommunities"
-        :communities="allCommunities"
-        communityType="all"
-      />
-
-      <ManageCommunitiesButton v-if="showManageButton && !showAllCommunities" />
+        <!-- all Communities -->
+        <CommunitiesList
+            v-if="loadedCommunities && showAllCommunities"
+            :communities="allCommunities"
+            communityType="all"
+        />
+        <ManageCommunitiesButton v-if="showManageButton && !showAllCommunities"/>
+      </div>
+      <div v-else>
+        <h3>
+          Sorry we couldn't find any communities matching your search.
+        </h3>
+      </div>
     </div>
   </div>
 </template>
@@ -109,6 +119,9 @@ export default {
       showAllCommunities: false,
       loadMore: false,
       showManageButton: true,
+      query: '',
+      firstGet: false,
+      noPosts: false,
     };
   },
   mounted() {
@@ -140,49 +153,130 @@ export default {
         }
       };
     },
+    getSearchCommunities() {
+      if (this.showAllCommunities) {
+        this.getOtherCommunities();
+      } else {
+        this.getAllMyCommunities();
+      }
+
+    },
+    getAllMyCommunities() {
+      this.myCommunities = [];
+      this.createdCommunities = [];
+      this.noPosts = false;
+      this.currentPage = 1;
+      this.firstGet = true;
+      if (this.query === "") {
+        this.getMyCommunities();
+        this.getCreatedCommunities();
+        this.firstGet = false;
+      } else {
+        document.getElementById('search').blur();
+        axios
+            .get("api/communities?type=memberof", {params: {page: "all", phrase: this.query}})
+            .then((response) => {
+              this.loadedCommunities = false;
+              for (var i = 0; i < response.data.data.length; i++) {
+                this.myCommunities.push(response.data.data[i]);
+              }
+              if (this.currentPage === 1 && response.data.data.length === 0) {
+                this.noPosts = true;
+              }
+              this.loadedCommunities = true;
+            })
+            .catch((error) => {
+              console.error(error);
+              this.loadedCommunities = false;
+            });
+      }
+    },
+    getOtherCommunities() {
+      this.allCommunities = [];
+      this.noPosts = false;
+      this.currentPage = 1;
+      this.firstGet = true;
+      if (this.query === "") {
+        this.getAllCommunities();
+        this.firstGet = false;
+      } else {
+        document.getElementById('search').blur();
+        axios
+            .get("api/communities?type=other", {
+              params: {page: this.currentPage, phrase: this.query},
+            })
+            .then((response) => {
+              this.loadedCommunities = false;
+              for (let i = 0; i < response.data.data.length; i++) {
+                this.allCommunities.push(response.data.data[i]);
+              }
+              if (this.currentPage === 1 && response.data.data.length === 0) {
+                this.noPosts = true;
+              }
+              this.loadMore = response.data["next_page"] != null;
+              this.loadedCommunities = true;
+            })
+            .catch((error) => {
+              console.error(error);
+              this.loadedCommunities = false;
+            });
+      }
+    },
     getMyCommunities() {
+      this.noPosts = false;
       axios
-        .get("api/communities?type=memberof", { params: { page: "all" } })
-        .then((response) => {
-          this.loadedCommunities = false;
-          for (var i = 0; i < response.data.data.length; i++) {
-            this.myCommunities.push(response.data.data[i]);
-          }
-          this.loadedCommunities = true;
-        })
-        .catch((error) => {
-          console.error(error);
-          this.loadedCommunities = false;
-        });
+          .get("api/communities?type=memberof", {params: {page: "all"}})
+          .then((response) => {
+            this.loadedCommunities = false;
+            for (var i = 0; i < response.data.data.length; i++) {
+              this.myCommunities.push(response.data.data[i]);
+            }
+            if (this.currentPage === 1 && response.data.data.length === 0) {
+              this.noPosts = true;
+            }
+            this.loadedCommunities = true;
+          })
+          .catch((error) => {
+            console.error(error);
+            this.loadedCommunities = false;
+          });
     },
     getCreatedCommunities() {
+      this.noPosts = false;
       axios
-        .get("api/communities?type=created", { params: { page: "all" } })
-        .then((response) => {
-          this.loadedCommunities = false;
-          for (let i = 0; i < response.data.data.length; i++) {
-            this.createdCommunities.push(response.data.data[i]);
-          }
-          this.loadedCommunities = true;
-        })
-        .catch((error) => {
-          console.error(error);
-          this.loadedCommunities = false;
-        });
+          .get("api/communities?type=created", {params: {page: "all"}})
+          .then((response) => {
+            this.loadedCommunities = false;
+            for (let i = 0; i < response.data.data.length; i++) {
+              this.createdCommunities.push(response.data.data[i]);
+            }
+            if (this.currentPage === 1 && response.data.data.length === 0) {
+              this.noPosts = true;
+            }
+            this.loadedCommunities = true;
+          })
+          .catch((error) => {
+            console.error(error);
+            this.loadedCommunities = false;
+          });
     },
     getAllCommunities() {
+      this.noPosts = false;
       axios
-        .get("api/communities?type=other", {
-          params: { page: this.currentPage },
-        })
-        .then((response) => {
-          this.loadedCommunities = false;
-          for (let i = 0; i < response.data.data.length; i++) {
-            this.allCommunities.push(response.data.data[i]);
-          }
-          this.loadMore = response.data["next_page"] != null;
-          this.loadedCommunities = true;
-        })
+          .get("api/communities?type=other", {
+            params: {page: this.currentPage},
+          })
+          .then((response) => {
+            this.loadedCommunities = false;
+            for (let i = 0; i < response.data.data.length; i++) {
+              this.allCommunities.push(response.data.data[i]);
+            }
+            if (this.currentPage === 1 && response.data.data.length === 0) {
+              this.noPosts = true;
+            }
+            this.loadMore = response.data["next_page"] != null;
+            this.loadedCommunities = true;
+          })
         .catch((error) => {
           console.error(error);
           this.loadedCommunities = false;

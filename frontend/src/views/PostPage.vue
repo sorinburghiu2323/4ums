@@ -1,15 +1,15 @@
 <template>
   <div v-if="loadedPost" class="container">
-    <router-link class="nav-link" to="..">
+    <div class="nav-link" @click.prevent.stop="goBack()">
       <p id="back">
-        <font-awesome-icon :icon="['fas', 'arrow-left']" />
+        <font-awesome-icon :icon="['fas', 'arrow-left']"/>
         {{ post.community.name }}
       </p>
-    </router-link>
+    </div>
     <div class="header">
       <div
-        class="settings-icon"
-        @click="
+          class="settings-icon"
+          @click="
           $router.push({
             name: 'Settings',
           })
@@ -109,7 +109,7 @@
         </div>
       </div>
     </div>
-    <div class="comment-btn" @click.stop="showCommentInput" v-if="!showInput">
+    <div v-if="!showInput" class="comment-btn" @click.stop="showCommentInput">
       <div class="comment-icon">
         <font-awesome-icon :icon="['fas', 'comment-dots']"></font-awesome-icon>
       </div>
@@ -118,8 +118,8 @@
     <div v-if="showInput" class="comment-input">
       <div class="close-comment">
         <font-awesome-icon
-          :icon="['fa', 'times']"
-          @click="
+            :icon="['fa', 'times']"
+            @click="
             showInput = false;
             addComment = '';
           "
@@ -132,12 +132,16 @@
       </div>
     </div>
     <div v-if="loadedPost && community" class="comments-list">
-      <Comment
-        v-for="(comment, index) in allComments"
-        :key="index"
-        :comment="comment"
-        :isByPostOwner="post.user.id === comment.user.id"
-        :isByCommunityOwner="community.creator.id === comment.user.id"
+      <Comment v-for="(comment, index) in allComments" :key="index"
+               :comment="comment"
+               :displayApprove="isUserOwner"
+               :hasBeenApproved="isAnswered"
+               :isByCommunityOwner="community.creator.id === comment.user.id"
+               :isByPostOwner="post.user.id === comment.user.id"
+               :isQuestion="post_type === 'question'"
+               v-on:update-post="updatePost"
+
+
       />
     </div>
   </div>
@@ -177,10 +181,11 @@ export default {
       post: Object,
       post_type: "discussion",
       date_time: "10/20/30",
-      isAnswered: false,
+      isAnswered: true,
       userLiked: false,
       addComment: null,
       showInput: false,
+      isUserOwner: false,
     };
   },
   mounted() {
@@ -197,15 +202,25 @@ export default {
     },
   },
   methods: {
+    updatePost() {
+      this.currentPage = 1;
+      this.allComments = [];
+      this.isAnswered = !this.isAnswered;
+      this.getPost();
+    },
+    goBack() {
+      this.$router.go(-1);
+
+    },
     getCommunity() {
       axios
-        .get("/api/communities/" + this.id)
-        .then((response) => {
-          this.community = response.data;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+          .get("/api/communities/" + this.id)
+          .then((response) => {
+            this.community = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
     },
     sendComment() {
       axios
@@ -215,7 +230,8 @@ export default {
         )
         .then(() => {
           this.showInput = false;
-          this.$router.go(0);
+          this.allComments = [];
+          this.getPost();
         })
         .catch((error) => {
           console.error(error);
@@ -258,6 +274,7 @@ export default {
           this.isAnswered = this.post["has_approved"];
           this.loadedPost = true;
           this.userLiked = this.post["is_liked"];
+          this.isUserOwner = this.post["is_user_owner"];
         })
         .catch((error) => {
           console.error(error);
