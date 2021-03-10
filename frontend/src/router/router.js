@@ -21,6 +21,7 @@ import Settings from "@/views/Settings";
 import EditProfile from "@/views/EditProfile";
 import LeaveCommunity from "@/views/LeaveCommunity";
 import DeleteCommunity from "@/views/DeleteCommunity";
+import ChangePassword from "@/views/ChangePassword";
 
 Vue.use(VueRouter);
 
@@ -124,7 +125,12 @@ const routes = [
         path: '*',
         name: 'NotFound',
         component: NotFound,
-    }
+    },
+    {
+        path: "/changePassword",
+        name: "ChangePassword",
+        component: ChangePassword,
+    },
 ];
 
 const router = new VueRouter({
