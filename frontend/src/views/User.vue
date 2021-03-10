@@ -19,8 +19,11 @@
       <p class="info">{{ this.firstName + " " + this.secondName }}</p>
       <p class="info">
         <font-awesome-icon :icon="['fas', 'star']" /> Points: {{ this.points }}
-        <font-awesome-icon :icon="['fas', 'trophy']" /> Position:
-        {{ this.leaderboardPosition }}
+        <a v-if="this.leaderboardPosition">
+          <font-awesome-icon :icon="['fas', 'trophy']" />
+          Position:
+          {{ this.leaderboardPosition }}
+        </a>
       </p>
     </div>
     <p style="width: 100%; text-align: left;"><u>Bio:</u></p>
