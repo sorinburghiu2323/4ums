@@ -87,8 +87,8 @@ export default {
 }
 
 .input {
-  text-align: left;
   margin: auto;
+  text-align: left;
 }
 
 .text {
