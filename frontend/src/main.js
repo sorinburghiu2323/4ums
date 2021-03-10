@@ -41,6 +41,7 @@ import {
   faHandPeace,
   faUsers,
   faShare,
+  faLink,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Add icons here after import
@@ -76,6 +77,7 @@ library.add(
     faHandPeace,
     faUsers,
     faShare,
+    faLink,
  )
 
 
@@ -89,6 +91,10 @@ Vue.use(VueCookie);
 //Particles
 import Particles from "particles.vue";
 Vue.use(Particles);
+//Clipboard
+import VueClipboard from "vue-clipboard2";
+VueClipboard.config.autoSetContainer = true;
+Vue.use(VueClipboard);
 new Vue({
   router,
   render: (h) => h(App),
