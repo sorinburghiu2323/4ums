@@ -2,20 +2,23 @@
   <div class="containers container">
     <div class="badges">
       <div class="chosen-answer" v-if="is_approved">
-          <font-awesome-icon :icon="['fa', 'crown']"></font-awesome-icon>
-          <p>Chosen Answer</p>
+        <font-awesome-icon :icon="['fa', 'crown']"></font-awesome-icon>
+        <p>Chosen Answer</p>
       </div>
       <div class="lecturer" v-if="comment.user.is_teacher">
-        <font-awesome-icon :icon="['fa', 'chalkboard-teacher']"/>
+        <font-awesome-icon :icon="['fa', 'chalkboard-teacher']" />
         <p>Lecturer</p>
       </div>
       <div class="community-owner" v-if="isByCommunityOwner">
-        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
+        <font-awesome-icon :icon="['fa', 'hand-peace']" />
         <p>Community Owner</p>
       </div>
       <div class="thread-owner" v-if="isByPostOwner">
-        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
+        <font-awesome-icon :icon="['fa', 'hand-peace']" />
         <p>Thread Owner</p>
+      </div>
+      <div class="approve" @click="is_approved = true">
+        <p>Approve Answer</p>
       </div>
     </div>
     <div class="details">
@@ -39,13 +42,13 @@
         </div>
       </div>
       <div class="date">
-        <p>Posted {{date_time}}</p>
+        <p>Posted {{ date_time }}</p>
       </div>
     </div>
 
     <div class="author" @click.stop="navigateToUser">
       <p>
-       By <span class="author-name">{{ comment.user.username }}</span>
+        By <span class="author-name">{{ comment.user.username }}</span>
       </p>
     </div>
   </div>
@@ -61,6 +64,8 @@ export default {
     comment: Object,
     isByPostOwner: Boolean,
     isByCommunityOwner: Boolean,
+    isQuestion: Boolean,
+    displayApprove: Boolean,
   },
   data() {
     return {
@@ -80,7 +85,7 @@ export default {
     },
     date_time() {
       return moment(this.comment["created_at"]).format("DD/MM/YY");
-    }
+    },
   },
   methods: {
     navigateToUser() {
@@ -91,6 +96,7 @@ export default {
         },
       });
     },
+    approveAnswer() {},
     likeComment() {
       if (!this.userLiked) {
         axios
@@ -135,6 +141,9 @@ export default {
 </script>
 
 <style scoped>
+.approve {
+  background-color: green;
+}
 .containers {
   cursor: pointer;
   display: flex;
@@ -157,7 +166,7 @@ export default {
 }
 
 .badges {
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
 }
 
@@ -183,17 +192,29 @@ export default {
 
 .lecturer {
   background: rgb(138, 59, 254);
-  background: linear-gradient(225deg, rgba(138, 59, 254, 1) 11%, rgba(180, 55, 255, 1) 49%);
+  background: linear-gradient(
+    225deg,
+    rgba(138, 59, 254, 1) 11%,
+    rgba(180, 55, 255, 1) 49%
+  );
 }
 
 .community-owner {
-  background: rgb(255,237,0);
-  background: linear-gradient(270deg, rgba(255,237,0,1) 15%, rgba(253,248,98,1) 100%);
+  background: rgb(255, 237, 0);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 237, 0, 1) 15%,
+    rgba(253, 248, 98, 1) 100%
+  );
 }
 
 .thread-owner {
-  background: rgb(20,90,246);
-  background: linear-gradient(90deg, rgba(20,90,246,1) 27%, rgba(0,137,255,1) 100%);
+  background: rgb(20, 90, 246);
+  background: linear-gradient(
+    90deg,
+    rgba(20, 90, 246, 1) 27%,
+    rgba(0, 137, 255, 1) 100%
+  );
 }
 
 .details p {
@@ -224,8 +245,8 @@ export default {
 }
 
 .description p {
-    text-align: left;
-    overflow-wrap: break-word;
+  text-align: left;
+  overflow-wrap: break-word;
 }
 
 .date {
@@ -250,9 +271,12 @@ export default {
   box-shadow: 0 0 30px #0a72fb;
 }
 
-
-.chosen-answer  {
-  background: linear-gradient(270deg, rgba(52, 235, 233, 1) 0%, rgba(101, 255, 167, 1) 35%);
+.chosen-answer {
+  background: linear-gradient(
+    270deg,
+    rgba(52, 235, 233, 1) 0%,
+    rgba(101, 255, 167, 1) 35%
+  );
   box-shadow: 0px 5px 40px #268079;
 }
 
