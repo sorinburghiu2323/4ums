@@ -203,7 +203,6 @@ export default {
   },
   methods: {
     updatePost() {
-      console.log("hi");
       this.currentPage = 1;
       this.allComments = [];
       this.isAnswered = !this.isAnswered;

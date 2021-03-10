@@ -115,8 +115,8 @@ export default {
         },
       });
     },
-    unApproveAnswer() {
-      axios.delete(
+    async unApproveAnswer() {
+      await axios.delete(
           "/api/communities/" +
           this.communityId +
           "/posts/" +
@@ -129,8 +129,8 @@ export default {
       this.beenApproved = false;
       this.$emit('update-post');
     },
-    approveAnswer() {
-      axios.post(
+    async approveAnswer() {
+      await axios.post(
           "/api/communities/" +
           this.communityId +
           "/posts/" +
