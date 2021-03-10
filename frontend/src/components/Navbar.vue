@@ -48,24 +48,34 @@ export default {
     let pageName = this.$route.fullPath;
     let pageName2 = pageName.substring(1).split("/")[0];
     for (let i = 1; i < 4; i++) {
-      document.getElementById(this.pages[i]).style.color = "rgb(126, 126, 126)";
+      if(document.getElementById(this.pages[i])) {
+        document.getElementById(this.pages[i]).style.color = "rgb(126, 126, 126)";
+      }
     }
 
     if (pageName2 === "") {
-      document.getElementById(this.pages[0]).style.color = "#5FF9AB";
+      if(document.getElementById(this.pages[0])) {
+        document.getElementById(this.pages[0]).style.color = "#5FF9AB";
+      }
     } else {
-      document.getElementById(pageName2).style.color = "#5FF9AB";
+      if(document.getElementById(pageName2)) {
+        document.getElementById(pageName2).style.color = "#5FF9AB";
+      }
     }
   },
   methods: {
     goTo: function (location) {
       // update the text colour depending on which is selected
-      document.getElementById(location).style.color = "#5FF9AB";
+      if(document.getElementById(location)) {
+        document.getElementById(location).style.color = "#5FF9AB";
+      }
       // this.$router.replace(location)
       for (let i = 0; i < 4; i++) {
         if (this.pages[i] !== location) {
-          document.getElementById(this.pages[i]).style.color =
+          if(document.getElementById(this.pages[i])) {
+            document.getElementById(this.pages[i]).style.color =
               "rgb(126, 126, 126)";
+          } 
         }
       }
     }

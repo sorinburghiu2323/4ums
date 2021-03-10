@@ -92,8 +92,7 @@ export default {
 }
 #back {
   text-align: left;
-  margin-left: 2vh;
-  padding-top: 2vh;
+  margin-left: 0;
   color: #777779;
 }
 .community-content {
