@@ -7,18 +7,6 @@
       </p>
     </div>
     <h1 style="text-align: left">Edit Your Profile</h1>
-    <div
-      style="display: flex; justify-content: space-between; margin-bottom: 1vh"
-    >
-      <div style="vertical-align: center; margin: auto; margin-left: 0;">Show me on the leaderboard?</div>
-
-      <div>
-        <label class="switch">
-          <input type="checkbox" v-model="hideLeaderboard" />
-          <span class="slider round"></span> </label
-        ><br />
-      </div>
-    </div>
     <div class="titleBox" style="height: 6.5vh">
       <p
         class="titleBox"
@@ -63,7 +51,6 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.description);
       axios.get("/api/users/me").then((response) => {
         axios
           .put("/api/users/me", {
