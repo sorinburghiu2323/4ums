@@ -132,14 +132,16 @@
       </div>
     </div>
     <div v-if="loadedPost && community" class="comments-list">
-      <Comment
-        v-for="(comment, index) in allComments"
-        :key="index"
-        :comment="comment"
-        :isByPostOwner="post.user.id === comment.user.id"
-        :isByCommunityOwner="community.creator.id === comment.user.id"
-        :isQuestion="post_type === 'question'"
-        :displayApprove="isUserOwner"
+      <Comment v-for="(comment, index) in allComments" :key="index"
+               :comment="comment"
+               :displayApprove="isUserOwner"
+               :hasBeenApproved="isAnswered"
+               :isByCommunityOwner="community.creator.id === comment.user.id"
+               :isByPostOwner="post.user.id === comment.user.id"
+               :isQuestion="post_type === 'question'"
+               v-on:update-post="updatePost"
+
+
       />
     </div>
   </div>
@@ -179,7 +181,7 @@ export default {
       post: Object,
       post_type: "discussion",
       date_time: "10/20/30",
-      isAnswered: false,
+      isAnswered: true,
       userLiked: false,
       addComment: null,
       showInput: false,
@@ -200,8 +202,15 @@ export default {
     },
   },
   methods: {
+    updatePost() {
+      this.currentPage = 1;
+      this.allComments = [];
+      this.isAnswered = !this.isAnswered;
+      this.getPost();
+    },
     goBack() {
       this.$router.go(-1);
+
     },
     getCommunity() {
       axios
