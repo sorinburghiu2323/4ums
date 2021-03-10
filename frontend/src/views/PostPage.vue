@@ -50,7 +50,7 @@
         </div>
       </div>
       <div>
-        <div class="lecturer">
+        <div v-if="this.post.user.is_lecturer" class="lecturer">
           <div class="oval">
             <font-awesome-icon :icon="['fa', 'chalkboard-teacher']" />
             <p>Lecturer</p>
@@ -195,6 +195,7 @@ export default {
   },
   computed: {
     isByCommunityOwner() {
+      console.log(this.post.user);
       if (this.community === null || this.post === null) {
         return false;
       }
