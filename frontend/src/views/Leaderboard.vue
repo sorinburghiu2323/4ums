@@ -14,10 +14,11 @@
     </div>
     <div class="position">
       <div class="profile-pic"></div>
-      <div class="position-text">
-        <font-awesome-icon :icon="['fa', 'user']"></font-awesome-icon>
-        <p>Your Position: {{ leaderboardPosition | ordinal_suffix }}</p>
-      </div>
+        <div class="position-text">
+            <font-awesome-icon :icon="['fa', 'user']"></font-awesome-icon>
+            <p v-if="leaderboardPosition">Your Position: {{leaderboardPosition | ordinal_suffix}} </p>
+            <p v-else>Your position is hidden.</p>
+        </div>
     </div>
     <div class="top-three" v-if="loaded">
       <div class="top">
