@@ -206,7 +206,6 @@ export default {
   top: 5px;
   right: 75px;
   color: #7e7e7e;
-  position: relative;
   cursor: pointer;
   margin: auto;
 }
