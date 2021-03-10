@@ -113,8 +113,7 @@ router.beforeEach((to, from, next) => {
         // Direct user to login if they are not authenticated
         axios.get('/api/users/me')
             .catch(() => {
-                if (to.path !== '/login' && to.path !== '/register' && to.path !== '/login/forgot'
-                    && to.path !== '/login/forgot/passwordreset') {
+                if (to.path !== '/register' && !(to.path.includes('/login'))) {
                     return next({
                         path: '/login',
                     });

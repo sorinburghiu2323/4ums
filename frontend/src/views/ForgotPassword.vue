@@ -40,25 +40,26 @@ export default {
     name: "ForgotPassword",
     data() {
         return {
-            emailField: '',
-            hover: false,
-            sentEmail: false,
-            invalidEmail: true,
-            errorMessage: ''
+          emailField: "",
+          hover: false,
+          sentEmail: false,
+          invalidEmail: true,
+          errorMessage: ''
         };
     },
     methods: {
         submitEmail() {
-            axios.post('/api/login/sendreset', {body: {email : this.emailField}})
-            .then(() => {
+          console.log(this.emailField);
+          axios.post('/api/login/sendreset', {email: this.emailField})
+              .then(() => {
                 this.sentEmail = true;
                 this.invalidEmail = false;
                 this.errorMessage = '';
-            }).catch((error) => {
-                this.invalidEmail = true;
-              this.errorMessage = "We couldn't find any account with that email address";
-              console.error(error.response.data);
-            })
+              }).catch((error) => {
+            this.invalidEmail = true;
+            this.errorMessage = "We couldn't find any account with that email address";
+            console.error(error.response.data);
+          })
         },
         goBack() {
             this.$router.push(LoginPage);

@@ -30,6 +30,7 @@ declare module "particles.vue";
 
 <script>
 import axios from "axios";
+import LoginPage from "@/views/LoginPage";
 
 export default {
     name: "EnterNewPassword",
@@ -46,20 +47,19 @@ export default {
             if(this.isMatching()){
                 this.notMatching = true;
             }else {
-                this.notMatching = false;
-                axios.post('/api/login/passwordreset', {
-                    body : {
-                      user_id: this.$route.query.id,
-                      code: this.$route.query.code,
-                      password: this.passwordField1,
-                      password_repeated: this.passwordField2,
-                    }})
-                .then((response) =>{
-                    console.log(response);
-                })
-                .catch((error) =>{
-                    console.error(error);
-                });
+              this.notMatching = false;
+              axios.post('/api/login/passwordreset', {
+                user_id: this.$route.query.id,
+                code: this.$route.query.code,
+                password: this.passwordField1,
+                password_repeat: this.passwordField2,
+              })
+                  .then(() => {
+                    this.$router.push(LoginPage);
+                  })
+                  .catch((error) => {
+                    console.error(error.response.data);
+                  });
             }
         },
         goBack() {
