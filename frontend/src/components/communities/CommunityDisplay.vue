@@ -111,7 +111,7 @@ export default {
 }
 .purple {
   background: rgb(188, 98, 253);
-  background: linear-gradient(270deg, rgb(144, 98, 253) 0%, rgb(149, 0, 255) 35%);
+  background: linear-gradient(45deg, rgb(188, 98, 253) 0%, rgb(149, 0, 255) 100%);
 }
 
 .details {
