@@ -109,7 +109,7 @@ export default {
     },
     getUserDetails() {
       axios
-        .get("/api/users/" + this.$route.params.id)
+        .get("/api/users/" + this.$route.params.id, {params: {sharecode: this.$route.query.sharecode}})
         .then((response) => {
           this.firstName = response.data.first_name;
           this.secondName = response.data.last_name;

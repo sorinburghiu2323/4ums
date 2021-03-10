@@ -5,7 +5,16 @@
         <font-awesome-icon :icon="['fas', 'pencil-alt']"  />
       </div>
       <div class="share-icon backgroundSquare">
-        <font-awesome-icon :icon="['fas', 'share']"></font-awesome-icon>
+          <font-awesome-icon :icon="['fas', 'share']" @click.prevent.stop="showShare()"></font-awesome-icon>
+          <!-- pop up share link -->
+          <div id="share">
+              <div id="link">
+                  <!-- link text -->
+                  <p @click.prevent.stop="goLink()">{{ this.link }}</p>
+                  <!-- copy link button -->
+                  <font-awesome-icon :icon="['fas', 'link'] " id="copy-icon" @click.stop.prevent="copyLink()"/>
+              </div>
+          </div>
       </div>
       <div
         class="settings-icon"
@@ -119,6 +128,56 @@ export default {
         name: "Settings",
       });
     },
+    copyLink: function () {
+      this.$copyText(this.link).then(function () {
+        document.getElementById('copy-icon').style.background = "black";
+        document.getElementById('copy-icon').style.color = "white";
+      }, function (e) {
+        console.log(e)
+      })
+    },
+    goLink() {
+        this.$router.push(this.smallLink);
+    },
+    getLink() {
+        if (this.counter >= 2) {
+            console.error("Can't generate share code")
+        } else {
+            axios.get("/api/users/sharecode")
+                .then((response) => {
+                    if (response.data.code === null) {
+                        axios.post("/api/users/sharecode").then(() => {
+                            this.counter++;
+                            this.getLink();
+                        }).catch((error2) => {
+                            console.error(error2);
+                        })
+                    }
+                    this.smallLink = "/users/" + this.id + "?sharecode=" + response.data.code;
+                    this.link = window.location.origin + this.smallLink;
+
+                }).catch((error) => {
+                console.error(error);
+            })
+        }
+    },
+    showShare() {
+        if (document.getElementById("share").style.visibility === "visible") {
+            //document.getElementById("info").style.marginTop = "60px";
+            document.getElementById("share").style.visibility = "hidden";
+        } else {
+            //document.getElementById("info").style.marginTop = "120px";
+            document.getElementById("share").style.visibility = "visible";
+            this.counter = 0;
+            this.getLink();
+        }
+    },
+    hideShare() {
+        if (document.getElementById("share").style.visibility === "visible") {
+            document.getElementById("info").style.marginTop = "60px";
+            document.getElementById("share").style.visibility = "hidden";
+        }
+    },
     edit() {
       this.$router.push({
         name: "EditProfile",
@@ -132,6 +191,7 @@ export default {
       axios
         .get("/api/users/me")
         .then((response) => {
+          this.id = response.data.id;
           this.firstName = response.data.first_name;
           this.secondName = response.data.last_name;
           this.username = response.data.username;
@@ -183,6 +243,9 @@ export default {
       bio: "",
       displayGraph: true,
       labels: ["This week", "Last week", "2 Weeks Ago", "3 Weeks Ago"],
+      link: '',
+      smallLink: '',
+      counter: 0,
     };
   },
 };
@@ -310,5 +373,59 @@ export default {
 
 #graph {
   margin-top: 0;
+}
+
+#share {
+    display: flex;
+    position: absolute;
+    visibility: hidden;
+    background: #135AF6;
+    top: 50px;
+    right: 10px;
+    height: 100px;
+}
+
+#share #link {
+    position: fixed;
+    margin: auto;
+    right: 10px;
+    visibility: inherit;
+    max-width: calc(100vw - 5px);
+    min-width: 300px;
+    height: 40px;
+    box-shadow: 0 0 20px black;
+    cursor: pointer;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, #135AF6, #1A88FE);
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 5;
+
+}
+
+#share #link p {
+    height: inherit;
+    width: 254px;
+    position: absolute;
+    top: -13px;
+    white-space: nowrap;
+    left: 10px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 20px;
+}
+
+#share #copy-icon{
+    display: flex;
+    position:absolute;
+    top: 4px;
+    left: calc(100% - 36px);
+    background: white;
+    color: black;
+    border-radius: 40px;
+    font-size: 20px;
+    padding:6px;
+    z-index: 10;
 }
 </style>

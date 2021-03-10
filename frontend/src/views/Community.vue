@@ -34,16 +34,26 @@
         </button>
       </div>
       <div class="search-section">
-        <input placeholder="Search for a thread..." type="text" />
-        <div class="search-icon">
+        <input id="search" v-model="query" placeholder="Search for a thread..." type="text"
+               @keyup.enter="getSearchPosts()"/>
+        <div v-if="query === '' && firstGet">
+          {{ getSearchPosts() }}
+          {{ this.firstGet = false }}
+        </div>
+        <div class="search-icon" @click.stop.prevent="getSearchPosts()">
           <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
         </div>
       </div>
-      <div v-if="loadedPosts && joined">
-        <Post v-for="(post, index) in posts" :key="index" :post="post" />
+      <div v-if="loadedPosts && joined && !noPosts">
+        <Post v-for="(post, index) in posts" :key="index" :post="post"/>
       </div>
       <div v-else-if="!joined" style="margin-top: 50px;">
         Join community to see posts...
+      </div>
+      <div v-else-if="noPosts">
+        <h3>
+          Sorry we couldn't find any threads matching your search.
+        </h3>
       </div>
     </div>
   </div>
@@ -71,6 +81,9 @@ export default {
       loadMore: false,
       joined: true,
       id: null,
+      query: '',
+      firstGet: false,
+      noPosts: false,
     };
   },
   created() {
@@ -107,18 +120,54 @@ export default {
         this.loadedCommunity = true;
       });
     },
+    getSearchPosts() {
+      this.posts = [];
+      this.noPosts = false;
+      this.currentPage = 1;
+      this.firstGet = true;
+      if (this.query === "") {
+        this.getPosts();
+        this.firstGet = false;
+      } else {
+        document.getElementById('search').blur();
+        const community_id = this.$route.params.id;
+        const url = "/api/communities/" + community_id + "/posts";
+        axios
+            .get(url, {params: {page: this.currentPage, phrase: this.query}})
+            .then((response) => {
+              for (let i = 0; i < response.data.data.length; i++) {
+                this.posts.push(response.data.data[i]);
+              }
+              if (this.currentPage === 1 && response.data.data.length === 0) {
+                this.noPosts = true;
+              }
+              this.loadMore = response.data["next_page"] !== null;
+              this.loadedPosts = true;
+            })
+            .catch((error) => {
+              if (error.response.status === 403) {
+                this.joined = false;
+              }
+            });
+
+      }
+    },
     getPosts() {
+      this.noPosts = false;
       const community_id = this.$route.params.id;
       const url = "/api/communities/" + community_id + "/posts";
       axios
-        .get(url, { params: { page: this.currentPage } })
-        .then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            this.posts.push(response.data.data[i]);
-          }
-          this.loadMore = response.data["next_page"] !== null;
-          this.loadedPosts = true;
-        })
+          .get(url, {params: {page: this.currentPage}})
+          .then((response) => {
+            for (let i = 0; i < response.data.data.length; i++) {
+              this.posts.push(response.data.data[i]);
+            }
+            if (this.currentPage === 1 && response.data.data.length === 0) {
+              this.noPosts = true;
+            }
+            this.loadMore = response.data["next_page"] !== null;
+            this.loadedPosts = true;
+          })
         .catch((error) => {
           if (error.response.status === 403) {
             this.joined = false;
