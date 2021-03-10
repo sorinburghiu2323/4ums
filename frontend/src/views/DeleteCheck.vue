@@ -2,7 +2,7 @@
   <div>
     <p id="back" @click="$router.go(-1)">
       <font-awesome-icon :icon="['fas', 'arrow-left']" />
-      Back to threads
+      Back
     </p>
     <h1 style="text-align: left; left: 20px;">
       Are you sure you want to delete your account?
@@ -41,6 +41,7 @@ export default {
   outline: none;
   cursor: pointer;
   font-weight: 600;
+  width: 100px;
 }
 
 #back {

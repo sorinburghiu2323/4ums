@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <p id="back" @click="goBack()">
       <font-awesome-icon :icon="['fas', 'arrow-left']" />
       Back
@@ -20,7 +20,7 @@
         Show me on the leaderboard
       </div>
       <div style="float: right; position: relative; top: -50px;">
-        <label class="switch">
+        <label class="switch" v-if="hideLeaderboard !== null">
           <input type="checkbox" v-model="hideLeaderboard" />
           <span class="slider round"></span>
         </label>
@@ -41,11 +41,14 @@ import axios from "axios";
 export default {
   data() {
     return {
-      hideLeaderboard: true,
+      hideLeaderboard: null,
     };
   },
   mounted() {
     this.toggle();
+    axios.get('/api/users/me').then((response) => {
+      this.hideLeaderboard = !response.data.hide_leaderboard;
+    });
   },
   watch: {
     hideLeaderboard: function() {
@@ -90,6 +93,11 @@ export default {
 </script>
 
 <style scoped>
+
+.container {
+  width: 100%;
+  overflow: hidden;
+}
 .switch {
   padding-bottom: 2px;
   position: relative;
@@ -189,5 +197,6 @@ input:checked + .slider:before {
 #back {
   text-align: left;
   color: #777779;
+  cursor: pointer;
 }
 </style>

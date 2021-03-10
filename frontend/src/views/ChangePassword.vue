@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+		<p id="back" @click="$router.go(-1)">
+			<font-awesome-icon :icon="['fas', 'arrow-left']" />
+			Back
+		</p>
     <div>
       <h1 style="text-align: left; display: block;">Update your password</h1>
     </div>
@@ -267,5 +271,11 @@ input::placeholder {
 
 .fulfilled {
   color: green;
+}
+
+#back {
+  text-align: left;
+  color: #777779;
+  cursor: pointer;
 }
 </style>

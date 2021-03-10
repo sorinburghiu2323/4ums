@@ -213,6 +213,7 @@ export default {
   font-size: 35px;
   color: #7e7e7e;
   position: relative;
+  cursor: pointer;
 }
 
 #top-buttons {

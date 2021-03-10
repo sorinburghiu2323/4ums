@@ -133,6 +133,7 @@ export default {
   right: 15px;
   font-size: 35px;
   color: #7e7e7e;
+  cursor: pointer;
 }
 
 .search-section {

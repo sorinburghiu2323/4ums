@@ -200,6 +200,7 @@ export default {
   right: 75px;
   color: #7e7e7e;
   position: relative;
+  cursor: pointer;
 }
 
 .edit-icon {
