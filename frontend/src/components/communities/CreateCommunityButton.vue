@@ -3,7 +3,7 @@
         <button
         id="circleButton"
         @click="navigateToCreate()">
-        <p>Create Community</p>
+        <div class="curved-text"><img src="@/assets/create-community.svg"></div>
         <font-awesome-icon :icon="['fa', 'plus']"></font-awesome-icon>
         </button>
     </div>
@@ -21,12 +21,23 @@ export default {
 </script>
 
 <style scoped>
+.curved-text {
+    position: absolute;
+    top: -10px;
+    left: 0px;
+}
+
+.curved-text img {
+    height: 120px;
+    transform: rotate(20deg);
+}
+
 #circleButton {
     border-radius: 50%;
     background: rgb(210,35,175);
     background: linear-gradient(180deg, rgba(210,35,175,1) 0%, rgba(227,122,247,1) 75%);
-    height: 15vh;
-    width: 15vh;
+    height: 14vh;
+    width: 14vh;
     position: fixed;
     bottom: 12vh;
     right: 0;

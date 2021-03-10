@@ -4,8 +4,8 @@
       v-if="this.buttonVisible"
       id="circleButton"
       v-on:click="postSelect()"
-    >
-      <p>Create Thread</p>
+      >
+      <div class="curved-text"><img src="@/assets/create-thread.svg"></div>
       <font-awesome-icon :icon="['fa', 'plus']"/>
     </button>
     <div v-if="this.selectVisible" id="iconContainer">
@@ -84,12 +84,21 @@ export default {
 </script>
 
 <style scoped>
+.curved-text {
+    position: absolute;
+    top: -10px;
+    left: 0px;
+}
 
+.curved-text img {
+    height: 120px;
+    transform: rotate(28deg);
+}
 #circleButton {
   border-radius: 50%;
   background: linear-gradient(to bottom right, #B437FF, #9C39FF);
-  height: 15vh;
-  width: 15vh;
+  height: 14vh;
+  width: 14vh;
   position: fixed;
   bottom: 12vh;
   right: 0;
