@@ -1,19 +1,22 @@
+from SoftwareDev import settings
 import logging
+
+from django.template import loader, Context, Template
+
+from os import environ as environ_variables
 import pickle
 from base64 import urlsafe_b64encode, urlsafe_b64decode, b64decode
-from email import message_from_string
 from email.mime.text import MIMEText
-from os import environ as environ_variables
-
-from django.template import loader
+from email.mime.multipart import MIMEMultipart
+from email import message_from_string
 
 # boto is used *ONLY* in deployed app to access secrets
 if "DJANGO_AWS_4UMS_DEPLOYED" in environ_variables:
     import boto3
+    from botocore.exceptions import ClientError
     from googleapiclient.errors import HttpError
     from google.auth.transport.requests import Request
     from googleapiclient.discovery import build
-    from botocore.exceptions import ClientError
 
 
 def create_message(sender, to, subject, message_html):
