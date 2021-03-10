@@ -2,7 +2,7 @@ declare module "particles.vue";
 <template>
     <div class="container">
         <div class="header">
-            <img src="@/assets/website-logo.png" class="logo-container">
+            <img class="logo-container" src="@/assets/website-logo.png">
         </div>
         <div v-if="!sentEmail && invalidEmail">
         <div class="info">
@@ -11,8 +11,8 @@ declare module "particles.vue";
             <div style="color:red; z-index: 2; text-align: left;">{{this.errorMessage}}</div>
         <div class="inputBox">
             <div class="color-bar"></div>
-            <input v-model="emailField" maxlength="34" spellcheck="false" type="text"
-                   placeholder="Email Address">
+            <input v-model="emailField" maxlength="34" placeholder="Email Address" spellcheck="false"
+                   type="text">
         </div>
         <div class="details">
             Unfortunately if you are unable to access your email account we will not
@@ -35,6 +35,7 @@ declare module "particles.vue";
 <script>
 import LoginPage from "@/views/LoginPage";
 import axios from "axios";
+
 export default {
     name: "ForgotPassword",
     data() {
@@ -55,8 +56,8 @@ export default {
                 this.errorMessage = '';
             }).catch((error) => {
                 this.invalidEmail = true;
-                this.errorMessage = "We couldn't find any account with that email address";
-                console.error(error);
+              this.errorMessage = "We couldn't find any account with that email address";
+              console.error(error.response.data);
             })
         },
         goBack() {

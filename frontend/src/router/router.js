@@ -42,9 +42,9 @@ const routes = [
         component: ForgotPassword,
     },
     {
-        path: "/login/forgot/update",
+        path: "/login/passwordreset",
         name: "EnterNewPassword",
-        component:  EnterNewPassword,
+        component: EnterNewPassword,
     },
     {
         path: "/register",

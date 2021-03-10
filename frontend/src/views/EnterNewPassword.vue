@@ -2,21 +2,21 @@ declare module "particles.vue";
 <template>
     <div class="container">
         <div class="header">
-            <img src="@/assets/website-logo.png" class="logo-container">
+            <img class="logo-container" src="@/assets/website-logo.png">
         </div>
         <div class="info">
             Reset Your Password:
         </div>
         <div class="inputBox">
             <div class="color-bar1"></div>
-            <input v-model="passwordField1" maxlength="34" spellcheck="false" type="password"
-                   placeholder="Enter your new password">
+            <input v-model="passwordField1" maxlength="34" placeholder="Enter your new password" spellcheck="false"
+                   type="password">
         </div>
         <label v-if="notMatching" style="color:red;display:flex; position:relative; margin-left:37px;"> Passwords don't match</label>
         <div class="inputBox" style = "margin-top: 20px;">
             <div class="color-bar2"></div>
-            <input v-model="passwordField2" maxlength="38" spellcheck="false" type="password"
-                   placeholder="Confirm your new password">
+            <input v-model="passwordField2" maxlength="38" placeholder="Confirm your new password" spellcheck="false"
+                   type="password">
         </div>
         <button class="buttonSmart" type="submit" @click.stop="submitPassword()">
             Sign in
@@ -49,10 +49,10 @@ export default {
                 this.notMatching = false;
                 axios.post('/api/login/passwordreset', {
                     body : {
-                        user_id: 1,
-                        code: this.$route.params.code,
-                        password: this.passwordField1,
-                        password_repeated : this.passwordField2,
+                      user_id: this.$route.query.id,
+                      code: this.$route.query.code,
+                      password: this.passwordField1,
+                      password_repeated: this.passwordField2,
                     }})
                 .then((response) =>{
                     console.log(response);
