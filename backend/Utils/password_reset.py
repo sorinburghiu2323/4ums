@@ -10,14 +10,13 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email import message_from_string
 
-from googleapiclient.errors import HttpError
-from google.auth.transport.requests import Request
-from googleapiclient.discovery import build
-
 # boto is used *ONLY* in deployed app to access secrets
 if "DJANGO_AWS_4UMS_DEPLOYED" in environ_variables:
     import boto3
     from botocore.exceptions import ClientError
+    from googleapiclient.errors import HttpError
+    from google.auth.transport.requests import Request
+    from googleapiclient.discovery import build
 
 
 def create_message(sender, to, subject, message_html):
