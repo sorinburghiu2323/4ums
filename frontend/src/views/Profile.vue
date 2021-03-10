@@ -7,7 +7,14 @@
       <div class="share-icon backgroundSquare">
         <font-awesome-icon :icon="['fas', 'share']"></font-awesome-icon>
       </div>
-      <div class="settings-icon">
+      <div
+        class="settings-icon"
+        @click="
+          $router.push({
+            name: 'Settings',
+          })
+        "
+      >
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>
@@ -32,7 +39,6 @@
         <p style="width: 100%; text-align: left; margin-top:-10px;">
           Bio
         </p>
-
         <div class="lines"></div>
         <div>
           <p v-if="this.bio !== ''" style="padding-top: 0">
@@ -106,6 +112,11 @@ export default {
     this.getUserDetails();
   },
   methods: {
+    goToSettings() {
+      this.$router.push({
+        name: "Settings",
+      });
+    },
     edit() {
       this.$router.push({
         name: "EditProfile",
@@ -195,6 +206,7 @@ export default {
   top: 5px;
   right: 75px;
   color: #7e7e7e;
+  cursor: pointer;
   margin: auto;
 }
 

@@ -5,7 +5,14 @@
       Back
     </p>
     <div id="top-buttons">
-      <div class="settings-icon">
+      <div
+        class="settings-icon"
+        @click="
+          $router.push({
+            name: 'Settings',
+          })
+        "
+      >
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>
@@ -38,7 +45,7 @@
       <CommunitiesList
         :communities="communities"
         :myCommunities="false"
-        communityType='memberof'
+        communityType="memberof"
       />
     </div>
     <p style="width: 100%; text-align: left;"><u>Engagement Per Week:</u></p>
@@ -206,6 +213,7 @@ export default {
   font-size: 35px;
   color: #7e7e7e;
   position: relative;
+  cursor: pointer;
 }
 
 #top-buttons {
