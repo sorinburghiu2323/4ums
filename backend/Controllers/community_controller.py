@@ -22,7 +22,11 @@ def create_new(request):
 
     if "name" in request.DATA and "description" in request.DATA:
         if request.DATA["name"].isspace() or request.DATA["name"] == "":
-            return JsonResponse("Bad request - Community name cannot be empty.", status=400, safe=False)
+            return JsonResponse(
+                "Bad request - Community name cannot be empty.",
+                status=400,
+                safe=False,
+            )
         try:
             new_community = Community.objects.create(
                 user=user_instance,
@@ -220,6 +224,8 @@ def delete_community(request, community_id):
     # Verify user is the community creator.
     user = request.user
     if community.user != user:
-        return JsonResponse("Unauthorized - Permission denied.", status=401, safe=False)
+        return JsonResponse(
+            "Unauthorized - Permission denied.", status=401, safe=False
+        )
     community.delete()
     return JsonResponse("OK - Community deleted.", status=200, safe=False)
