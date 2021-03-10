@@ -1,15 +1,15 @@
 <template>
   <div v-if="loadedPost" class="container">
-    <router-link class="nav-link" to="..">
+    <div class="nav-link" @click.prevent.stop="goBack()">
       <p id="back">
-        <font-awesome-icon :icon="['fas', 'arrow-left']" />
+        <font-awesome-icon :icon="['fas', 'arrow-left']"/>
         {{ post.community.name }}
       </p>
-    </router-link>
+    </div>
     <div class="header">
       <div
-        class="settings-icon"
-        @click="
+          class="settings-icon"
+          @click="
           $router.push({
             name: 'Settings',
           })
@@ -109,7 +109,7 @@
         </div>
       </div>
     </div>
-    <div class="comment-btn" @click.stop="showCommentInput" v-if="!showInput">
+    <div v-if="!showInput" class="comment-btn" @click.stop="showCommentInput">
       <div class="comment-icon">
         <font-awesome-icon :icon="['fas', 'comment-dots']"></font-awesome-icon>
       </div>
@@ -118,8 +118,8 @@
     <div v-if="showInput" class="comment-input">
       <div class="close-comment">
         <font-awesome-icon
-          :icon="['fa', 'times']"
-          @click="
+            :icon="['fa', 'times']"
+            @click="
             showInput = false;
             addComment = '';
           "
@@ -200,15 +200,18 @@ export default {
     },
   },
   methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
     getCommunity() {
       axios
-        .get("/api/communities/" + this.id)
-        .then((response) => {
-          this.community = response.data;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+          .get("/api/communities/" + this.id)
+          .then((response) => {
+            this.community = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
     },
     sendComment() {
       axios
@@ -218,7 +221,8 @@ export default {
         )
         .then(() => {
           this.showInput = false;
-          this.$router.go(0);
+          this.allComments = [];
+          this.getPost();
         })
         .catch((error) => {
           console.error(error);
