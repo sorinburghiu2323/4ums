@@ -93,10 +93,10 @@ export default {
           this.loadMore = response.data.next_page !== null;
           this.loadedPosts = true;
         })
-        .catch((error) => {
-          console.error(error);
-          this.loadedPosts = false;
-        });
+          .catch((error) => {
+            console.error(error);
+            this.loadedPosts = false;
+          });
     },
     loadMorePosts() {
       this.currentPage += 1;

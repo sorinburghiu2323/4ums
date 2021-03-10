@@ -1,43 +1,45 @@
 <template>
   <div class="containers container">
     <div class="badges">
-      <div class="chosen-answer" v-if="is_approved">
+      <div v-if="is_approved" class="chosen-answer">
         <font-awesome-icon :icon="['fa', 'crown']"></font-awesome-icon>
         <p>Chosen Answer</p>
       </div>
-      <div class="lecturer" v-if="comment.user.is_teacher">
-        <font-awesome-icon :icon="['fa', 'chalkboard-teacher']" />
+      <div v-if="comment.user.is_teacher" class="lecturer">
+        <font-awesome-icon :icon="['fa', 'chalkboard-teacher']"/>
         <p>Lecturer</p>
       </div>
-      <div class="community-owner" v-if="isByCommunityOwner">
-        <font-awesome-icon :icon="['fa', 'hand-peace']" />
+      <div v-if="isByCommunityOwner" class="community-owner">
+        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
         <p>Community Owner</p>
       </div>
-      <div class="thread-owner" v-if="isByPostOwner">
-        <font-awesome-icon :icon="['fa', 'hand-peace']" />
+      <div v-if="isByPostOwner" class="thread-owner">
+        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
         <p>Thread Owner</p>
       </div>
       <div
-        class="approve"
-        v-if="displayApprove && !is_approved && isQuestion"
-        @click="approveAnswer()"
+          v-if="displayApprove && !is_approved && isQuestion && !beenApproved"
+          class="approve"
+          @click="approveAnswer()"
       >
         <p>
-          <font-awesome-icon :icon="['fas', 'check-circle']" /> Approve Answer
+          <font-awesome-icon :icon="['fas', 'check-circle']"/>
+          Approve Answer
         </p>
       </div>
       <div
-        class="approve"
-        v-if="displayApprove && is_approved && isQuestion"
-        @click="unapproveAnswer()"
+          v-if="displayApprove && is_approved && isQuestion"
+          class="approve"
+          @click="unApproveAnswer()"
       >
         <p>
-          <font-awesome-icon :icon="['fas', 'times-circle']" /> Unapprove Answer
+          <font-awesome-icon :icon="['fas', 'times-circle']"/>
+          Un-Approve Answer
         </p>
       </div>
     </div>
     <div class="details">
-      <div class="description" v-if="comment.comment">
+      <div v-if="comment.comment" class="description">
         <p>{{ comment.comment }}</p>
       </div>
     </div>
@@ -81,6 +83,7 @@ export default {
     isByCommunityOwner: Boolean,
     isQuestion: Boolean,
     displayApprove: Boolean,
+    hasBeenApproved: Boolean,
   },
   data() {
     return {
@@ -89,6 +92,7 @@ export default {
       is_approved: this.comment.is_approved,
       userLiked: this.comment["is_liked"],
       numLikes: this.comment["comment_likes"],
+      beenApproved: this.hasBeenApproved
     };
   },
   computed: {
@@ -111,9 +115,9 @@ export default {
         },
       });
     },
-    unapproveAnswer() {
+    unApproveAnswer() {
       axios.delete(
-        "/api/communities/" +
+          "/api/communities/" +
           this.communityId +
           "/posts/" +
           this.postId +
@@ -122,10 +126,12 @@ export default {
           "/approve"
       );
       this.is_approved = false;
+      this.beenApproved = false;
+      this.$emit('update-post');
     },
     approveAnswer() {
       axios.post(
-        "/api/communities/" +
+          "/api/communities/" +
           this.communityId +
           "/posts/" +
           this.postId +
@@ -134,6 +140,8 @@ export default {
           "/approve"
       );
       this.is_approved = true;
+      this.beenApproved = true;
+      this.$emit('update-post');
     },
     likeComment() {
       if (!this.userLiked) {
