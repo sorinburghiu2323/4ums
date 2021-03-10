@@ -23,9 +23,11 @@
         <p class="info">
           <font-awesome-icon :icon="['fas', 'star']" style="color:grey" />
           Points: {{ this.points }}
-          <font-awesome-icon :icon="['fas', 'trophy']" style="color:grey" />
-          Position:
-          {{ this.leaderboardPosition }}
+          <a v-if="this.leaderboardPosition">
+            <font-awesome-icon :icon="['fas', 'trophy']" style="color:grey" />
+            Position:
+            {{ this.leaderboardPosition }}
+          </a>
         </p>
       </div>
       <div class="bio">

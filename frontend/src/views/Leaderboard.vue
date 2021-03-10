@@ -11,7 +11,8 @@
             </div>
             <div class="position-text">
                 <font-awesome-icon :icon="['fa', 'user']"></font-awesome-icon>
-                <p>Your Position: {{leaderboardPosition | ordinal_suffix}} </p>
+                <p v-if="leaderboardPosition">Your Position: {{leaderboardPosition | ordinal_suffix}} </p>
+                <p v-else>Your position is hidden.</p>
             </div>
         </div>
         <div class="top-three" v-if="loaded">
