@@ -1,19 +1,18 @@
+declare module "particles.vue";
 <template>
     <div class="container">
-      <div class="forgot-form">
         <div class="header">
-          <div class="logo-container">
             <img class="logo-container" src="@/assets/website-logo.png">
-          </div>
         </div>
         <div v-if="!sentEmail && invalidEmail">
-        <div class="info" style="margin-bottom: 10px">
+        <div class="info">
             Reset Your Password:
         </div>
-            <div style="color:red; z-index: 2; text-align: left; margin-bottom: 5px;">{{this.errorMessage}}</div>
-        <div class="input">
-            <div class="color-bar" style="background: #FB6D13"></div>
-            <input v-model="emailField" placeholder="Email address" type="email">
+            <div style="color:red; z-index: 2; text-align: left;">{{this.errorMessage}}</div>
+        <div class="inputBox">
+            <div class="color-bar"></div>
+            <input v-model="emailField" maxlength="34" placeholder="Email Address" spellcheck="false"
+                   type="text">
         </div>
         <div class="details">
             Unfortunately if you are unable to access your email account we will not
@@ -30,7 +29,6 @@
             <font-awesome-icon :icon="['fas', 'arrow-left']"/>
             Back to <u>login page</u>
         </div>
-      </div>
     </div>
 </template>
 
@@ -71,23 +69,32 @@ export default {
 </script>
 <style scoped>
 .container{
-    display: flex;
-    width: 100%;
-    height: 100vh;
+    margin-top: 10vh;
+    padding-left: 10vw;
     animation: fade-in-move-down 0.7s;
+    overflow: hidden;
 }
 .logo-container {
-    width: 300px;
-    height:auto;
-    background:None;
-    margin: auto;
+    width: 333px;
+    padding-top: 6vh;
+    height: auto;
+    background: None;
+    z-index: 3;
 }
 
-.forgot-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: auto;
+.header {
+    width: auto;
+    margin-left: -35px;
+    left: calc(50vw - 160px);
+    margin-bottom: 10px;
+    z-index: 2;
+}
+
+.header h1 {
+    font-size: 30px;
+    text-align: left;
+    margin: 10px 10px 0;
+    color: white;
 }
 
 .info {
@@ -95,58 +102,64 @@ export default {
     font-size: 15px;
     margin-left: 20px;
     color: white;
+    text-align: left;
     font-weight: 600;
 }
 
-.input {
-  text-align: left;
-  margin: auto;
-  width: 280px;
+.inputBox {
+    background: linear-gradient(to right, #272B39, #1E212B) !important;
+    position: relative;
+    margin: 10px;
+    z-index: 2;
+    height: 20px;
+    width: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    color: white;
+    right: 0;
+    padding-top: 30px;
+    border-radius: 20px;
+    resize: none;
 }
 
-.input input {
-  width: inherit;
-  height: 46px;
-  margin-left: 8px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  color: white;
-  background: rgb(40, 44, 58);
-  background: linear-gradient(
-    90deg,
-    rgba(40, 44, 58, 1) 0%,
-    rgba(27, 30, 40, 1) 35%,
-    rgba(8, 9, 11, 1) 100%
-  );
-  padding-left: 15px;
+.inputBox .color-bar {
+    height: 50px;
+    width: 20px;
+    top: 0;
+    left: 0;
+    border-radius: 20px 0 0 20px;
+    position: absolute;
+    background: linear-gradient(to bottom, #1372FA, #0F5BEE);
 }
 
-input::placeholder {
-  font-weight: 500;
-  color: white;
-}
-
-.input p {
-  margin-bottom: 3px;
-}
-
-.color-bar {
-  height: 48px;
-  width: 15px;
-  border-radius: 10px 0px 0 10px;
-  position: absolute;
+.inputBox input {
+    border: none;
+    resize: none;
+    background: none;
+    position: relative;
+    top: -15px;
+    left: 5%;
+    right: 10%;
+    color: white;
+    height: 30px;
+    width: calc(100% - 60px);
+    margin: auto auto auto 20px;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 17px;
 }
 
 .details {
     z-index: 2;
     position: relative;
     font-size: 15px;
-    margin: auto;
+    margin-left: 30px;
     color: white;
     font-weight: 600;
-    width: 300px;
+    width: calc(100% - 30px - 30px);
+    text-align: left;
 }
 
 .buttonSmart {
@@ -161,6 +174,7 @@ input::placeholder {
     margin-top: 25px;
     cursor: pointer;
     font-weight: 600;
+    margin-left: -40px;
     outline: none;
     font-size: 15px;
 }
@@ -175,6 +189,7 @@ input::placeholder {
     cursor: pointer;
     font-weight: 600;
     margin-top: 20px;
+    margin-left: -50px;
 }
 @keyframes fade-in-move-down {
   0% {

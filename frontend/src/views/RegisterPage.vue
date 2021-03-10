@@ -2,9 +2,7 @@
     <div class="container">
         <div class="register-form">
           <div class="header">
-            <div class="logo-container">
-              <img class="logo-container" src="@/assets/website-logo.png">
-            </div>
+            <div class="logo-container"><img class="logo-container" src="@/assets/website-logo.png"></div>
           </div>
           <div v-if="showRequirements" class="pass-requirements">
             <p>Password requirements: </p>

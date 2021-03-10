@@ -83,7 +83,11 @@ export default {
 .login-form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin: auto;
+}
+
+.input {
+  text-align: left;
   margin: auto;
 }
 
@@ -92,13 +96,9 @@ export default {
   color: white;
   font-weight: 500;
 }
-
-.input {
-  text-align: left;
-}
-
-.input input {
-  width: 96%;
+input {
+  width: calc(100vw - 60px);
+  position: relative;
   height: 46px;
   margin-left: 8px;
   margin-bottom: 15px;
@@ -112,17 +112,12 @@ export default {
     rgba(40, 44, 58, 1) 0%,
     rgba(27, 30, 40, 1) 35%,
     rgba(8, 9, 11, 1) 100%
-  );
+  ) !important;
   padding-left: 15px;
 }
 
-input::placeholder {
-  font-weight: 500;
-  color: white;
-}
-
-.input p {
-  margin-bottom: 3px;
+.input input {
+  width: calc(100vw - 140px);
 }
 
 .color-bar {
@@ -130,6 +125,7 @@ input::placeholder {
   width: 15px;
   border-radius: 10px 0px 0 10px;
   position: absolute;
+  z-index: 2;
 }
 
 .login-btn {
@@ -158,12 +154,11 @@ input::placeholder {
   font-size: 14px;
 }
 
-.logo-container{
-  width: 300px;
-  height:auto;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  background:None;
+.logo-container {
+  width: 333px;
+  height: auto;
+  background: None;
+  padding-bottom: 20px;
 }
 @keyframes fade-in-move-down {
   0% {
