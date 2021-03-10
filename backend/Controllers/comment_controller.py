@@ -104,13 +104,14 @@ def like_comment(request, community_id, post_id, comment_id):
 
             # Create like and add points to the comment creator.
             PostCommentLike.objects.create(user=user, post_comment=comment)
-            adjust_points(
-                user=comment.user,
-                points=settings.LIKE_COMMENT_PTS,
-                community=community,
-                post=post,
-                comment=comment,
-            )
+            if user != comment.user:
+                adjust_points(
+                    user=comment.user,
+                    points=settings.LIKE_COMMENT_PTS,
+                    community=community,
+                    post=post,
+                    comment=comment,
+                )
             return JsonResponse("OK - Comment liked.", status=200, safe=False)
 
         return JsonResponse(
@@ -147,13 +148,14 @@ def unlike_comment(request, community_id, post_id, comment_id):
     user = request.user
     try:
         PostCommentLike.objects.get(user=user, post_comment=comment).delete()
-        adjust_points(
-            user=comment.user,
-            points=-settings.LIKE_COMMENT_PTS,
-            community=community,
-            post=post,
-            comment=comment,
-        )
+        if user != comment.user:
+            adjust_points(
+                user=comment.user,
+                points=-settings.LIKE_COMMENT_PTS,
+                community=community,
+                post=post,
+                comment=comment,
+            )
         return JsonResponse("OK - Comment unliked.", status=200, safe=False)
     except:
         return JsonResponse(

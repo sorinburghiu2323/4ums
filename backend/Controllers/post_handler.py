@@ -164,12 +164,13 @@ def like_post(request, community_id, post_id):
 
             # Create like and add points to the post creator.
             PostLike.objects.create(user=user, post=post)
-            adjust_points(
-                user=post.user,
-                points=settings.LIKE_POST_PTS,
-                community=community,
-                post=post,
-            )
+            if user != post.user:
+                adjust_points(
+                    user=post.user,
+                    points=settings.LIKE_POST_PTS,
+                    community=community,
+                    post=post,
+                )
             return JsonResponse("OK - Post liked.", status=200, safe=False)
 
         return JsonResponse(
