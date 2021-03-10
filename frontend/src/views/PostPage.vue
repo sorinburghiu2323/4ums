@@ -18,6 +18,54 @@
         <font-awesome-icon :icon="['fas', 'cog']"></font-awesome-icon>
       </div>
     </div>
+    <div class="badges">
+      <div v-if="post_type === 'question' && !this.isAnswered">
+        <div class="open">
+          <div class="oval">
+            <font-awesome-icon
+              :icon="['fa', 'question-circle']"
+            ></font-awesome-icon>
+            <p>Open</p>
+          </div>
+        </div>
+      </div>
+      <div v-else-if="post_type === 'discussion'">
+        <div class="discussion">
+          <div class="oval">
+            <font-awesome-icon
+              :icon="['fa', 'comment-dots']"
+            ></font-awesome-icon>
+            <p>Discussion</p>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <div class="answer">
+          <div class="oval">
+            <font-awesome-icon
+              :icon="['fa', 'check-circle']"
+            ></font-awesome-icon>
+            <p>Answered</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="lecturer">
+          <div class="oval">
+            <font-awesome-icon :icon="['fa', 'chalkboard-teacher']" />
+            <p>Lecturer</p>
+          </div>
+        </div>
+      </div>
+      <div v-if="isByCommunityOwner">
+        <div class="community-owner">
+          <div class="oval">
+            <font-awesome-icon :icon="['fa', 'chalkboard-teacher']" />
+            <p>Community Owner</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="containers">
       <div class="details">
         <div class="title">
@@ -57,37 +105,6 @@
               By
               <span class="author-name">{{ post.user.username }}</span>
             </p>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="post_type === 'question' && !this.isAnswered">
-        <div class="open">
-          <div class="oval">
-            <font-awesome-icon
-              :icon="['fa', 'question-circle']"
-            ></font-awesome-icon>
-            <p>Open</p>
-          </div>
-        </div>
-      </div>
-      <div v-else-if="post_type === 'discussion'">
-        <div class="discussion">
-          <div class="oval">
-            <font-awesome-icon
-              :icon="['fa', 'comment-dots']"
-            ></font-awesome-icon>
-            <p>Discussion</p>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <div class="answer">
-          <div class="oval">
-            <font-awesome-icon
-              :icon="['fa', 'check-circle']"
-            ></font-awesome-icon>
-            <p>Answered</p>
           </div>
         </div>
       </div>
@@ -173,6 +190,14 @@ export default {
     this.getPost();
     this.getCommunity();
     this.scroll();
+  },
+  computed: {
+    isByCommunityOwner() {
+      if(this.community === null || this.post === null) {
+        return false;
+      }
+      return this.community.creator.id === this.post.user.id;
+    },
   },
   methods: {
     getCommunity() {
@@ -290,6 +315,42 @@ export default {
 </script>
 
 <style scoped>
+.badges {
+  display: flex;
+  flex-direction: column;
+}
+
+.badges > div {
+  width: fit-content;
+  margin-bottom: 5px;
+}
+
+.lecturer .oval {
+  background: rgb(138, 59, 254);
+  background: linear-gradient(
+    225deg,
+    rgba(138, 59, 254, 1) 11%,
+    rgba(180, 55, 255, 1) 49%
+  );
+  font-weight: 600;
+}
+
+.lecturer .oval svg, .community-owner .oval svg, .thread-owner .oval svg {
+  margin-left: 0;
+}
+
+.community-owner .oval {
+  background: rgb(255,237,0);
+  background: linear-gradient(270deg, rgba(255,237,0,1) 15%, rgba(253,248,98,1) 100%);
+  font-weight: 600;
+}
+
+.thread-owner .oval {
+  background: rgb(20,90,246);
+  background: linear-gradient(90deg, rgba(20,90,246,1) 27%, rgba(0,137,255,1) 100%);
+  font-weight: 600;
+}
+
 .send-icon {
   position: absolute;
   top: 10px;
@@ -428,10 +489,6 @@ export default {
 
 .oval {
   display: flex;
-  position: absolute;
-  z-index: -1;
-  top: -30px;
-  left: 0;
   height: 20px;
   margin-top: 1px;
   margin-left: 0px;
@@ -454,6 +511,7 @@ export default {
 .open .oval {
   background: linear-gradient(to right, #fe6811, #fe982d);
   box-shadow: 0 0 30px #fe6710;
+  min-width: 130px;
 }
 
 .discussion .oval {
@@ -464,6 +522,7 @@ export default {
 .answer .oval {
   background: linear-gradient(to right, #34e7e4, #63fba4);
   box-shadow: 0 0 30px #4cf1c4;
+  min-width: 130px;
 }
 
 .likes {

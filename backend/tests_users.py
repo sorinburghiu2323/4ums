@@ -1,11 +1,9 @@
-"""Unit tests for user validation functions."""
-
 from django.test import TestCase
 
-from backend.Utils.user_validation import validate_user_data, validate_password
+from backend.Utils.user_validation import validate_password, validate_user_data
 
 
-class TestUserValidation(TestCase):
+class UserValidationTesting(TestCase):
     """
     Test user validation cases.
     """

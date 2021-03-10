@@ -33,7 +33,7 @@
     </div>
 
     <button id="submit" v-on:click="createPost()">
-      <p>POST</p>
+      <div class="curved-text"><img src="@/assets/post.svg"></div>
       <font-awesome-icon :icon="['fa', 'comment-dots']"/>
     </button>
   </div>
@@ -99,6 +99,17 @@ export default {
 </script>
 
 <style scoped>
+.curved-text {
+    position: absolute;
+    top: -10px;
+    left: 0px;
+}
+
+.curved-text img {
+    height: 120px;
+    transform: rotate(-5deg);
+}
+
 #communityBox {
   padding: 5px;
   color: white;
@@ -168,8 +179,8 @@ export default {
 #submit {
   border-radius: 50%;
   background: linear-gradient(to bottom right, #B437FF, #9C39FF);
-  height: 15vh;
-  width: 15vh;
+  height: 14vh;
+  width: 14vh;
   position: fixed;
   bottom: 12vh;
   right: 0;

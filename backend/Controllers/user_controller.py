@@ -281,7 +281,7 @@ def update_me(request):
         # Update password.
         user.set_password(request.DATA["password"])
         user.save()
-        password_updated = True       
+        password_updated = True
 
     elif (
         "email" in request.DATA
@@ -291,7 +291,7 @@ def update_me(request):
         and "username" in request.DATA
         and "description" in request.DATA
     ):
-        
+
         print("HErepw")
         update_valid = validate_user_data(
             request.DATA["first_name"],
@@ -318,8 +318,6 @@ def update_me(request):
     if not password_updated and not body_updated:
         return JsonResponse("Bad Request - Bad fields.", status=400, safe=False)
     return JsonResponse("OK - User updated.", status=200, safe=False)
-
-
 
 
 def get_user(request, user_id):

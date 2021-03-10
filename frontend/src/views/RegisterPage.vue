@@ -1,77 +1,63 @@
 <template>
-  <div class="container">
-    <div class="register-form">
-      <div class="header">
-        <div class="logo-container">
-          <img src="@/assets/website-logo.svg" />
-        </div>
-      </div>
-      <div v-if="showRequirements" class="pass-requirements">
-        <p>Password requirements:</p>
-        <ul>
-          <li :class="{ fulfilled: lowercase }">Atleast 1 lower case</li>
-          <li :class="{ fulfilled: uppercase }">Atleast 1 upper case</li>
-          <li :class="{ fulfilled: containsNumber }">A number</li>
-          <li :class="{ fulfilled: noSpaces }">No spaces</li>
-          <li :class="{ fulfilled: nineChars }">At least 9 characters long</li>
-        </ul>
-      </div>
-      <div class="input">
-        <div class="color-bar" style="background: #FFED00"></div>
-        <input v-model="firstName" placeholder="First name" type="text" />
-      </div>
-      <div class="input">
-        <div class="color-bar" style="background: #FFED00"></div>
-        <input v-model="lastName" placeholder="Last name" type="text" />
-      </div>
-      <div class="input">
-        <div class="color-bar" style="background: #B437FF"></div>
-        <input v-model="username" placeholder="Username" type="text" />
-      </div>
-      <div class="input">
-        <div class="color-bar" style="background: #FB6D13"></div>
-        <input v-model="email" placeholder="University Email" type="email" />
-      </div>
-      <div class="input">
-        <div class="color-bar" style="background: #D223AF"></div>
-        <input v-model="password" placeholder="Password" type="password" />
-      </div>
-      <div class="input">
-        <div class="color-bar" style="background: #D223AF"></div>
-        <input
-          v-model="passwordConfirmation"
-          placeholder="Confirm password"
-          type="password"
-        />
-        <p style="color: red; font-size: 12px;">{{ errMessage }}</p>
-      </div>
-      <div class="terms">
-        <div>
-          <input v-model="isTeacher" type="checkbox" /><span
-            >I am a teacher/lecturer</span
-          >
-        </div>
-      </div>
-      <div class="terms">
-        <div>
-          <input v-model="isTermsAgreed" type="checkbox" />
-          <span class="tc-link" @click="showTC = true"
-            >I agree to all terms</span
-          >
-        </div>
-        <p style="color: red; font-size: 12px;">{{ termErrMessage }}</p>
-      </div>
-      <div>
-        <button class="register-btn" @click="registerUser()">Register</button>
-      </div>
-      <div class="text">
-        <p>
-          Already have an account?
-          <a class="link" @click="navigate('login')">Sign in</a>
+    <div class="container">
+        <div class="register-form">
+          <div class="header">
+            <div class="logo-container"><img class="logo-container" src="@/assets/website-logo.png"></div>
+          </div>
+          <div v-if="showRequirements" class="pass-requirements">
+            <p>Password requirements: </p>
+            <ul>
+              <li :class="{'fulfilled': lowercase}">Atleast 1 lower case</li>
+              <li :class="{'fulfilled': uppercase}">Atleast 1 upper case</li>
+              <li :class="{'fulfilled': containsNumber}">A number</li>
+              <li :class="{'fulfilled': noSpaces}">No spaces</li>
+              <li :class="{'fulfilled': nineChars}">At least 9 characters long</li>
+            </ul>
+          </div>
+          <div class="input">
+            <div class="color-bar" style="background: #FFED00"></div>
+            <input v-model="firstName" placeholder="First name" type="text"/>
+          </div>
+          <div class="input">
+            <div class="color-bar" style="background: #FFED00"></div>
+            <input v-model="lastName" placeholder="Last name" type="text"/>
+          </div>
+          <div class="input">
+                <div class="color-bar" style="background: #B437FF"></div>
+            <input v-model="username" placeholder="Username" type="text"/>
+            </div>
+            <div class="input">
+                <div class="color-bar" style="background: #FB6D13"></div>
+              <input v-model="email" placeholder="University Email" type="email"/>
+            </div>
+            <div class="input">
+                <div class="color-bar" style="background: #D223AF"></div>
+              <input v-model="password" placeholder="Password" type="password">
+            </div>
+            <div class="input">
+                <div class="color-bar" style="background: #D223AF"></div>
+              <input v-model="passwordConfirmation" placeholder="Confirm password" type="password">
+                <p style="color: red; font-size: 12px;">{{errMessage}}</p>
+            </div>
+            <div class="terms">
+              <div><input v-model="isTeacher" type="checkbox"><span>I am a teacher/lecturer</span></div>
+            </div>
+            <div class="terms">
+              <div>
+                <input v-model="isTermsAgreed" type="checkbox"> 
+                <span class="tc-link" @click="showTC=true;">I agree to all terms</span>
+              </div>
+                <p style="color: red; font-size: 12px;">{{termErrMessage}}</p>
+            </div>
+            <div>
+                <button class="register-btn" @click="registerUser()">Register</button>
+            </div>
+            <div class="text">
+                <p>Already have an account?
+             <a class="link" @click="navigate('login')">Sign in</a>
         </p>
       </div>
     </div>
-
     <div class="TC-popup">
       <div class="close-TC" v-if="showTC">
         <font-awesome-icon :icon="['fa', 'times']" @click="showTC = false" />
@@ -237,9 +223,18 @@ export default {
 
 <style scoped>
 .container {
-  display: flex;
-  width: 100%;
-  position: relative;
+    display: flex;
+    width: 100%;
+    animation: fade-in-move-down 0.7s;
+    position: relative;
+}
+
+.logo-container{
+  width: 300px;
+  height:auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background:None;
 }
 .register-form {
   display: flex;
@@ -330,7 +325,7 @@ input::placeholder {
   color: red;
 }
 
-.fulfilled {
+.fulfilled ul {
   color: green;
 }
 
@@ -350,5 +345,16 @@ input::placeholder {
   top: 10px;
   font-size: 30px;
   cursor: pointer;
+}
+
+@keyframes fade-in-move-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
