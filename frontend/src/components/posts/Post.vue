@@ -1,5 +1,5 @@
 <template>
-  <div class="containers" @click='navigateToPost'>
+  <div class="containers" @click="navigateToPost">
     <div class="details">
       <div class="title">
         <p>{{ post.title }}</p>
@@ -7,33 +7,32 @@
       <div class="description">
         <p>{{ post.description }}</p>
       </div>
-      <div v-if="post_type === 'question'&& !this.approvedAnswer">
+      <div v-if="post_type === 'question' && !this.approvedAnswer">
         <div class="open">
-          <div class="oval">
-          </div>
-          <font-awesome-icon :icon="['fa', 'question-circle']"></font-awesome-icon>
+          <div class="oval"></div>
+          <font-awesome-icon
+            :icon="['fa', 'question-circle']"
+          ></font-awesome-icon>
           <p>Open</p>
         </div>
       </div>
       <div v-else-if="post_type === 'discussion'">
         <div class="discussion">
-          <div class="oval">
-          </div>
+          <div class="oval"></div>
           <font-awesome-icon :icon="['fa', 'comment-dots']"></font-awesome-icon>
           <p>Discussion</p>
         </div>
       </div>
       <div v-else>
         <div class="answer">
-          <div class="oval">
-          </div>
+          <div class="oval"></div>
           <font-awesome-icon :icon="['fa', 'check-circle']"></font-awesome-icon>
           <p>Answered</p>
         </div>
       </div>
     </div>
     <div style="display: flex;">
-      <div class="likes" @click.stop='likePost'>
+      <div class="likes" @click.stop="likePost">
         <div v-if="this.userLiked" style="color:white">
           <div class="like-icon">
             <font-awesome-icon :icon="['fa', 'thumbs-up']"></font-awesome-icon>
@@ -48,22 +47,22 @@
         </div>
       </div>
       <div class="date">
-          <p>Posted {{date_time}}</p>
+        <p>Posted {{ date_time }}</p>
       </div>
-      <div class="author" @click.stop='navigateToUser'>
-        <p>By <span class="author-name">{{ post["user"]["username"] }}</span></p>
+      <div class="author" @click.stop="navigateToUser">
+        <p>
+          By <span class="author-name">{{ post["user"]["username"] }}</span>
+        </p>
       </div>
     </div>
-    
   </div>
 </template>
 <script>
-import moment from 'moment'
+import moment from "moment";
 import axios from "axios";
 
-
 export default {
-  name: 'Post',
+  name: "Post",
   props: {
     post: Object,
   },
@@ -73,49 +72,64 @@ export default {
       post_type: this.post.post_type,
       userLiked: this.post["is_liked"],
       approvedAnswer: this.post["has_approved"],
-      date_time: moment((this.post["create_at"])).format('DD/MM/YY'),
-    }
+      date_time: moment(this.post["create_at"]).format("DD/MM/YY"),
+    };
   },
   methods: {
     navigateToPost() {
       this.$router.push({
-        name: 'PostPage',
+        name: "PostPage",
         params: {
           id: this.post.community.id,
-          postId: this.post.id
-        }
-      })
+          postId: this.post.id,
+        },
+      });
     },
     navigateToUser() {
       this.$router.push({
-        name: 'User',
+        name: "User",
         params: {
-          id: this.post.user.id
-        }
-      })
+          id: this.post.user.id,
+        },
+      });
     },
     likePost() {
       if (!this.userLiked) {
-        axios.post('/api/communities/' + this.post.community.id + '/posts/' + this.post.id + '/likes')
-            .then(() => {
-              this.post["likes_num"]++;
-              this.userLiked = true;
-            })
-            .catch((error) => {
-              console.error(error);
-            })
+        axios
+          .post(
+            "/api/communities/" +
+              this.post.community.id +
+              "/posts/" +
+              this.post.id +
+              "/likes"
+          )
+          .then(() => {
+            this.post["likes_num"]++;
+            this.userLiked = true;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } else {
-        axios.delete('/api/communities/' + this.post.community.id + '/posts/' + this.post.id + '/likes')
-            .then(() => {
-              this.post["likes_num"]--;
-              this.userLiked = false;
-            }).catch((error) => {
-          console.error(error);
-        })
+        axios
+          .delete(
+            "/api/communities/" +
+              this.post.community.id +
+              "/posts/" +
+              this.post.id +
+              "/likes"
+          )
+          .then(() => {
+            this.post["likes_num"]--;
+            this.userLiked = false;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -124,11 +138,13 @@ export default {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin: 10px -10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   height: auto;
   padding: 0 3px 10px 0;
   border: none;
-  background: linear-gradient(to right, #272B39, #1D2029);
+  border-radius: 25px;
+  background: linear-gradient(to right, #272b39, #1d2029);
   position: relative;
 }
 
@@ -137,7 +153,7 @@ export default {
 }
 
 .details p {
-    margin: 0;
+  margin: 0;
 }
 
 .details .title {
@@ -147,18 +163,18 @@ export default {
 }
 
 .title p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* number of lines to show */
-    -webkit-box-orient: vertical;
-    text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+  text-align: left;
 }
 
 .details .description {
-    height: 70%;
-    font-size: 15px;
-    color: white;
+  height: 70%;
+  font-size: 15px;
+  color: white;
 }
 
 .description p {
@@ -186,7 +202,7 @@ export default {
   margin-top: 1px;
   margin-left: -10px;
   border-radius: 20vw 20vw 20vw 20vw;
-  background: linear-gradient(to right, #FE6811, #FE982D);
+  background: linear-gradient(to right, #fe6811, #fe982d);
 }
 
 .discussion .oval {
@@ -200,7 +216,7 @@ export default {
   margin-top: 1px;
   margin-left: -10px;
   border-radius: 20vw 20vw 20vw 20vw;
-  background: linear-gradient(to right, #E276F4, #D225B1);
+  background: linear-gradient(to right, #e276f4, #d225b1);
 }
 
 .answer .oval {
@@ -214,8 +230,8 @@ export default {
   margin-top: 1px;
   margin-left: -10px;
   border-radius: 20vw 20vw 20vw 20vw;
-  background: linear-gradient(to right, #34E7E4, #63FBA4);
-  box-shadow: 0 0 30px #4CF1C4;
+  background: linear-gradient(to right, #34e7e4, #63fba4);
+  box-shadow: 0 0 30px #4cf1c4;
 }
 
 .open {
@@ -323,5 +339,4 @@ export default {
 .author-name {
   text-decoration: underline;
 }
-
 </style>

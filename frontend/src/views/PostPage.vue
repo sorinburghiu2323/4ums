@@ -133,11 +133,13 @@
     </div>
     <div v-if="loadedPost && community" class="comments-list">
       <Comment
-          v-for="(comment, index) in allComments"
-          :key="index"
-          :comment="comment"
-          :isByCommunityOwner="community.creator.id === comment.user.id"
-          :isByPostOwner="post.user.id === comment.user.id"
+        v-for="(comment, index) in allComments"
+        :key="index"
+        :comment="comment"
+        :isByPostOwner="post.user.id === comment.user.id"
+        :isByCommunityOwner="community.creator.id === comment.user.id"
+        :isQuestion="post_type === 'question'"
+        :displayApprove="isUserOwner"
       />
     </div>
   </div>
@@ -181,6 +183,7 @@ export default {
       userLiked: false,
       addComment: null,
       showInput: false,
+      isUserOwner: false,
     };
   },
   mounted() {
@@ -262,6 +265,7 @@ export default {
           this.isAnswered = this.post["has_approved"];
           this.loadedPost = true;
           this.userLiked = this.post["is_liked"];
+          this.isUserOwner = this.post["is_user_owner"];
         })
         .catch((error) => {
           console.error(error);
