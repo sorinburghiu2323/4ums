@@ -46,8 +46,7 @@
       </div>
 
       <!--Communities user created-->
-      <div v-if="!noPosts">
-        <p v-if="!showAllCommunities">Created by you:</p>
+       <p v-if="!showAllCommunities">Created by you:</p>
         <CommunitiesList
             v-if="loadedCommunities && !showAllCommunities"
             :communities="createdCommunities"
@@ -60,20 +59,13 @@
             :communities="myCommunities"
             communityType="memberof"
         />
-
-        <!-- all Communities -->
-        <CommunitiesList
-            v-if="loadedCommunities && showAllCommunities"
-            :communities="allCommunities"
-            communityType="all"
-        />
-        <ManageCommunitiesButton v-if="showManageButton && !showAllCommunities"/>
-      </div>
-      <div v-else>
-        <h3>
-          Sorry we couldn't find any communities matching your search.
-        </h3>
-      </div>
+      <!-- all Communities -->
+      <CommunitiesList
+          v-if="loadedCommunities && showAllCommunities"
+          :communities="allCommunities"
+          communityType="all"
+      />
+      <ManageCommunitiesButton v-if="showManageButton && !showAllCommunities"/>
     </div>
   </div>
 </template>
