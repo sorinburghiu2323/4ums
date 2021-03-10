@@ -1,31 +1,31 @@
 <template>
     <div class="container">
         <div class="login-form">
-            <div class="header">
-                <div class="logo-container"><img src="@/assets/website-logo.svg"></div>
-            </div>
-            <div>
-                <p v-if="failedLogin" class="error-message">Incorrect password or email</p>
-            </div>
+          <div class="header">
+            <div class="logo-container"><img  class="logo-container" src="@/assets/website-logo.png"></div>
+          </div>
+          <div>
+            <p v-if="failedLogin" class="error-message">Incorrect password or email</p>
+          </div>
 
-            <div class="input">
-                <div class="color-bar" style="background: #FB6D13"></div>
-                <input v-model="email" placeholder="Email address" type="text"/>
-            </div>
-            <div class="input">
-                <div class="color-bar" style="background: #8A3BFE"></div>
-                <input v-model="password" placeholder="Password" type="password"
-                @keyup.enter="loginUser()">
-            </div>
-            <div>
-                <button class="login-btn" @click="loginUser()">Sign in</button>
-            </div>
-            <div class="text">
-                <p class="link">Forgot your password?</p>
-            </div>
-            <div class="text" style="margin-top: 40px;">
-                <p>Don't have an account? <a class="link" @click="navigate('register')">Sign up</a></p>
-            </div>
+          <div class="input">
+            <div class="color-bar" style="background: #FB6D13"></div>
+            <input v-model="email" placeholder="Email address" type="text"/>
+          </div>
+          <div class="input">
+            <div class="color-bar" style="background: #8A3BFE"></div>
+            <input v-model="password" placeholder="Password" type="password"
+                   @keyup.enter="loginUser()">
+          </div>
+          <div>
+            <button class="login-btn" @click="loginUser()">Sign in</button>
+          </div>
+          <div class="text" @click.stop="navigate('login/forgot')">
+            <p class="link">Forgot your password?</p>
+          </div>
+          <div class="text" style="margin-top: 40px;">
+            <p>Don't have an account? <a class="link" @click="navigate('register')">Sign up</a></p>
+          </div>
         </div>
     </div>
 </template>
@@ -69,13 +69,12 @@ export default {
     display: flex;
     width: 100%;
     height: 100vh;
+    animation: fade-in-move-down 0.7s;
 }
 .login-form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     margin: auto;
-    margin-top: 10vh;
 }
 
 .input{
@@ -88,7 +87,8 @@ export default {
     font-weight: 500;
 }
 input {
-    width: 96%;
+    width: calc(100vw - 60px);
+    position: relative;
     height:46px;
     margin-left: 8px;
     margin-bottom: 15px;
@@ -102,7 +102,7 @@ input {
 }
 
 .input input {
-    padding-left: 15px;
+  width: calc(100vw - 140px);
 }
 
 .color-bar {
@@ -110,12 +110,14 @@ input {
     width: 15px;
     border-radius: 10px 0px 0 10px;
     position: absolute;
+    z-index: 2;
 }
 
 .login-btn {
     background: linear-gradient(270deg, rgba(101,255,167,1) 10%, rgba(52,235,233,1) 100%);
     width: 80px;
     height: 40px;
+    left: calc(50vw - 80px);
     border-radius: 25px;
     border: 1px solid black;
     outline: none;
@@ -131,5 +133,22 @@ input {
 .error-message {
     color: red;
     font-size: 14px;
+}
+
+.logo-container{
+    width: 333px;
+    height: auto;
+    background: None;
+    padding-bottom: 20px;
+}
+@keyframes fade-in-move-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

@@ -86,6 +86,9 @@ Vue.config.productionTip = false;
 // Cookie library
 var VueCookie = require("vue-cookie");
 Vue.use(VueCookie);
+//Particles
+import Particles from "particles.vue";
+Vue.use(Particles);
 new Vue({
   router,
   render: (h) => h(App),

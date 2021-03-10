@@ -1,19 +1,20 @@
-"""Unit tests for /api/communities GET endpoint."""
-
 import json
 
 from django.test import TestCase
 
 from backend.models import User, Community, CommunityMember
 
-class CommunityListEndpointTest(TestCase):
-    def setUp(self):
 
+class CommunityListEndpointTest(TestCase):
+    """
+    Test community get endpoints.
+    """
+
+    def setUp(self):
         self.user = User.objects.create_superuser(
             username="testy", email="test@4ums.co.uk", password="abc"
         )
         success = self.client.login(username="test@4ums.co.uk", password="abc")
-
         assert success
 
     def test_auth_401(self):
@@ -36,7 +37,7 @@ class CommunityListEndpointTest(TestCase):
         response = self.client.get("/api/communities", {"type": "banana"})
         self.assertEqual(400, response.status_code)
 
-    def test_get_valid_all(self):
+    def test_get_valid_other(self):
         """Test that the endpoint returns the expected list."""
 
         Community.objects.create(
@@ -51,7 +52,7 @@ class CommunityListEndpointTest(TestCase):
             description="Bob's gang (cool kids only)",
         )
 
-        response = self.client.get("/api/communities", {"type": "all"})
+        response = self.client.get("/api/communities", {"type": "other"})
         self.assertEqual(200, response.status_code)
 
         result = json.loads(response.content.decode())
@@ -104,7 +105,7 @@ class CommunityListEndpointTest(TestCase):
         self.assertEqual(expected, result["data"][0])
 
     def test_get_valid_member(self):
-        """Test that the endpooint returns the expected list."""
+        """Test that the endpoint returns the expected list."""
 
         comm_instance1 = Community.objects.create(
             user=self.user, name="lorem", description="lorem ipsum ..."

@@ -19,6 +19,7 @@
     "core-js": "^3.6.5",
     "cross-env": "^7.0.3",
     "moment": "^2.29.1",
+    "particles.vue": "^2.2.2",
     "vue": "^2.6.11",
     "vue-bar-graph": "^1.2.0",
     "vue-cookie": "^1.1.4",
