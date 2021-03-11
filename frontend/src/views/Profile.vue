@@ -52,7 +52,7 @@
         </p>
         <div class="lines"></div>
         <div>
-          <p v-if="this.bio !== ''" style="padding-top: 0">
+          <p v-if="this.bio !== '' && this.bio !== null" style="padding-top: 0">
             {{ this.bio }}
           </p>
           <p v-else>
