@@ -14,15 +14,38 @@
       </div>
     </div>
     <div class="search-section">
-      <input placeholder="Search for a thread..." type="text" />
-      <div class="search-icon">
+      <input
+        id="search"
+        v-model="query"
+        placeholder="Search for a thread..."
+        type="text"
+        @keyup.enter="getSearchPosts()"
+      />
+      <div v-if="query === '' && firstGet">
+        {{ getSearchPosts() }}
+        {{ (this.firstGet = false) }}
+      </div>
+      <div class="search-icon" @click.stop.prevent="getSearchPosts()">
         <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
       </div>
     </div>
-    <div v-if="loadedPosts && !noPosts">
-      <div class="post-content">
-        <Post v-for="(post, index) in allPosts" :key="index" :post="post" />
+    <div v-if="loadedPosts">
+      <div v-if="!noPosts">
+        <div class="post-content">
+          <Post v-for="(post, index) in allPosts" :key="index" :post="post" />
+        </div>
       </div>
+      <div v-else-if="noPosts && this.query === ''">
+        <h3>
+          There are no posts left for you to view, maybe join more communities?
+        </h3>
+      </div>
+      <div v-else>
+        <h3>
+          Sorry we couldn't find any threads matching your search.
+        </h3>
+      </div>
+      <div><br /><br /><br /><br /></div>
     </div>
     <div v-else-if="noPosts">
       <h3>
@@ -58,6 +81,8 @@ export default {
       errorLoadingPosts: false,
       loadMore: false,
       scrolledToBottom: false,
+      query: "",
+      firstGet: false,
       noPosts: false,
     };
   },
@@ -79,7 +104,39 @@ export default {
         }
       };
     },
+    getSearchPosts() {
+      this.allPosts = [];
+      this.noPosts = false;
+      this.currentPage = 1;
+      this.firstGet = true;
+      if (this.query === "") {
+        this.getPosts();
+        this.firstGet = false;
+      } else {
+        document.getElementById("search").blur();
+        axios
+          .get("api/users/feed", {
+            params: { page: this.currentPage, phrase: this.query },
+          })
+          .then((response) => {
+            this.loadedPosts = false;
+            if (this.currentPage === 1 && response.data.data.length === 0) {
+              this.noPosts = true;
+            }
+            for (let i = 0; i < response.data.data.length; i++) {
+              this.allPosts.push(response.data.data[i]);
+            }
+            this.loadMore = response.data["next_page"] !== null;
+            this.loadedPosts = true;
+          })
+          .catch((error) => {
+            console.error(error);
+            this.loadedPosts = false;
+          });
+      }
+    },
     async getPosts() {
+      this.noPosts = false;
       await axios
         .get("api/users/feed", { params: { page: this.currentPage } })
         .then((response) => {
@@ -90,7 +147,7 @@ export default {
           for (let i = 0; i < response.data.data.length; i++) {
             this.allPosts.push(response.data.data[i]);
           }
-          this.loadMore = response.data.next_page !== null;
+          this.loadMore = response.data["next_page"] !== null;
           this.loadedPosts = true;
         })
         .catch((error) => {

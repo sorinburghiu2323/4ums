@@ -23,7 +23,7 @@
         <div class="open">
           <div class="oval">
             <font-awesome-icon
-              :icon="['fa', 'question-circle']"
+                :icon="['fa', 'question-circle']"
             ></font-awesome-icon>
             <p>Open</p>
           </div>
@@ -71,7 +71,9 @@
         <div class="title">
           <p>{{ post.title }}</p>
         </div>
-
+        <div v-if="post.comments_num > 0" style="text-align: left; margin-bottom: 10px; font-size: 14px;">
+          {{post.comments_num}} Comments
+        </div>
         <div class="post-content">
           <div class="description">
             <p>{{ post.description }}</p>
@@ -195,7 +197,6 @@ export default {
   },
   computed: {
     isByCommunityOwner() {
-      console.log(this.post.user);
       if (this.community === null || this.post === null) {
         return false;
       }
@@ -204,11 +205,13 @@ export default {
   },
   methods: {
     updatePost() {
-      console.log("hi");
       this.currentPage = 1;
       this.allComments = [];
       this.isAnswered = !this.isAnswered;
       this.getPost();
+    },
+    goBack() {
+      this.$router.go(-1);
     },
     getCommunity() {
       axios
@@ -327,21 +330,23 @@ export default {
 <style scoped>
 .badges {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .badges > div {
-  width: fit-content;
-  margin-bottom: 5px;
+  width: auto;
+  margin-bottom: 10px;
+  padding-right: 10px;
 }
 
 .lecturer .oval {
   background: rgb(138, 59, 254);
   background: linear-gradient(
-    225deg,
+    45deg,
     rgba(138, 59, 254, 1) 11%,
     rgba(180, 55, 255, 1) 49%
   );
+  box-shadow: 0 0 30px rgba(138, 59, 254, 1);
   font-weight: 600;
 }
 
@@ -359,6 +364,7 @@ export default {
     rgba(253, 248, 98, 1) 100%
   );
   font-weight: 600;
+  box-shadow: 0 0 30px rgba(255, 237, 0, 1);
 }
 
 .thread-owner .oval {
@@ -369,6 +375,7 @@ export default {
     rgba(0, 137, 255, 1) 100%
   );
   font-weight: 600;
+  box-shadow: 0 0 30px rgba(20, 90, 246, 1);
 }
 
 .send-icon {
@@ -380,9 +387,7 @@ export default {
   color: black;
   padding: 3px 7px 3px 7px;
   border-radius: 12px;
-  margin: auto;
-  margin-left: 0;
-  margin-right: 0;
+  margin: auto 0;
 }
 
 .header {
@@ -412,8 +417,7 @@ export default {
   height: 110px;
   color: white;
   width: 90%;
-  margin: auto;
-  margin-top: 5px;
+  margin: 5px auto auto;
   outline: none;
   resize: none;
 }
@@ -437,14 +441,11 @@ export default {
 }
 .comment-btn .comment-icon {
   font-size: 30px;
-  margin: auto;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: auto 10px;
 }
 
 .comment-btn p {
-  margin: auto;
-  margin-left: 0;
+  margin: auto auto auto 0;
 }
 
 .containers {
@@ -452,13 +453,10 @@ export default {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin: 10px;
   height: auto;
   border: none;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0;
+  margin: 10px 10px 0;
 }
 
 .container {
@@ -468,13 +466,15 @@ export default {
 
 .post-content {
   background: linear-gradient(to right, #272b39, #1e212b);
-  margin-left: -19px;
-  margin-right: -16px;
-  padding: 10px 10px 0px 10px;
+  margin-left: -18px;
+  margin-right: -18px;
+  padding: 10px 10px 0 10px;
+  filter: drop-shadow(0px 0px 5px white);
 }
 
 .comments-list {
-  padding-bottom: 85px;
+  margin-right: -1px;
+  margin-bottom: 80px;
 }
 
 .details .title {

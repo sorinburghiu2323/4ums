@@ -2,7 +2,9 @@
     <div class="container">
         <div class="register-form">
           <div class="header">
-            <div class="logo-container"><img class="logo-container" src="@/assets/website-logo.png"></div>
+            <div class="logo-container">
+              <img class="logo-container" src="@/assets/website-logo.png">
+            </div>
           </div>
           <div v-if="showRequirements" class="pass-requirements">
             <p>Password requirements: </p>
@@ -243,27 +245,27 @@ export default {
   margin: auto;
 }
 
+
 .input {
   text-align: left;
+  height: 48px;
+  margin-bottom: 15px;
+  display: flex;
 }
 
 .input input {
-  width: 96%;
-  height: 46px;
-  margin-left: 8px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  color: white;
-  background: rgb(40, 44, 58);
-  background: linear-gradient(
-    90deg,
-    rgba(40, 44, 58, 1) 0%,
-    rgba(27, 30, 40, 1) 35%,
-    rgba(8, 9, 11, 1) 100%
-  );
-  padding-left: 15px;
+    width: 96%;
+    height: 100%;
+    /* margin-left: 8px; */
+    border-radius: 0px 8px 8px 0px;
+    border: none;
+    outline: none;
+    color: white;
+    background: rgb(40, 44, 58);
+    background: linear-gradient(90deg, rgba(40, 44, 58, 1) 0%, rgba(27, 30, 40, 1) 35%, rgba(8, 9, 11, 1) 100% );
+    padding-left: 8px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 input::placeholder {
@@ -306,10 +308,9 @@ input::placeholder {
 }
 
 .color-bar {
-  height: 48px;
+  height: inherit;
   width: 15px;
   border-radius: 10px 0px 0 10px;
-  position: absolute;
 }
 
 .link {

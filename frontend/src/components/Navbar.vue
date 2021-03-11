@@ -88,7 +88,7 @@ export default {
   font-size: 4vh;
   font-family: "Trebuchet MS";
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   height: 11vh;
   background-color: #161626;
@@ -97,7 +97,7 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
-  border-radius: 25px;
+  border-radius: 25px 25px 0 0;
 }
 
 .nav-link{
@@ -106,9 +106,9 @@ export default {
 }
 
 .nav-icon {
-    font-size: 2vh;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
-    text-align: center;
+  font-size: 2vh;
+  margin-top: 0;
+  margin-bottom: 1vh;
+  text-align: center;
 }
 </style>

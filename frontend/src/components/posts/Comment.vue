@@ -115,9 +115,9 @@ export default {
         },
       });
     },
-    unApproveAnswer() {
-      axios.delete(
-        "/api/communities/" +
+    async unApproveAnswer() {
+      await axios.delete(
+          "/api/communities/" +
           this.communityId +
           "/posts/" +
           this.postId +
@@ -129,9 +129,9 @@ export default {
       this.beenApproved = false;
       this.$emit("update-post");
     },
-    approveAnswer() {
-      axios.post(
-        "/api/communities/" +
+    async approveAnswer() {
+      await axios.post(
+          "/api/communities/" +
           this.communityId +
           "/posts/" +
           this.postId +
@@ -226,14 +226,12 @@ export default {
 }
 
 .badges div p {
-  margin: auto;
-  margin-left: 4px;
+  margin: auto auto auto 4px;
   font-weight: 600;
 }
 
 .badges div svg {
-  margin: auto;
-  margin-left: 0;
+  margin: auto auto auto 0;
 }
 
 .lecturer {
