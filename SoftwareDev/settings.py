@@ -28,13 +28,13 @@ SECRET_KEY = os.getenv(
 if "DJANGO_AWS_4UMS_DEPLOYED" in os.environ:
     ALLOWED_HOSTS = ["4ums.co.uk"]
     SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
     DEBUG = False
 else:
     ALLOWED_HOSTS = ["*"]
     DEBUG = True
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 
 # Application definition
 
