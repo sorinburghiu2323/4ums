@@ -37,7 +37,9 @@
       </div>
       <div v-else-if="noPosts && this.query === ''">
         <h3>
-          There are no posts left for you to view, maybe join more communities?
+          There are no posts for you to view, click the communities
+            <font-awesome-icon :icon="['fas', 'users']"/>
+            tab to browse and join more Communities.
         </h3>
       </div>
       <div v-else>
