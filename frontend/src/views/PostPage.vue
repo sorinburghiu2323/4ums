@@ -470,6 +470,7 @@ export default {
   margin-left: -18px;
   margin-right: -18px;
   padding: 10px 10px 0 10px;
+  filter: drop-shadow(0px 0px 5px white);
 }
 
 .comments-list {
