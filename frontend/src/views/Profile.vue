@@ -51,8 +51,8 @@
           Bio
         </p>
         <div class="lines"></div>
-        <div>
-          <p v-if="this.bio !== ''" style="padding-top: 0">
+        <div v-if="!loadingBio">
+          <p v-if="this.bio !== '' && this.bio !== null" style="padding-top: 0">
             {{ this.bio }}
           </p>
           <p v-else>
@@ -221,7 +221,9 @@ export default {
           }
           this.initials =
             this.firstName.substring(0, 1) + this.secondName.substring(0, 1);
+          this.loadingBio = true;
           this.bio = response.data.description;
+          this.loadingBio = false;
         })
         .catch((error) => {
           console.error(error);
@@ -241,6 +243,7 @@ export default {
       leaderboardInfo: [],
       communities: [],
       bio: "",
+      loadingBio: true,
       displayGraph: true,
       labels: ["This week", "Last week", "2 Weeks Ago", "3 Weeks Ago"],
       link: '',
@@ -300,6 +303,7 @@ export default {
   background: none;
   color: black;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .share-icon.backgroundSquare {
