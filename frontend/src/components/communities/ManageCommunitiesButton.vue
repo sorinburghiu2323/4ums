@@ -34,10 +34,10 @@ export default {
 
 #circleButton {
   border-radius: 50%;
-  background: rgb(52,235,233);
-  background: linear-gradient(180deg, rgba(52,235,233,1) 0%, rgba(101,255,167,1) 54%);
-  height: 14vh;
-  width: 14vh;
+  background: rgb(52, 235, 233);
+  background: linear-gradient(180deg, rgba(52, 235, 233, 1) 0%, rgba(101, 255, 167, 1) 54%);
+  height: 120px;
+  width: 120px;
   position: fixed;
   bottom: 12vh;
   right: 0;
