@@ -1,15 +1,15 @@
 <template>
   <div v-if="loadedPost" class="container">
-    <div class="nav-link" @click.prevent.stop="goBack()">
+    <router-link class="nav-link" to="..">
       <p id="back">
-        <font-awesome-icon :icon="['fas', 'arrow-left']"/>
+        <font-awesome-icon :icon="['fas', 'arrow-left']" />
         {{ post.community.name }}
       </p>
-    </div>
+    </router-link>
     <div class="header">
       <div
-          class="settings-icon"
-          @click="
+        class="settings-icon"
+        @click="
           $router.push({
             name: 'Settings',
           })
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div>
-        <div class="lecturer">
+        <div v-if="this.post.user.is_lecturer" class="lecturer">
           <div class="oval">
             <font-awesome-icon :icon="['fa', 'chalkboard-teacher']" />
             <p>Lecturer</p>
@@ -120,8 +120,8 @@
     <div v-if="showInput" class="comment-input">
       <div class="close-comment">
         <font-awesome-icon
-            :icon="['fa', 'times']"
-            @click="
+          :icon="['fa', 'times']"
+          @click="
             showInput = false;
             addComment = '';
           "
@@ -231,8 +231,7 @@ export default {
         )
         .then(() => {
           this.showInput = false;
-          this.allComments = [];
-          this.getPost();
+          this.$router.go(0);
         })
         .catch((error) => {
           console.error(error);

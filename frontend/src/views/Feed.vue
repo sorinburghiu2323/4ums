@@ -47,6 +47,12 @@
       </div>
       <div><br /><br /><br /><br /></div>
     </div>
+    <div v-else-if="noPosts">
+      <h3>
+        There are no posts left for you to view, maybe join more communities?
+      </h3>
+    </div>
+    <div><br /><br /><br /><br /></div>
   </div>
 </template>
 <script>
