@@ -50,6 +50,9 @@
       <div v-else-if="!joined" style="margin-top: 50px;">
         Join community to see posts...
       </div>
+      <div v-else-if="noPosts && query === ''">
+        There are no posts in this community at the moment, maybe create a new post?
+      </div>
       <div v-else-if="noPosts">
         <h3>
           Sorry we couldn't find any threads matching your search.
