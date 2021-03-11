@@ -133,12 +133,19 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 80%;
+  white-space: nowrap;
+}
+
+.details .title p {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .details .description {
   height: 70%;
   font-size: 15px;
   color: #7e7e7e;
+  width: 90%;
 }
 
 .description p {

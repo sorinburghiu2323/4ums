@@ -1,6 +1,6 @@
 <template>
   <div id="form">
-    <router-link class="nav-link" :to="'/communities/' + community.id">
+    <router-link v-if="community" class="nav-link" :to="'/communities/' + community.id">
       <p id="back">
         <font-awesome-icon :icon="['fas', 'arrow-left']"/>
         Back to threads

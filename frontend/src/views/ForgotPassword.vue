@@ -51,7 +51,6 @@ export default {
     },
     methods: {
         submitEmail() {
-          console.log(this.emailField);
           axios.post('/api/login/sendreset', {email: this.emailField})
               .then(() => {
                 this.sentEmail = true;
