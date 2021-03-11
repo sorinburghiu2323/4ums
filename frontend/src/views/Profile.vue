@@ -303,6 +303,7 @@ export default {
   background: none;
   color: black;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .share-icon.backgroundSquare {
