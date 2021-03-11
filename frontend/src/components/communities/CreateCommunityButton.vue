@@ -28,16 +28,16 @@ export default {
 }
 
 .curved-text img {
-    height: 120px;
-    transform: rotate(20deg);
+  height: 12vh;
+  transform: rotate(20deg);
 }
 
 #circleButton {
   border-radius: 50%;
   background: rgb(210, 35, 175);
   background: linear-gradient(180deg, rgba(210, 35, 175, 1) 0%, rgba(227, 122, 247, 1) 75%);
-  height: 120px;
-  width: 120px;
+  height: 12vh;
+  width: 12vh;
   position: fixed;
   bottom: 12vh;
   right: 0;
