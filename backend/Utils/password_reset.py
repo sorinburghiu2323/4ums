@@ -76,7 +76,7 @@ def build_email(email_addr, user_id, reset_code, first_name, username):
     """
 
     link_url = (
-        f"http://4ums.co.uk/login/passwordreset?id={user_id}&code={reset_code}"
+        f"https://4ums.co.uk/login/passwordreset?id={user_id}&code={reset_code}"
     )
     template = loader.get_template("reset_email.html")
     message_content = template.render(
