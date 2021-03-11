@@ -6,34 +6,34 @@
         <p>Chosen Answer</p>
       </div>
       <div v-if="comment.user.is_teacher" class="lecturer">
-        <font-awesome-icon :icon="['fa', 'chalkboard-teacher']"/>
+        <font-awesome-icon :icon="['fa', 'chalkboard-teacher']" />
         <p>Lecturer</p>
       </div>
       <div v-if="isByCommunityOwner" class="community-owner">
-        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
+        <font-awesome-icon :icon="['fa', 'hand-peace']" />
         <p>Community Owner</p>
       </div>
       <div v-if="isByPostOwner" class="thread-owner">
-        <font-awesome-icon :icon="['fa', 'hand-peace']"/>
+        <font-awesome-icon :icon="['fa', 'hand-peace']" />
         <p>Thread Owner</p>
       </div>
       <div
-          v-if="displayApprove && !is_approved && isQuestion && !beenApproved"
-          class="approve"
-          @click="approveAnswer()"
+        v-if="displayApprove && !is_approved && isQuestion && !beenApproved"
+        class="approve"
+        @click="approveAnswer()"
       >
         <p>
-          <font-awesome-icon :icon="['fas', 'check-circle']"/>
+          <font-awesome-icon :icon="['fas', 'check-circle']" />
           Approve Answer
         </p>
       </div>
       <div
-          v-if="displayApprove && is_approved && isQuestion"
-          class="approve"
-          @click="unApproveAnswer()"
+        v-if="displayApprove && is_approved && isQuestion"
+        class="approve"
+        @click="unApproveAnswer()"
       >
         <p>
-          <font-awesome-icon :icon="['fas', 'times-circle']"/>
+          <font-awesome-icon :icon="['fas', 'times-circle']" />
           Un-Approve Answer
         </p>
       </div>
@@ -92,7 +92,7 @@ export default {
       is_approved: this.comment.is_approved,
       userLiked: this.comment["is_liked"],
       numLikes: this.comment["comment_likes"],
-      beenApproved: this.hasBeenApproved
+      beenApproved: this.hasBeenApproved,
     };
   },
   computed: {
@@ -127,7 +127,7 @@ export default {
       );
       this.is_approved = false;
       this.beenApproved = false;
-      this.$emit('update-post');
+      this.$emit("update-post");
     },
     async approveAnswer() {
       await axios.post(
@@ -141,7 +141,7 @@ export default {
       );
       this.is_approved = true;
       this.beenApproved = true;
-      this.$emit('update-post');
+      this.$emit("update-post");
     },
     likeComment() {
       if (!this.userLiked) {

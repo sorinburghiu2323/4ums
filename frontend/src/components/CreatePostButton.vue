@@ -149,10 +149,14 @@ export default {
   margin-right: 40px;
   margin-left: 40px;
   display: flex;
+  position: relative;
 }
 
 .icon2 svg, .icon3 svg {
-  margin: auto;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%)
 }
 
 .subtext{
@@ -174,6 +178,7 @@ export default {
   border-width: 0;
   display: flex;
   margin-top: -20px;
+  position: relative;
 }
 
 .top-row, .bottom-row {
