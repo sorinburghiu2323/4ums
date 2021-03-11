@@ -226,14 +226,12 @@ export default {
 }
 
 .badges div p {
-  margin: auto;
-  margin-left: 4px;
+  margin: auto auto auto 4px;
   font-weight: 600;
 }
 
 .badges div svg {
-  margin: auto;
-  margin-left: 0;
+  margin: auto auto auto 0;
 }
 
 .lecturer {
