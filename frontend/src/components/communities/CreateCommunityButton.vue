@@ -28,24 +28,24 @@ export default {
 }
 
 .curved-text img {
-    height: 120px;
-    transform: rotate(20deg);
+  height: 12vh;
+  transform: rotate(20deg);
 }
 
 #circleButton {
-    border-radius: 50%;
-    background: rgb(210,35,175);
-    background: linear-gradient(180deg, rgba(210,35,175,1) 0%, rgba(227,122,247,1) 75%);
-    height: 14vh;
-    width: 14vh;
-    position: fixed;
-    bottom: 12vh;
-    right: 0;
-    font-size: 40px;
-    font-weight: 600;
-    border-width: 0;
-    z-index: 1;
-    box-shadow: 0px 3px 20px #D223AF;
+  border-radius: 50%;
+  background: rgb(210, 35, 175);
+  background: linear-gradient(180deg, rgba(210, 35, 175, 1) 0%, rgba(227, 122, 247, 1) 75%);
+  height: 12vh;
+  width: 12vh;
+  position: fixed;
+  bottom: 12vh;
+  right: 0;
+  font-size: 40px;
+  font-weight: 600;
+  border-width: 0;
+  z-index: 1;
+  box-shadow: 0px 3px 20px #D223AF;
 }
 
 

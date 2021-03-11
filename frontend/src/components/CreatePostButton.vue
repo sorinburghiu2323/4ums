@@ -91,14 +91,14 @@ export default {
 }
 
 .curved-text img {
-    height: 120px;
-    transform: rotate(28deg);
+  height: 12vh;
+  transform: rotate(28deg);
 }
 #circleButton {
   border-radius: 50%;
   background: linear-gradient(to bottom right, #B437FF, #9C39FF);
-  height: 14vh;
-  width: 14vh;
+  height: 12vh;
+  width: 12vh;
   position: fixed;
   bottom: 12vh;
   right: 0;
@@ -106,7 +106,7 @@ export default {
   font-weight: 600;
   border-width: 0;
   z-index: 1;
-  box-shadow: 0px 3px 20px #9C39FF;
+  box-shadow: 0 3px 20px #9C39FF;
   outline: none;
 
 }
