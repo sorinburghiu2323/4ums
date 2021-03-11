@@ -71,7 +71,9 @@
         <div class="title">
           <p>{{ post.title }}</p>
         </div>
-
+        <div v-if="post.comments_num > 0" style="text-align: left; margin-bottom: 10px; font-size: 14px;">
+          {{post.comments_num}} Comments
+        </div>
         <div class="post-content">
           <div class="description">
             <p>{{ post.description }}</p>
@@ -132,16 +134,16 @@
       </div>
     </div>
     <div v-if="loadedPost && community" class="comments-list">
-      <Comment v-for="(comment, index) in allComments" :key="index"
-               :comment="comment"
-               :displayApprove="isUserOwner"
-               :hasBeenApproved="isAnswered"
-               :isByCommunityOwner="community.creator.id === comment.user.id"
-               :isByPostOwner="post.user.id === comment.user.id"
-               :isQuestion="post_type === 'question'"
-               v-on:update-post="updatePost"
-
-
+      <Comment
+        v-for="(comment, index) in allComments"
+        :key="index"
+        :comment="comment"
+        :displayApprove="isUserOwner"
+        :hasBeenApproved="isAnswered"
+        :isByCommunityOwner="community.creator.id === comment.user.id"
+        :isByPostOwner="post.user.id === comment.user.id"
+        :isQuestion="post_type === 'question'"
+        v-on:update-post="updatePost"
       />
     </div>
   </div>
@@ -195,7 +197,7 @@ export default {
   },
   computed: {
     isByCommunityOwner() {
-      if(this.community === null || this.post === null) {
+      if (this.community === null || this.post === null) {
         return false;
       }
       return this.community.creator.id === this.post.user.id;
@@ -210,17 +212,16 @@ export default {
     },
     goBack() {
       this.$router.go(-1);
-
     },
     getCommunity() {
       axios
-          .get("/api/communities/" + this.id)
-          .then((response) => {
-            this.community = response.data;
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        .get("/api/communities/" + this.id)
+        .then((response) => {
+          this.community = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     sendComment() {
       axios
@@ -342,28 +343,38 @@ export default {
 .lecturer .oval {
   background: rgb(138, 59, 254);
   background: linear-gradient(
-      45deg,
-      rgba(138, 59, 254, 1) 11%,
-      rgba(180, 55, 255, 1) 49%
+    45deg,
+    rgba(138, 59, 254, 1) 11%,
+    rgba(180, 55, 255, 1) 49%
   );
   box-shadow: 0 0 30px rgba(138, 59, 254, 1);
   font-weight: 600;
 }
 
-.lecturer .oval svg, .community-owner .oval svg, .thread-owner .oval svg {
+.lecturer .oval svg,
+.community-owner .oval svg,
+.thread-owner .oval svg {
   margin-left: 0;
 }
 
 .community-owner .oval {
   background: rgb(255, 237, 0);
-  background: linear-gradient(270deg, rgba(255, 237, 0, 1) 15%, rgba(253, 248, 98, 1) 100%);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 237, 0, 1) 15%,
+    rgba(253, 248, 98, 1) 100%
+  );
   font-weight: 600;
   box-shadow: 0 0 30px rgba(255, 237, 0, 1);
 }
 
 .thread-owner .oval {
   background: rgb(20, 90, 246);
-  background: linear-gradient(90deg, rgba(20, 90, 246, 1) 27%, rgba(0, 137, 255, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(20, 90, 246, 1) 27%,
+    rgba(0, 137, 255, 1) 100%
+  );
   font-weight: 600;
   box-shadow: 0 0 30px rgba(20, 90, 246, 1);
 }

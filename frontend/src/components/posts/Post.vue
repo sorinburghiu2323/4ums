@@ -49,6 +49,9 @@
       <div class="date">
         <p>Posted {{ date_time }}</p>
       </div>
+      <div class="comment-count" v-if="post.comments_num > 0">
+        <p>{{post.comments_num}} Comments</p>
+      </div>
       <div class="author" @click.stop="navigateToUser">
         <p>
           By <span class="author-name">{{ post["user"]["username"] }}</span>
@@ -189,6 +192,14 @@ export default {
 .date {
   color: #7e7e7e;
   font-size: 15px;
+}
+.comment-count {
+  position: absolute;
+  top: 0px;
+  font-weight: 600;
+  right: 15px;
+  font-size: 13px;
+  color: #9C39FF;
 }
 
 .open .oval {
