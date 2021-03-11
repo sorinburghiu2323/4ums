@@ -9,8 +9,8 @@
     <div class="header">
       <h1>Manage Communities</h1>
       <div
-        class="settings-icon"
-        @click="
+          class="settings-icon"
+          @click="
           $router.push({
             name: 'Settings',
           })
@@ -20,8 +20,18 @@
       </div>
     </div>
     <div class="search-section">
-      <input placeholder="Search for a community..." type="text" />
-      <div class="search-icon">
+      <input
+          id="search"
+          v-model="query"
+          placeholder="Search for a community..."
+          type="text"
+          @keyup.enter="searchMyCommunities()"
+      />
+      <div v-if="query === '' && firstGet">
+        {{ searchMyCommunities() }}
+        {{ (this.firstGet = false) }}
+      </div>
+      <div class="search-icon" @click.stop.prevent="searchMyCommunities()">
         <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
       </div>
     </div>
@@ -30,9 +40,9 @@
       <!--Communities user created-->
       <p>Created by you:</p>
       <CommunitiesList
-        v-if="loadedCommunities"
-        :communities="createdCommunities"
-        communityType="created"
+          v-if="loadedCommunities"
+          :communities="createdCommunities"
+          communityType="created"
       />
 
       <!--Communities user is a member of -->
@@ -64,6 +74,9 @@ export default {
       myCommunities: [],
       createdCommunities: [],
       showCreateButton: true,
+      query: '',
+      noPosts: false,
+      firstGet: false,
     };
   },
   mounted() {
@@ -75,8 +88,8 @@ export default {
     scroll() {
       window.onscroll = () => {
         let bottomOfWindow =
-          document.documentElement.scrollTop + window.innerHeight >
-          document.body.scrollHeight;
+            document.documentElement.scrollTop + window.innerHeight >
+            document.body.scrollHeight;
         if (bottomOfWindow) {
           this.showCreateButton = false;
         } else {
@@ -84,16 +97,48 @@ export default {
         }
       };
     },
+    searchMyCommunities() {
+      this.myCommunities = [];
+      this.createdCommunities = [];
+      this.noPosts = false;
+      this.currentPage = 1;
+      this.firstGet = true;
+      if (this.query === "") {
+        this.getMyCommunities();
+        this.getCreatedCommunities();
+        this.firstGet = false;
+      } else {
+        axios
+            .get("api/communities?type=memberof", {params: {page: "all", phrase: this.query}})
+            .then((response) => {
+              this.loadedCommunities = false;
+              for (let i = 0; i < response.data.data.length; i++) {
+                this.myCommunities.push(response.data.data[i]);
+              }
+              if (this.currentPage === 1 && response.data.data.length === 0) {
+                this.noPosts = true;
+              }
+              this.loadedCommunities = true;
+            })
+            .catch((error) => {
+              console.error(error);
+              this.loadedCommunities = false;
+            });
+      }
+    },
     getMyCommunities() {
       axios
-        .get("api/communities?type=memberof", { params: { page: "all" } })
-        .then((response) => {
-          this.loadedCommunities = false;
-          for (var i = 0; i < response.data.data.length; i++) {
-            this.myCommunities.push(response.data.data[i]);
-          }
-          this.loadedCommunities = true;
-        })
+          .get("api/communities?type=memberof", {params: {page: "all"}})
+          .then((response) => {
+            this.loadedCommunities = false;
+            for (var i = 0; i < response.data.data.length; i++) {
+              this.myCommunities.push(response.data.data[i]);
+            }
+            if (this.currentPage === 1 && response.data.data.length === 0) {
+              this.noPosts = true;
+            }
+            this.loadedCommunities = true;
+          })
         .catch((error) => {
           console.error(error);
           this.loadedCommunities = false;
